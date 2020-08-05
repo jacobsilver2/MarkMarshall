@@ -1,18 +1,22 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
- */
-
 import React from "react"
-import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
+import styled from "styled-components"
+import Headroom from "react-headroom"
+import Header from "./Header"
+import Footer from "./Footer"
+import Fade from "./Fade"
 
-import Header from "./header"
-import "./layout.css"
+const Wrapper = styled.div`
+  max-width: 960;
+  margin: 0 auto;
+  padding: 0 1.0875rem 1.45rem;
+`
 
-const Layout = ({ children }) => {
+const StickyFooter = styled.div`
+  flex-shrink: 0;
+`
+
+const Layout = ({ children, location }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -25,27 +29,19 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      <Header siteTitle={data.site.siteMetadata.title} />
-      <div
-        style={{
-          margin: `0 auto`,
-          maxWidth: 960,
-          padding: `0 1.0875rem 1.45rem`,
-        }}
-      >
-        <main>{children}</main>
-        <footer>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
-        </footer>
-      </div>
+      <Headroom>
+        <Header siteTitle={data.site.siteMetadata.title} />
+      </Headroom>
+      <Wrapper>
+        <Fade location={location}>
+          <main>{children}</main>
+        </Fade>
+      </Wrapper>
+      <StickyFooter>
+        <Footer />
+      </StickyFooter>
     </>
   )
-}
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
 }
 
 export default Layout

@@ -1,42 +1,45 @@
 import { Link } from "gatsby"
-import PropTypes from "prop-types"
-import React from "react"
+import React, { useContext } from "react"
+import styled from "styled-components"
+import { GlobalStateContext } from "../context/provider"
 
-const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      background: `rebeccapurple`,
-      marginBottom: `1.45rem`,
-    }}
-  >
-    <div
-      style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
-      }}
-    >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
-        >
-          {siteTitle}
-        </Link>
-      </h1>
-    </div>
-  </header>
-)
+const StyledFooter = styled.footer`
+  background: ${({ theme, lightMode }) =>
+    lightMode ? theme.color.blue : theme.color.primaryDark};
+  color: ${({ lightMode }) => (lightMode ? "black" : "white")};
+  margin-bottom: 1.45rem;
+`
 
-Header.propTypes = {
-  siteTitle: PropTypes.string,
-}
+const Title = styled.h1`
+  margin: 0;
+`
 
-Header.defaultProps = {
-  siteTitle: ``,
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: ${({ theme, lightMode }) =>
+    lightMode ? theme.color.primaryDark : theme.color.offWhite};
+`
+
+const Wrapper = styled.div`
+  margin: 0 auto;
+  max-width: 960px;
+  padding: 1.45rem 1.0875rem;
+`
+
+const Header = ({ siteTitle }) => {
+  const state = useContext(GlobalStateContext)
+  return (
+    <StyledFooter lightMode={state.lightMode}>
+      <Wrapper>
+        <Title>
+          <StyledLink lightMode={state.lightMode} to="/">
+            {siteTitle}
+          </StyledLink>
+        </Title>
+        <p>The current mode is {state.lightMode ? "light" : "dark"}</p>
+      </Wrapper>
+    </StyledFooter>
+  )
 }
 
 export default Header

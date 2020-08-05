@@ -1,3 +1,11 @@
+import { createGlobalStyle } from "styled-components"
+import reset from "styled-reset"
+
+const GlobalStyle = createGlobalStyle`
+  ${reset}
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -620,3 +628,7 @@ pre tt:after {
     font-size: 100%;
   }
 }
+
+`
+
+export default GlobalStyle
