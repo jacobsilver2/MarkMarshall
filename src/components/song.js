@@ -12,6 +12,15 @@ const SongCard = styled.div`
 
 const Song = ({ song }) => {
   const dispatch = useContext(GlobalDispatchContext)
+  const {
+    title,
+    genre,
+    composer,
+    instrumentation,
+    description,
+    tempo,
+    soundsLike,
+  } = song
 
   function addToGlobalState() {
     dispatch({
@@ -23,14 +32,26 @@ const Song = ({ song }) => {
 
   return (
     <SongCard>
-      <h1>{song.title}</h1>
-      <h2>{song.bpm} bpm</h2>
-      <p>Tags:</p>
-      <ul>
-        {song.tags.map(tag => (
-          <li key={tag}>{tag}</li>
-        ))}
-      </ul>
+      {title && <h1>{title}</h1>}
+
+      {composer && (
+        <h2>
+          {composer.length > 1 ? "Composers" : "Composer"} :{" "}
+          {composer.join(", ")}
+        </h2>
+      )}
+      {genre && (
+        <h2>
+          {genre.length > 1 ? "Genres" : "Genre"} : {genre.join(", ")}
+        </h2>
+      )}
+      {instrumentation && (
+        <h2>Instrumentation : {instrumentation.join(", ")}</h2>
+      )}
+
+      {tempo && <h2>Tempo : {tempo.join(", ")}</h2>}
+      {soundsLike && <h2>Sounds Like : {soundsLike.join(", ")}</h2>}
+
       <button onClick={() => addToGlobalState()}>Click to play</button>
     </SongCard>
   )

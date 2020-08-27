@@ -4,25 +4,21 @@ import styled from "styled-components"
 import { GlobalStateContext } from "../context/provider"
 import SEO from "../components/seo"
 import Song from "../components/song"
+import FeaturedSongs from "../components/featuredSongs"
+import FeaturedPlaylists from "../components/featuredPlaylists"
+import SearchResults from "../components/searchResults"
+import Search from "../components/search"
 
 const Wrapper = styled.div`
-  height: 100%;
+  min-height: calc(100vh - 160px);
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
   grid-gap: 5rem;
-  border: 1px solid green;
 `
 
 const Featured = styled.div`
-  /* border: 1px solid red; */
-`
-
-const Search = styled.div`
-  /* border: 1px solid red; */
-`
-
-const Results = styled.div`
-  /* border: 1px solid red; */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 `
 
 const IndexPage = () => {
@@ -34,9 +30,12 @@ const IndexPage = () => {
   return (
     <Wrapper>
       <SEO title="Home" />
-      <Featured></Featured>
-      <Search></Search>
-      <Results></Results>
+      <Featured>
+        <FeaturedSongs />
+        <FeaturedPlaylists />
+      </Featured>
+      <Search />
+      <SearchResults />
     </Wrapper>
   )
 }

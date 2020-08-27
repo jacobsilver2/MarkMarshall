@@ -3,20 +3,22 @@ import React from "react"
 import styled from "styled-components"
 
 const StyledHeader = styled.header`
+  height: 80px;
   background: ${({ theme, lightMode }) =>
     lightMode ? theme.color.blue : theme.color.primaryDark};
   color: ${({ lightMode }) => (lightMode ? "black" : "white")};
-  margin-bottom: 1.45rem;
 `
 const Wrapper = styled.div`
+  height: 100%;
   display: flex;
   justify-content: space-between;
-  margin: 0 auto;
+  align-items: center;
+  /* margin: 0 auto; */
   padding: 1.45rem 1rem;
 `
 
 const Title = styled.h1`
-  margin: 0;
+  /* margin: 0; */
 `
 
 const StyledLink = styled(Link)`
@@ -29,7 +31,7 @@ const Links = styled.div`
 `
 
 const Page = styled.h3`
-  margin: auto;
+  /* margin: auto; */
   padding-left: 1rem;
 `
 

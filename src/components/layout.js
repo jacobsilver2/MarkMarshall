@@ -14,21 +14,12 @@ const Site = styled.div`
   flex-direction: column;
 `
 
-// const Wrapper = styled.div`
-//   flex: 1 0 auto;
-//   min-height: auto;
-//   max-width: 960;
-//   margin: 0 auto;
-//   padding: 0 1.0875rem 1.45rem;
-// `
-
 const StickyFooter = styled.div`
   flex-shrink: 0;
 `
 
 const SiteContent = styled.div`
   flex-grow: 1;
-  background-color: pink;
 `
 
 const Layout = ({ children, location }) => {
@@ -44,14 +35,15 @@ const Layout = ({ children, location }) => {
         edges {
           node {
             contentful_id
-            bpm
+            tempo
+            soundsLike
+            instrumentation
             audio {
               file {
                 url
               }
             }
             title
-            tags
             description {
               internal {
                 content
@@ -68,7 +60,7 @@ const Layout = ({ children, location }) => {
 
   useEffect(() => {
     dispatch({ type: "ADD_SONGS", songs: data.songs.edges })
-    dispatch({ type: "ADD_FILTERED_SONGS", filteredSongs: data.songs.edges })
+    // dispatch({ type: "ADD_FILTERED_SONGS", filteredSongs: data.songs.edges })
   }, [])
 
   return (
