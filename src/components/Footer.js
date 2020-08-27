@@ -1,18 +1,23 @@
 import React, { useContext } from "react"
-import { GlobalDispatchContext, GlobalStateContext } from "../context/provider"
+import styled from "styled-components"
+import MusicPlayer from "./musicPlayer"
+// import Waves from "./waves"
+import { GlobalStateContext } from "../context/provider"
+
+const StyledFooter = styled.footer`
+  border: 1px solid black;
+`
 
 const Footer = () => {
-  const dispatch = useContext(GlobalDispatchContext)
   const state = useContext(GlobalStateContext)
   return (
-    <footer>
-      <p>© {new Date().getFullYear()}, built by Jacob Silver</p>
-      <div>
-        <button onClick={() => dispatch({ type: "TOGGLE_DARK_MODE" })}>
-          {state.lightMode ? "Dark Mode" : "Light Mode"}
-        </button>
-      </div>
-    </footer>
+    <StyledFooter>
+      {/* <Waves url={state.currentTrackURL} /> */}
+      <MusicPlayer
+        url={state.currentTrackURL}
+        title={state.currentTrackTitle}
+      />
+    </StyledFooter>
   )
 }
 

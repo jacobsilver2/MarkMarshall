@@ -1,13 +1,18 @@
 import { Link } from "gatsby"
-import React, { useContext } from "react"
+import React from "react"
 import styled from "styled-components"
-import { GlobalStateContext } from "../context/provider"
 
-const StyledFooter = styled.footer`
+const StyledHeader = styled.header`
   background: ${({ theme, lightMode }) =>
     lightMode ? theme.color.blue : theme.color.primaryDark};
   color: ${({ lightMode }) => (lightMode ? "black" : "white")};
   margin-bottom: 1.45rem;
+`
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 1.45rem 1rem;
 `
 
 const Title = styled.h1`
@@ -19,26 +24,35 @@ const StyledLink = styled(Link)`
   color: ${({ theme, lightMode }) =>
     lightMode ? theme.color.primaryDark : theme.color.offWhite};
 `
+const Links = styled.div`
+  display: flex;
+`
 
-const Wrapper = styled.div`
-  margin: 0 auto;
-  max-width: 960px;
-  padding: 1.45rem 1.0875rem;
+const Page = styled.h3`
+  margin: auto;
+  padding-left: 1rem;
 `
 
 const Header = ({ siteTitle }) => {
-  const state = useContext(GlobalStateContext)
   return (
-    <StyledFooter lightMode={state.lightMode}>
+    <StyledHeader>
       <Wrapper>
         <Title>
-          <StyledLink lightMode={state.lightMode} to="/">
-            {siteTitle}
-          </StyledLink>
+          <StyledLink to="/">{siteTitle}</StyledLink>
         </Title>
-        <p>The current mode is {state.lightMode ? "light" : "dark"}</p>
+        <Links>
+          <Page>
+            <StyledLink to="/music">Music</StyledLink>
+          </Page>
+          <Page>
+            <StyledLink to="/playlists">Playlists</StyledLink>
+          </Page>
+          <Page>
+            <StyledLink to="/about">About</StyledLink>
+          </Page>
+        </Links>
       </Wrapper>
-    </StyledFooter>
+    </StyledHeader>
   )
 }
 
