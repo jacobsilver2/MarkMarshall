@@ -11,7 +11,8 @@ const SearchBox = styled.div`
   align-self: center;
 `
 const Input = styled.input`
-  font-size: 4rem;
+  margin: auto;
+  font-size: 4.5rem;
   height: 80%;
   width: 80%;
   border-radius: 15px;
@@ -31,7 +32,7 @@ const Search = () => {
     const query = event.target.value
     const songs = state.songs || []
 
-    const filteredData = songs.filter(song => {
+    let filteredData = songs.filter(song => {
       const { title, tempo, instrumentation, composer, genre } = song.node
       return (
         title.toLowerCase().includes(query.toLowerCase()) ||
@@ -46,10 +47,14 @@ const Search = () => {
         (genre && genre.join("").toLowerCase().includes(query.toLowerCase()))
       )
     })
+    if (query === "") {
+      filteredData = []
+    }
     setLocalState({
       query,
       filteredData,
     })
+
     dispatch({ type: "ADD_FILTERED_SONGS", filteredSongs: filteredData })
   }
   return (

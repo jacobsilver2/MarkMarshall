@@ -1,6 +1,12 @@
 import React, { useContext } from "react"
+import styled from "styled-components"
 import { GlobalStateContext } from "../context/provider"
 import Song from "./song"
+
+const DescWrapper = styled.div`
+  border-top: 1px solid black;
+  overflow: scroll;
+`
 
 const SearchResults = () => {
   const state = useContext(GlobalStateContext)
@@ -9,10 +15,10 @@ const SearchResults = () => {
   ))
 
   return (
-    <div>
+    <DescWrapper>
       <h1>Search Results</h1>
       {songCards}
-    </div>
+    </DescWrapper>
   )
 }
 

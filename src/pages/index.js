@@ -10,7 +10,7 @@ import SearchResults from "../components/searchResults"
 import Search from "../components/search"
 
 const Wrapper = styled.div`
-  min-height: calc(100vh - 160px);
+  height: calc(100vh - 160px);
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
   grid-gap: 5rem;

@@ -7,7 +7,8 @@ const SongCard = styled.div`
   flex-direction: column;
   border: 1px solid black;
   box-shadow: 10px 10px 8px #888888;
-  margin: 20px 0;
+  margin: 20px;
+  padding: 1rem;
 `
 
 const Song = ({ song }) => {
@@ -40,6 +41,7 @@ const Song = ({ song }) => {
           {composer.join(", ")}
         </h2>
       )}
+      {description && <h2>Description: {description.internal.content}</h2>}
       {genre && (
         <h2>
           {genre.length > 1 ? "Genres" : "Genre"} : {genre.join(", ")}

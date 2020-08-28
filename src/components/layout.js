@@ -6,7 +6,7 @@ import { GlobalDispatchContext } from "../context/provider"
 import Header from "./Header"
 import Footer from "./Footer"
 import Fade from "./Fade"
-import Search from "./search"
+// import Search from "./search"
 
 const Site = styled.div`
   height: 100%;
