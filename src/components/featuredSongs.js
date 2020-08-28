@@ -9,7 +9,6 @@ const FeatWrapper = styled.div`
 
 const FeaturedSongs = () => {
   const state = useContext(GlobalStateContext)
-  console.log(state)
   return (
     <FeatWrapper>
       <h1>Featured Songs</h1>
