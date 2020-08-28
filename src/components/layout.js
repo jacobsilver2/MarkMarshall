@@ -52,6 +52,7 @@ const Layout = ({ children, location }) => {
             composer
             createdAt
             genre
+            mood
           }
         }
       }
