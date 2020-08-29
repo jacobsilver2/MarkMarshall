@@ -23,6 +23,7 @@ const MusicPlayer = ({ url, title }) => {
         showThemeSwitch={false}
         drag={false}
         spaceBar={true}
+        responsive={false}
       />
     </>
   )

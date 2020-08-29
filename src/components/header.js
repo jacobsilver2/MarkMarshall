@@ -52,6 +52,9 @@ const Header = ({ siteTitle }) => {
           <Page>
             <StyledLink to="/about">About</StyledLink>
           </Page>
+          <Page>
+            <StyledLink to="/contact">Contact</StyledLink>
+          </Page>
         </Links>
       </Wrapper>
     </StyledHeader>

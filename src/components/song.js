@@ -12,10 +12,14 @@ const SongCard = styled.div`
 `
 
 const Song = ({ song }) => {
+  //trying out getting songs from global state. Gonna try the normal graphql query for the
+  // playlists section.
+
   const dispatch = useContext(GlobalDispatchContext)
   const {
     title,
     genre,
+    mood,
     composer,
     instrumentation,
     description,
@@ -45,6 +49,11 @@ const Song = ({ song }) => {
       {genre && (
         <h2>
           {genre.length > 1 ? "Genres" : "Genre"} : {genre.join(", ")}
+        </h2>
+      )}
+      {mood && (
+        <h2>
+          {mood.length > 1 ? "Moods" : "Mood"} : {mood.join(", ")}
         </h2>
       )}
       {instrumentation && (
