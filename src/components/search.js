@@ -17,6 +17,10 @@ const Input = styled.input`
   width: 80%;
   border-radius: 15px;
   outline: none;
+  ::placeholder {
+    text-align: center;
+    font-size: 3.5rem;
+  }
 `
 
 const Search = () => {
@@ -55,7 +59,7 @@ const Search = () => {
       filteredData,
     })
 
-    dispatch({ type: "ADD_FILTERED_SONGS", filteredSongs: filteredData })
+    dispatch({ type: "ADD_SEARCH_RESULTS", searchResults: filteredData })
   }
   return (
     <>
@@ -63,7 +67,7 @@ const Search = () => {
         <Input
           type="text"
           aria-label="Search"
-          placeholder="Search by Title, Tempo, Genre, Sounds-Like, Instrumentation or Composer"
+          placeholder="Search by Title, Tempo, Genre, Mood, Sounds-Like, Instrumentation or Composer"
           onChange={handleInputChange}
         />
       </SearchBox>

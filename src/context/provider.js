@@ -8,6 +8,7 @@ const initialState = {
   currentTrackTitle: "Default Song",
   songs: [],
   filteredSongs: [],
+  searchResults: [],
 }
 
 function reducer(state, action) {
@@ -25,6 +26,13 @@ function reducer(state, action) {
         songs: action.songs,
       }
     }
+    case "ADD_SEARCH_RESULTS": {
+      return {
+        ...state,
+        searchResults: action.searchResults,
+      }
+    }
+
     case "ADD_FILTERED_SONGS": {
       return {
         ...state,

@@ -4,13 +4,12 @@ import styled from "styled-components"
 import FeaturedSongCard from "./featuredSongCard"
 
 const FeatWrapper = styled.div`
-  border-right: 1px solid black;
-  border-bottom: 1px solid black;
+  border-right: 1px dashed black;
+  border-bottom: 1px dashed black;
 `
 
 const SongsWrapper = styled.div`
   display: grid;
-
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   grid-gap: 1rem;

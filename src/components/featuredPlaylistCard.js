@@ -4,10 +4,14 @@ import { Link } from "gatsby"
 import slugify from "../lib/slugify"
 
 const PlaylistWrapper = styled.div`
-  border: 1px solid blue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed black;
   cursor: pointer;
+  box-shadow: 5px 5px 4px #888888;
   &:hover {
-    background-color: lightblue;
+    background-color: #ffc600;
     opacity: 80%;
   }
 `

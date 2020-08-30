@@ -1,12 +1,14 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
 import { GlobalDispatchContext } from "../context/provider"
+import { Link } from "gatsby"
+import slugify from "../lib/slugify"
 
 const SongCard = styled.div`
   display: flex;
   flex-direction: column;
   border: 1px solid black;
-  box-shadow: 10px 10px 8px #888888;
+  box-shadow: 5px 5px 4px #888888;
   margin: 20px;
   padding: 1rem;
 `
@@ -37,7 +39,11 @@ const Song = ({ song }) => {
 
   return (
     <SongCard>
-      {title && <h1>{title}</h1>}
+      {title && (
+        <h1>
+          <Link to={`/music/${slugify(title)}`}>{title}</Link>
+        </h1>
+      )}
 
       {composer && (
         <h2>

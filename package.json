@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
+    "@nfront/global-styles": "^1.2.1",
     "formik": "^2.1.5",
     "framer-motion": "^2.3.0",
     "gatsby": "^2.23.12",
@@ -15,6 +16,7 @@
     "gatsby-plugin-react-helmet": "^3.3.6",
     "gatsby-plugin-sharp": "^2.6.14",
     "gatsby-plugin-styled-components": "^3.3.10",
+    "gatsby-plugin-typography": "^2.5.10",
     "gatsby-source-contentful": "^2.3.38",
     "gatsby-source-filesystem": "^2.3.14",
     "gatsby-transformer-sharp": "^2.5.7",
@@ -28,8 +30,12 @@
     "react-helmet": "^6.1.0",
     "react-jinke-music-player": "^4.17.1",
     "react-player": "^2.6.1",
+    "react-typography": "^0.16.19",
     "styled-components": "^5.1.1",
     "styled-reset": "^4.2.1",
+    "typography": "^0.16.19",
+    "typography-theme-funston": "^0.16.19",
+    "typography-theme-grand-view": "^0.16.19",
     "wavesurfer-react": "^2.0.5",
     "wavesurfer.js": "^4.0.1",
     "yup": "^0.29.2"

@@ -4,7 +4,7 @@ import styled from "styled-components"
 import FeaturedPlaylistCard from "./featuredPlaylistCard"
 
 const FeatWrapper = styled.div`
-  border-bottom: 1px solid black;
+  border-bottom: 1px dashed black;
 `
 const PlaylistsWrapper = styled.div`
   display: grid;

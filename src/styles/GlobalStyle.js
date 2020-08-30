@@ -33,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: inherit;
   }
   h1,h2,h3,h4,h5,h6 {
-    font-family: 'radnika', sans-serif;
+    font-family: 'HCo Operator Mono', sans-serif;
     font-weight: normal;
     line-height: 1.5;
   }
@@ -95,6 +95,19 @@ const GlobalStyle = createGlobalStyle`
 
   ::selection {
     background: var(--yellow);
+  }
+
+  input {
+    ::placeholder {
+      font-family: 'HCo Operator Mono', sans-serif;
+    }
+  }
+
+  button {
+      font-family: 'HCo Operator Mono', sans-serif;
+      &:active {
+        background-color: #ffc600;
+      }
   }
 `
 

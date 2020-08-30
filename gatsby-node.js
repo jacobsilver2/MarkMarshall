@@ -2,10 +2,14 @@ const {
   graphqlForPlaylists,
 } = require("./createPages/create-pages-playlists.js")
 const ChildProcess = require("child_process")
+const { graphqlForSongs } = require("./createPages/create-pages-songs.js")
 
 async function createIndiviualPages(actions, graphql) {
   const { createPage } = actions
-  const promises = [graphqlForPlaylists(graphql, createPage)]
+  const promises = [
+    graphqlForPlaylists(graphql, createPage),
+    graphqlForSongs(graphql, createPage),
+  ]
   const results = await Promise.all(promises.map(p => p.catch(e => e)))
   const validResults = results.filter(result => !(result instanceof Error))
   return validResults

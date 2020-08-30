@@ -4,19 +4,23 @@ import { GlobalStateContext } from "../context/provider"
 import Song from "./song"
 
 const DescWrapper = styled.div`
-  border-top: 1px solid black;
+  border-top: 1px dashed black;
   overflow: scroll;
+`
+const TitleText = styled.h1`
+  text-align: center;
+  font-weight: bold;
 `
 
 const SearchResults = () => {
   const state = useContext(GlobalStateContext)
-  const songCards = state.filteredSongs.map(song => (
+  const songCards = state.searchResults.map(song => (
     <Song key={song.node.contentful_id} song={song.node} />
   ))
 
   return (
     <DescWrapper>
-      <h1>Search Results</h1>
+      <TitleText>Search Results</TitleText>
       {songCards}
     </DescWrapper>
   )

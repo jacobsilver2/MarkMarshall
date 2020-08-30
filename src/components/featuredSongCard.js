@@ -3,10 +3,14 @@ import styled from "styled-components"
 import { GlobalDispatchContext } from "../context/provider"
 
 const SongWrapper = styled.div`
-  border: 1px solid blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px dashed black;
   cursor: pointer;
+  box-shadow: 5px 5px 4px #888888;
   &:hover {
-    background-color: lightblue;
+    background-color: #ffc600;
     opacity: 80%;
   }
 `
