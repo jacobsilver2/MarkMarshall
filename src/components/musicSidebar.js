@@ -112,7 +112,13 @@ const MusicSidebar = () => {
   }, [])
 
   const handleCheck = e => {
-    console.log(e)
+    const { value, checked } = e.target
+    if (checked) {
+      dispatch({ type: "ADD_FILTER", filter: value })
+    }
+    if (!checked) {
+      dispatch({ type: "REMOVE_FILTER", filter: value })
+    }
   }
 
   return (
@@ -140,7 +146,12 @@ const MusicSidebar = () => {
           <UL>
             {composers.map(composer => (
               <LI key={composer}>
-                <input type="checkbox" name="composer" value={composer} />
+                <input
+                  onClick={handleCheck}
+                  type="checkbox"
+                  name="composer"
+                  value={composer}
+                />
                 {composer}
               </LI>
             ))}
@@ -151,7 +162,12 @@ const MusicSidebar = () => {
           <UL>
             {tempos.map(tempo => (
               <LI key={tempo}>
-                <input type="checkbox" name="tempo" value={tempo} />
+                <input
+                  onClick={handleCheck}
+                  type="checkbox"
+                  name="tempo"
+                  value={tempo}
+                />
                 {tempo}
               </LI>
             ))}
@@ -162,7 +178,12 @@ const MusicSidebar = () => {
           <UL>
             {soundsLike.map(sound => (
               <LI key={sound}>
-                <input type="checkbox" name="soundsLike" value={soundsLike} />
+                <input
+                  onClick={handleCheck}
+                  type="checkbox"
+                  name="soundsLike"
+                  value={soundsLike}
+                />
                 {sound}
               </LI>
             ))}
@@ -174,6 +195,7 @@ const MusicSidebar = () => {
             {instrumentation.map(inst => (
               <LI key={inst}>
                 <input
+                  onClick={handleCheck}
                   type="checkbox"
                   name="instrumentation"
                   value={instrumentation}
@@ -188,7 +210,12 @@ const MusicSidebar = () => {
           <UL>
             {mood.map(m => (
               <LI key={m}>
-                <input type="checkbox" name="mood" value={m} />
+                <input
+                  onClick={handleCheck}
+                  type="checkbox"
+                  name="mood"
+                  value={m}
+                />
                 {m}
               </LI>
             ))}
