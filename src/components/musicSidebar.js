@@ -75,7 +75,7 @@ const MusicSidebar = () => {
     const instrumentationSet = new Set()
     const moodSet = new Set()
     // loading all songs into the global "filtered" state
-    dispatch({ type: "ADD_FILTERED_SONGS", filteredSongs: allSongs })
+    // dispatch({ type: "ADD_FILTERED_SONGS", filteredSongs: allSongs })
 
     allSongs.forEach(song => {
       const {
@@ -182,7 +182,7 @@ const MusicSidebar = () => {
                   onClick={handleCheck}
                   type="checkbox"
                   name="soundsLike"
-                  value={soundsLike}
+                  value={sound}
                 />
                 {sound}
               </LI>
@@ -198,7 +198,7 @@ const MusicSidebar = () => {
                   onClick={handleCheck}
                   type="checkbox"
                   name="instrumentation"
-                  value={instrumentation}
+                  value={inst}
                 />
                 {inst}
               </LI>

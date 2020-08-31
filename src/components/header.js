@@ -23,8 +23,10 @@ const Title = styled.h1`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
-  color: ${({ theme, lightMode }) =>
-    lightMode ? theme.color.primaryDark : theme.color.offWhite};
+  color: white;
+  &:hover {
+    color: #ffc600;
+  }
 `
 const Links = styled.div`
   display: flex;

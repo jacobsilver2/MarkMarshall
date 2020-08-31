@@ -61,7 +61,6 @@ const Layout = ({ children, location }) => {
 
   useEffect(() => {
     dispatch({ type: "ADD_SONGS", songs: data.songs.edges })
-    // dispatch({ type: "ADD_FILTERED_SONGS", filteredSongs: data.songs.edges })
   }, [])
 
   return (

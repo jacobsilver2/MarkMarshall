@@ -9,6 +9,7 @@ const initialState = {
   songs: [],
   filteredSongs: [],
   searchResults: [],
+  filters: [],
 }
 
 function reducer(state, action) {
@@ -33,34 +34,23 @@ function reducer(state, action) {
       }
     }
 
-    case "ADD_FILTERED_SONGS": {
-      return {
-        ...state,
-        filteredSongs: action.filteredSongs,
-      }
-    }
+    // case "ADD_FILTERED_SONGS": {
+    //   return {
+    //     ...state,
+    //     filteredSongs: action.filteredSongs,
+    //   }
+    // }
     case "ADD_FILTER": {
-      const newFilteredSongs = state.filteredSongs.filter(song => {
-        return (
-          (song.node.genre && song.node.genre.includes(action.filter)) ||
-          (song.node.composer && song.node.composer.includes(action.filter)) ||
-          (song.node.tempo && song.node.tempo.includes(action.filter)) ||
-          (song.node.soundsLike &&
-            song.node.soundsLike.includes(action.filter)) ||
-          (song.node.instrumentation &&
-            song.node.instrumentation.includes(action.filter)) ||
-          (song.node.mood && song.node.mood.includes(action.filter))
-        )
-      })
       return {
         ...state,
-        filteredSongs: newFilteredSongs,
+        filters: [...state.filters, action.filter],
         // filteredSongs: action.filteredSongs,
       }
     }
     case "REMOVE_FILTER": {
       return {
         ...state,
+        filters: state.filters.filter(f => f !== action.filter),
       }
     }
     default:

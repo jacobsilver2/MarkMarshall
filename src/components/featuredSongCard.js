@@ -26,9 +26,13 @@ const FeaturedSongCard = ({ song }) => {
     })
   }
   return (
-    <SongWrapper onClick={addToGlobalState}>
-      <h1>{song.node.title}</h1>
-    </SongWrapper>
+    // not including a link to the song because we want clicking
+    // to just play the track
+    <>
+      <SongWrapper onClick={addToGlobalState}>
+        <h1>{song.node.title}</h1>
+      </SongWrapper>
+    </>
   )
 }
 
