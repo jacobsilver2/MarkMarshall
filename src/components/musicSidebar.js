@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
 import styled from "styled-components"
 import { useStaticQuery, graphql } from "gatsby"
-import { GlobalStateContext, GlobalDispatchContext } from "../context/provider"
+import { GlobalDispatchContext, GlobalStateContext } from "../context/provider"
 
 const SidebarWrapper = styled.div`
   height: calc(100vh - 160px);
@@ -26,6 +26,7 @@ const LI = styled.li`
 `
 
 const MusicSidebar = () => {
+  const state = useContext(GlobalStateContext)
   const data = useStaticQuery(graphql`
     query SongsQuery {
       songs: allContentfulSong {
@@ -64,7 +65,6 @@ const MusicSidebar = () => {
   const [instrumentation, setInstrumentation] = useState([])
   const [mood, setMood] = useState([])
 
-  const state = useContext(GlobalStateContext)
   const dispatch = useContext(GlobalDispatchContext)
 
   useEffect(() => {
@@ -74,8 +74,6 @@ const MusicSidebar = () => {
     const soundsLikeSet = new Set()
     const instrumentationSet = new Set()
     const moodSet = new Set()
-    // loading all songs into the global "filtered" state
-    // dispatch({ type: "ADD_FILTERED_SONGS", filteredSongs: allSongs })
 
     allSongs.forEach(song => {
       const {
@@ -96,7 +94,7 @@ const MusicSidebar = () => {
         )
       mood && mood.forEach(mood => moodSet.add(mood))
     })
-    // all this crazy shit is to get rid of duplicates
+    // all this crazy shit with sets is to get rid of duplicates
     const genresArr = [...genresSet]
     const composersArr = [...composersSet]
     const temposArr = [...temposSet]
@@ -112,12 +110,12 @@ const MusicSidebar = () => {
   }, [])
 
   const handleCheck = e => {
-    const { value, checked } = e.target
+    const { value: filter, checked } = e.target
     if (checked) {
-      dispatch({ type: "ADD_FILTER", filter: value })
+      dispatch({ type: "ADD_FILTER", filter })
     }
     if (!checked) {
-      dispatch({ type: "REMOVE_FILTER", filter: value })
+      dispatch({ type: "REMOVE_FILTER", filter })
     }
   }
 
@@ -135,6 +133,7 @@ const MusicSidebar = () => {
                   type="checkbox"
                   name="genre"
                   value={genre}
+                  checked={state.filters.includes(genre)}
                 />
                 {genre}
               </LI>
@@ -151,6 +150,7 @@ const MusicSidebar = () => {
                   type="checkbox"
                   name="composer"
                   value={composer}
+                  checked={state.filters.includes(composer)}
                 />
                 {composer}
               </LI>
@@ -167,6 +167,7 @@ const MusicSidebar = () => {
                   type="checkbox"
                   name="tempo"
                   value={tempo}
+                  checked={state.filters.includes(tempo)}
                 />
                 {tempo}
               </LI>
@@ -183,6 +184,7 @@ const MusicSidebar = () => {
                   type="checkbox"
                   name="soundsLike"
                   value={sound}
+                  checked={state.filters.includes(sound)}
                 />
                 {sound}
               </LI>
@@ -199,6 +201,7 @@ const MusicSidebar = () => {
                   type="checkbox"
                   name="instrumentation"
                   value={inst}
+                  checked={state.filters.includes(inst)}
                 />
                 {inst}
               </LI>
@@ -215,6 +218,7 @@ const MusicSidebar = () => {
                   type="checkbox"
                   name="mood"
                   value={m}
+                  checked={state.filters.includes(m)}
                 />
                 {m}
               </LI>

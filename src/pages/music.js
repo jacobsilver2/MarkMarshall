@@ -53,7 +53,6 @@ const Music = ({ data }) => {
       state.filters.length > 0
         ? allSongs.filter(song => {
             return state.filters.some(f => {
-              console.log(f)
               return (
                 (song.node.genre && song.node.genre.includes(f)) ||
                 (song.node.composer && song.node.composer.includes(f)) ||
