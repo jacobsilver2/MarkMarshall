@@ -133,7 +133,7 @@ const MusicSidebar = () => {
                   type="checkbox"
                   name="genre"
                   value={genre}
-                  checked={state.filters.includes(genre)}
+                  defaultChecked={state.filters.includes(genre)}
                 />
                 {genre}
               </LI>
@@ -150,7 +150,7 @@ const MusicSidebar = () => {
                   type="checkbox"
                   name="composer"
                   value={composer}
-                  checked={state.filters.includes(composer)}
+                  defaultChecked={state.filters.includes(composer)}
                 />
                 {composer}
               </LI>
@@ -167,7 +167,7 @@ const MusicSidebar = () => {
                   type="checkbox"
                   name="tempo"
                   value={tempo}
-                  checked={state.filters.includes(tempo)}
+                  defaultChecked={state.filters.includes(tempo)}
                 />
                 {tempo}
               </LI>
@@ -184,7 +184,7 @@ const MusicSidebar = () => {
                   type="checkbox"
                   name="soundsLike"
                   value={sound}
-                  checked={state.filters.includes(sound)}
+                  defaultChecked={state.filters.includes(sound)}
                 />
                 {sound}
               </LI>
