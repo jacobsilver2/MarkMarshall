@@ -56,13 +56,11 @@ const GlobalStyle = createGlobalStyle`
       /* display: inline-block; */
       height: 5px;
       position: absolute;
-      background: var(--yellow);
       content: '';
       width: 100%;
       bottom: -2px;
       z-index: -1;
       transition: transform 0.1s;
-      transform: skew(-20deg) rotate(var(--rotate)) scaleX(var(--scaleX));
     }
     &:hover {
       --scaleX: 1.03;
@@ -77,7 +75,6 @@ const GlobalStyle = createGlobalStyle`
   }
   @media (min-width:2500px) {
     body:after {
-      content: 'Wow you have a big monitor!';
       display: block;
       position: fixed;
       top: 0;

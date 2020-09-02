@@ -4,8 +4,7 @@ import styled from "styled-components"
 
 const StyledHeader = styled.header`
   height: 80px;
-  background: ${({ theme, lightMode }) =>
-    lightMode ? theme.color.blue : theme.color.primaryDark};
+  background: #0d0c1d;
   color: ${({ lightMode }) => (lightMode ? "black" : "white")};
 `
 const Wrapper = styled.div`

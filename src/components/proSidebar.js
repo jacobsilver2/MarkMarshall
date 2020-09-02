@@ -2,19 +2,56 @@ import React, { useContext, useState, useEffect } from "react"
 import styled from "styled-components"
 import { useStaticQuery, graphql } from "gatsby"
 import { GlobalDispatchContext, GlobalStateContext } from "../context/provider"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {
+  faTheaterMasks,
+  faGuitar,
+  faUserEdit,
+  faStopwatch,
+  faMusic,
+  faMoon,
+} from "@fortawesome/free-solid-svg-icons"
+import {
+  ProSidebar,
+  Menu,
+  MenuItem,
+  SubMenu,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarContent,
+} from "react-pro-sidebar"
+import "react-pro-sidebar/dist/css/styles.css"
+import HamburgerMenu from "react-hamburger-menu"
+import "../styles/proSidebarStyles.scss"
+import { sortArrayAlphabetically } from "../lib/sortArrayAlphabetically"
 
 const SidebarWrapper = styled.div`
   height: calc(100vh - 160px);
-  border-right: 1px dashed black;
-  padding: 1rem;
+  width: 270px;
+  /* max-width: 30rem; */
+  /* border-right: 1px dashed black; */
   overflow: scroll;
+`
+
+const StyledProSideBar = styled(ProSidebar)`
+  overflow: scroll;
+`
+const TitleAndBurgerWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
 `
 const Title = styled.h1`
   font-weight: bold;
+  color: white;
 `
+
 const Category = styled.h2`
+  display: inline;
+  font-size: 2rem;
   font-weight: bold;
-  color: red;
+  color: white;
 `
 const UL = styled.ul`
   list-style: none;
@@ -25,10 +62,10 @@ const LI = styled.li`
   margin-left: 1rem;
 `
 
-const MusicSidebar = () => {
+const ProSidebarComponent = () => {
   const state = useContext(GlobalStateContext)
   const data = useStaticQuery(graphql`
-    query SongsQuery {
+    query proSidebarQuery {
       songs: allContentfulSong {
         edges {
           node {
@@ -64,6 +101,7 @@ const MusicSidebar = () => {
   const [soundsLike, setSoundsLike] = useState([])
   const [instrumentation, setInstrumentation] = useState([])
   const [mood, setMood] = useState([])
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
   const dispatch = useContext(GlobalDispatchContext)
 
@@ -101,12 +139,12 @@ const MusicSidebar = () => {
     const soundsLikeArr = [...soundsLikeSet]
     const instrumentationArr = [...instrumentationSet]
     const moodArr = [...moodSet]
-    setGenres(genresArr)
-    setComposers(composersArr)
-    setTempos(temposArr)
-    setSoundsLike(soundsLikeArr)
-    setInstrumentation(instrumentationArr)
-    setMood(moodArr)
+    setGenres(sortArrayAlphabetically(genresArr))
+    setComposers(sortArrayAlphabetically(composersArr))
+    setTempos(sortArrayAlphabetically(temposArr))
+    setSoundsLike(sortArrayAlphabetically(soundsLikeArr))
+    setInstrumentation(sortArrayAlphabetically(instrumentationArr))
+    setMood(sortArrayAlphabetically(moodArr))
   }, [])
 
   const handleCheck = e => {
@@ -120,14 +158,34 @@ const MusicSidebar = () => {
   }
 
   return (
-    <SidebarWrapper>
-      <Title>Filter by</Title>
-      <UL>
-        <li>
-          <Category>Genre</Category>
-          <UL>
+    <StyledProSideBar
+      collapsed={!sidebarOpen}
+      onToggle={() => setSidebarOpen(prev => !prev)}
+    >
+      <Menu popperArrow="true" iconShape="round">
+        <SidebarHeader>
+          <TitleAndBurgerWrapper>
+            {sidebarOpen && <Title>Filter</Title>}
+            <HamburgerMenu
+              height={16}
+              width={30}
+              isOpen={!sidebarOpen}
+              menuClicked={() => setSidebarOpen(prev => !prev)}
+              color="#adadad"
+            />
+          </TitleAndBurgerWrapper>
+        </SidebarHeader>
+        <SidebarContent>
+          <SubMenu
+            icon={
+              <FontAwesomeIcon
+                icon={<FontAwesomeIcon icon={faTheaterMasks} />}
+              />
+            }
+            title={<Category>Genre</Category>}
+          >
             {genres.map(genre => (
-              <LI key={genre}>
+              <MenuItem key={genre}>
                 <input
                   onClick={handleCheck}
                   type="checkbox"
@@ -136,15 +194,15 @@ const MusicSidebar = () => {
                   defaultChecked={state.filters.includes(genre)}
                 />
                 {genre}
-              </LI>
+              </MenuItem>
             ))}
-          </UL>
-        </li>
-        <li>
-          <Category>Composer</Category>
-          <UL>
+          </SubMenu>
+          <SubMenu
+            icon={<FontAwesomeIcon icon={faUserEdit} />}
+            title={<Category>Composer</Category>}
+          >
             {composers.map(composer => (
-              <LI key={composer}>
+              <MenuItem key={composer}>
                 <input
                   onClick={handleCheck}
                   type="checkbox"
@@ -153,15 +211,15 @@ const MusicSidebar = () => {
                   defaultChecked={state.filters.includes(composer)}
                 />
                 {composer}
-              </LI>
+              </MenuItem>
             ))}
-          </UL>
-        </li>
-        <li>
-          <Category>Tempo</Category>
-          <UL>
+          </SubMenu>
+          <SubMenu
+            icon={<FontAwesomeIcon icon={faStopwatch} />}
+            title={<Category>Tempo</Category>}
+          >
             {tempos.map(tempo => (
-              <LI key={tempo}>
+              <MenuItem key={tempo}>
                 <input
                   onClick={handleCheck}
                   type="checkbox"
@@ -170,15 +228,15 @@ const MusicSidebar = () => {
                   defaultChecked={state.filters.includes(tempo)}
                 />
                 {tempo}
-              </LI>
+              </MenuItem>
             ))}
-          </UL>
-        </li>
-        <li>
-          <Category>Sounds Like</Category>
-          <UL>
+          </SubMenu>
+          <SubMenu
+            icon={<FontAwesomeIcon icon={faMusic} />}
+            title={<Category>Sounds Like</Category>}
+          >
             {soundsLike.map(sound => (
-              <LI key={sound}>
+              <MenuItem key={sound}>
                 <input
                   onClick={handleCheck}
                   type="checkbox"
@@ -187,15 +245,15 @@ const MusicSidebar = () => {
                   defaultChecked={state.filters.includes(sound)}
                 />
                 {sound}
-              </LI>
+              </MenuItem>
             ))}
-          </UL>
-        </li>
-        <li>
-          <Category>Instrumentation</Category>
-          <UL>
+          </SubMenu>
+          <SubMenu
+            icon={<FontAwesomeIcon icon={faGuitar} />}
+            title={<Category>Instrumentation</Category>}
+          >
             {instrumentation.map(inst => (
-              <LI key={inst}>
+              <MenuItem key={inst}>
                 <input
                   onClick={handleCheck}
                   type="checkbox"
@@ -204,15 +262,15 @@ const MusicSidebar = () => {
                   checked={state.filters.includes(inst)}
                 />
                 {inst}
-              </LI>
+              </MenuItem>
             ))}
-          </UL>
-        </li>
-        <li>
-          <Category>Mood</Category>
-          <UL>
+          </SubMenu>
+          <SubMenu
+            icon={<FontAwesomeIcon icon={faMoon} />}
+            title={<Category>Mood</Category>}
+          >
             {mood.map(m => (
-              <LI key={m}>
+              <MenuItem key={m}>
                 <input
                   onClick={handleCheck}
                   type="checkbox"
@@ -221,13 +279,13 @@ const MusicSidebar = () => {
                   checked={state.filters.includes(m)}
                 />
                 {m}
-              </LI>
+              </MenuItem>
             ))}
-          </UL>
-        </li>
-      </UL>
-    </SidebarWrapper>
+          </SubMenu>
+        </SidebarContent>
+      </Menu>
+    </StyledProSideBar>
   )
 }
 
-export default MusicSidebar
+export default ProSidebarComponent

@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from "react"
 import { GlobalStateContext } from "../context/provider"
 import { graphql } from "gatsby"
 import styled from "styled-components"
-import ReactPaginate from "react-paginate"
 import Song from "../components/song"
-import Sidebar from "../components/musicSidebar"
+import Sidebar from "../components/proSidebar"
+import Pagination from "../components/pagination"
+import { songsPerPage } from "../lib/constants"
 
 const Wrapper = styled.div`
   display: grid;
@@ -13,6 +14,11 @@ const Wrapper = styled.div`
 `
 
 const Cards = styled.div`
+  flex-grow: 1;
+`
+const SongsAndPaginationWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   overflow: scroll;
 `
 export const musicData = graphql`
@@ -49,16 +55,14 @@ const Music = ({ data }) => {
   const { edges: allSongs } = data.allSongs
   const state = useContext(GlobalStateContext)
   const [filteredSongs, setfilteredSongs] = useState([])
-  const [perPage, setPerPage] = useState(3)
-  const [elements, setElements] = useState([])
-  const [currentPage, setCurrentPage] = useState(0)
-  const [offset, setOffset] = useState(0)
-  const [pageCount, setPageCount] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const filtered =
       state.filters.length > 0
         ? allSongs.filter(song => {
+            setLoading(true)
             return state.filters.some(f => {
               return (
                 (song.node.genre && song.node.genre.includes(f)) ||
@@ -72,35 +76,47 @@ const Music = ({ data }) => {
             })
           })
         : allSongs
+    setCurrentPage(1)
     setfilteredSongs(filtered)
-    setPageCount(Math.ceil(filteredSongs.length / perPage))
-    setElements(filtered.slice(offset, offset + perPage))
+    setLoading(false)
   }, [state.filters])
 
-  const handlePageClick = data => {
-    const selectedPage = data.selected
-    const offset = selectedPage * perPage
-    setCurrentPage(selectedPage)
-    setOffset(offset)
+  const indexOfLastSong = currentPage * songsPerPage
+  const indexOfFirstSong = indexOfLastSong - songsPerPage
+  const currentSongs = filteredSongs.slice(indexOfFirstSong, indexOfLastSong)
+
+  const paginate = pageNumber => {
+    setCurrentPage(pageNumber)
   }
+
+  console.log(currentSongs)
 
   return (
     <Wrapper>
       <Sidebar>SIDEBAR</Sidebar>
-      <ReactPaginate
-        previousLabel={"← Previous"}
-        nextLabel={"Next →"}
-        breakLabel={<span className="gap">...</span>}
-        pageCount={pageCount}
-        onPageChange={handlePageClick}
-        forcePage={currentPage}
-      >
+      <SongsAndPaginationWrapper>
+        <Pagination
+          songsPerPage={songsPerPage}
+          totalSongs={filteredSongs.length}
+          paginate={paginate}
+          currentPage={currentPage}
+        />
         <Cards>
-          {elements.map(song => (
-            <Song key={song.node.contentful_id} song={song.node} />
+          {currentSongs.map(song => (
+            <Song
+              loading={loading}
+              key={song.node.contentful_id}
+              song={song.node}
+            />
           ))}
         </Cards>
-      </ReactPaginate>
+        <Pagination
+          songsPerPage={songsPerPage}
+          totalSongs={filteredSongs.length}
+          paginate={paginate}
+          currentPage={currentPage}
+        />
+      </SongsAndPaginationWrapper>
     </Wrapper>
   )
 }

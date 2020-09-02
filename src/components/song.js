@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { GlobalDispatchContext } from "../context/provider"
 import { Link } from "gatsby"
 import slugify from "../lib/slugify"
+import { listLength } from "../lib/constants"
 
 const SongCard = styled.div`
   display: flex;
@@ -12,11 +13,15 @@ const SongCard = styled.div`
   margin: 20px;
   padding: 1rem;
 `
+const H1 = styled.h1`
+  font-weight: bold;
+`
 
-const Song = ({ song }) => {
-  //trying out getting songs from global state. Gonna try the normal graphql query for the
-  // playlists section.
+const InlineH2 = styled.h2`
+  display: inline;
+`
 
+const Song = ({ song, loading }) => {
   const dispatch = useContext(GlobalDispatchContext)
   const {
     title,
@@ -37,37 +42,52 @@ const Song = ({ song }) => {
     })
   }
 
+  if (loading) {
+    return <h2>Loading</h2>
+  }
+
+  const renderList = category => {
+    const isLarge = category.length > listLength
+    const remainingCats = isLarge && category.length - listLength
+    const truncated =
+      isLarge &&
+      category.slice(0, listLength).join(", ") +
+        ` ...and ${remainingCats} more.`
+    const notTruncated = !isLarge && category.join(", ")
+    return <InlineH2>{truncated || notTruncated}</InlineH2>
+  }
+
   return (
     <SongCard>
       {title && (
-        <h1>
+        <H1>
           <Link to={`/music/${slugify(title)}`}>{title}</Link>
-        </h1>
+        </H1>
       )}
 
       {composer && (
-        <h2>
+        <InlineH2>
           {composer.length > 1 ? "Composers" : "Composer"} :{" "}
-          {composer.join(", ")}
-        </h2>
+          {renderList(composer)}
+        </InlineH2>
       )}
       {description && <h2>Description: {description.internal.content}</h2>}
       {genre && (
-        <h2>
-          {genre.length > 1 ? "Genres" : "Genre"} : {genre.join(", ")}
-        </h2>
+        <InlineH2>
+          {genre.length > 1 ? "Genres" : "Genre"} : {renderList(genre)}
+        </InlineH2>
       )}
       {mood && (
-        <h2>
-          {mood.length > 1 ? "Moods" : "Mood"} : {mood.join(", ")}
-        </h2>
+        <InlineH2>
+          {mood.length > 1 ? "Moods" : "Mood"} : {renderList(mood)}
+        </InlineH2>
       )}
       {instrumentation && (
-        <h2>Instrumentation : {instrumentation.join(", ")}</h2>
+        <InlineH2>Instrumentation : {renderList(instrumentation)}</InlineH2>
       )}
 
-      {tempo && <h2>Tempo : {tempo.join(", ")}</h2>}
-      {soundsLike && <h2>Sounds Like : {soundsLike.join(", ")}</h2>}
+      {tempo && <h2>Tempo : {renderList(tempo)}</h2>}
+      {soundsLike && <h2>Sounds Like : {renderList(soundsLike)}</h2>}
 
       <button onClick={() => addToGlobalState()}>Click to play</button>
     </SongCard>

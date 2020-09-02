@@ -24,3 +24,21 @@ exports.onPostBuild = () => {
     "ps aux | grep jest | grep -v grep | awk '{print $2}' | xargs kill"
   )
 }
+
+// here we're defining whatever items we're pulling from Contentful which might be
+// totally empty.
+
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions
+  const typeDefs = `
+      type allContentfulSong implements Node {
+        tempo: String
+        composer: String
+      }
+      type ContentfulSong implements Node {
+        tempo: String
+        composer: String
+      }
+    `
+  createTypes(typeDefs)
+}
