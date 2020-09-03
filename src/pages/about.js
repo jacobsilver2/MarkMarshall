@@ -1,7 +1,12 @@
 import React from "react"
-
+import SEO from "../components/seo"
 const About = () => {
-  return <div>Hi from About</div>
+  return (
+    <>
+      <SEO title="About" />
+      <div>Hi from About</div>
+    </>
+  )
 }
 
 export default About

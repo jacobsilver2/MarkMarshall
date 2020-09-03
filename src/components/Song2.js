@@ -34,7 +34,7 @@ const Waveform = styled.div`
   padding: 0 1rem;
 `
 
-const StyledFontAwesome = styled(FontAwesomeIcon)`
+export const StyledFontAwesome = styled(FontAwesomeIcon)`
   font-size: 3rem;
   color: grey;
   cursor: pointer;

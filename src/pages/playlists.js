@@ -1,4 +1,5 @@
 import React from "react"
+import SEO from "../components/seo"
 import { graphql } from "gatsby"
 import styled from "styled-components"
 import PlaylistTile from "../components/playlistTile"
@@ -39,7 +40,12 @@ const Playlists = ({ data }) => {
     <PlaylistTile key={playlist.node.contentful_id} playlist={playlist} />
   ))
 
-  return <AllPlaylistsWrapper>{playlistTiles}</AllPlaylistsWrapper>
+  return (
+    <>
+      <SEO title="Playlists" />
+      <AllPlaylistsWrapper>{playlistTiles}</AllPlaylistsWrapper>
+    </>
+  )
 }
 
 export default Playlists

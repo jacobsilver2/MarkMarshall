@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
+import SEO from "../components/seo"
 import { GlobalStateContext } from "../context/provider"
 import { graphql } from "gatsby"
 import styled from "styled-components"
@@ -31,6 +32,7 @@ const SongsAndPaginationWrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow: scroll;
+  padding: 0 2rem;
 `
 export const musicData = graphql`
   query allSongsData {
@@ -103,52 +105,55 @@ const Music = ({ data }) => {
   }
 
   return (
-    <Wrapper>
-      <Sidebar>SIDEBAR</Sidebar>
-      <SongsAndPaginationWrapper>
-        <Pagination
-          songsPerPage={songsPerPage}
-          totalSongs={filteredSongs.length}
-          paginate={paginate}
-          currentPage={currentPage}
-        />
-        <CategoriesWrapper>
-          <div>
-            <h1>Title</h1>
-          </div>
-          <div>
-            <h1>Genres</h1>
-          </div>
-          <div>
-            <h1>Description</h1>
-          </div>
-          <div>
-            <h1>Composer</h1>
-          </div>
-          <div>
-            <h1>Tempo</h1>
-          </div>
-          <div>
-            <h1>Instrumentation</h1>
-          </div>
-        </CategoriesWrapper>
-        <Cards>
-          {currentSongs.map(song => (
-            <Song
-              loading={loading}
-              key={song.node.contentful_id}
-              song={song.node}
-            />
-          ))}
-        </Cards>
-        <Pagination
-          songsPerPage={songsPerPage}
-          totalSongs={filteredSongs.length}
-          paginate={paginate}
-          currentPage={currentPage}
-        />
-      </SongsAndPaginationWrapper>
-    </Wrapper>
+    <>
+      <SEO title="Music" />
+      <Wrapper>
+        <Sidebar />
+        <SongsAndPaginationWrapper>
+          <Pagination
+            songsPerPage={songsPerPage}
+            totalSongs={filteredSongs.length}
+            paginate={paginate}
+            currentPage={currentPage}
+          />
+          <CategoriesWrapper>
+            <div>
+              <h1>Title</h1>
+            </div>
+            <div>
+              <h1>Genres</h1>
+            </div>
+            <div>
+              <h1>Description</h1>
+            </div>
+            <div>
+              <h1>Composer</h1>
+            </div>
+            <div>
+              <h1>Tempo</h1>
+            </div>
+            <div>
+              <h1>Instrumentation</h1>
+            </div>
+          </CategoriesWrapper>
+          <Cards>
+            {currentSongs.map(song => (
+              <Song
+                loading={loading}
+                key={song.node.contentful_id}
+                song={song.node}
+              />
+            ))}
+          </Cards>
+          <Pagination
+            songsPerPage={songsPerPage}
+            totalSongs={filteredSongs.length}
+            paginate={paginate}
+            currentPage={currentPage}
+          />
+        </SongsAndPaginationWrapper>
+      </Wrapper>
+    </>
   )
 }
 
