@@ -1,2 +1,2 @@
-export const listLength = 6
+export const listLength = 3
 export const songsPerPage = 10

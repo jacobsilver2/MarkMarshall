@@ -24,6 +24,7 @@ import "react-pro-sidebar/dist/css/styles.css"
 import HamburgerMenu from "react-hamburger-menu"
 import "../styles/proSidebarStyles.scss"
 import { sortArrayAlphabetically } from "../lib/sortArrayAlphabetically"
+import tempoCalc from "../lib/tempoCalc"
 
 const SidebarWrapper = styled.div`
   height: calc(100vh - 160px);
@@ -35,10 +36,12 @@ const SidebarWrapper = styled.div`
 
 const StyledProSideBar = styled(ProSidebar)`
   overflow: scroll;
+  scrollbar-width: none;
 `
 const TitleAndBurgerWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${({ sidebarOpen }) =>
+    sidebarOpen ? "space-between" : "center"};
   align-items: center;
   padding: 1rem;
 `
@@ -49,9 +52,15 @@ const Title = styled.h1`
 
 const Category = styled.h2`
   display: inline;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: bold;
   color: white;
+`
+const CatWrapper = styled.div`
+  height: 20vh;
+  overflow: scroll;
+  scrollbar-width: thin;
+  overflow-x: hidden;
 `
 const UL = styled.ul`
   list-style: none;
@@ -124,7 +133,7 @@ const ProSidebarComponent = () => {
       } = song.node
       genre && genre.forEach(genre => genresSet.add(genre))
       composer && composer.forEach(composer => composersSet.add(composer))
-      tempo && tempo.forEach(tempo => temposSet.add(tempo))
+      tempo && tempo.forEach(tempo => temposSet.add(tempoCalc(tempo)))
       soundsLike && soundsLike.forEach(sound => soundsLikeSet.add(sound))
       instrumentation &&
         instrumentation.forEach(instrument =>
@@ -161,10 +170,11 @@ const ProSidebarComponent = () => {
     <StyledProSideBar
       collapsed={!sidebarOpen}
       onToggle={() => setSidebarOpen(prev => !prev)}
+      // width="300px"
     >
       <Menu popperArrow="true" iconShape="round">
         <SidebarHeader>
-          <TitleAndBurgerWrapper>
+          <TitleAndBurgerWrapper sidebarOpen={sidebarOpen}>
             {sidebarOpen && <Title>Filter</Title>}
             <HamburgerMenu
               height={16}
@@ -177,25 +187,23 @@ const ProSidebarComponent = () => {
         </SidebarHeader>
         <SidebarContent>
           <SubMenu
-            icon={
-              <FontAwesomeIcon
-                icon={<FontAwesomeIcon icon={faTheaterMasks} />}
-              />
-            }
+            icon={<FontAwesomeIcon icon={faTheaterMasks} />}
             title={<Category>Genre</Category>}
           >
-            {genres.map(genre => (
-              <MenuItem key={genre}>
-                <input
-                  onClick={handleCheck}
-                  type="checkbox"
-                  name="genre"
-                  value={genre}
-                  defaultChecked={state.filters.includes(genre)}
-                />
-                {genre}
-              </MenuItem>
-            ))}
+            <CatWrapper>
+              {genres.map(genre => (
+                <MenuItem key={genre}>
+                  <input
+                    onClick={handleCheck}
+                    type="checkbox"
+                    name="genre"
+                    value={genre}
+                    defaultChecked={state.filters.includes(genre)}
+                  />
+                  {genre}
+                </MenuItem>
+              ))}
+            </CatWrapper>
           </SubMenu>
           <SubMenu
             icon={<FontAwesomeIcon icon={faUserEdit} />}
@@ -235,52 +243,58 @@ const ProSidebarComponent = () => {
             icon={<FontAwesomeIcon icon={faMusic} />}
             title={<Category>Sounds Like</Category>}
           >
-            {soundsLike.map(sound => (
-              <MenuItem key={sound}>
-                <input
-                  onClick={handleCheck}
-                  type="checkbox"
-                  name="soundsLike"
-                  value={sound}
-                  defaultChecked={state.filters.includes(sound)}
-                />
-                {sound}
-              </MenuItem>
-            ))}
+            <CatWrapper>
+              {soundsLike.map(sound => (
+                <MenuItem key={sound}>
+                  <input
+                    onClick={handleCheck}
+                    type="checkbox"
+                    name="soundsLike"
+                    value={sound}
+                    defaultChecked={state.filters.includes(sound)}
+                  />
+                  {sound}
+                </MenuItem>
+              ))}
+            </CatWrapper>
           </SubMenu>
           <SubMenu
             icon={<FontAwesomeIcon icon={faGuitar} />}
             title={<Category>Instrumentation</Category>}
           >
-            {instrumentation.map(inst => (
-              <MenuItem key={inst}>
-                <input
-                  onClick={handleCheck}
-                  type="checkbox"
-                  name="instrumentation"
-                  value={inst}
-                  checked={state.filters.includes(inst)}
-                />
-                {inst}
-              </MenuItem>
-            ))}
+            <CatWrapper>
+              {instrumentation.map(inst => (
+                <MenuItem key={inst}>
+                  <input
+                    onClick={handleCheck}
+                    type="checkbox"
+                    name="instrumentation"
+                    value={inst}
+                    checked={state.filters.includes(inst)}
+                  />
+                  {inst}
+                </MenuItem>
+              ))}
+            </CatWrapper>
           </SubMenu>
           <SubMenu
             icon={<FontAwesomeIcon icon={faMoon} />}
             title={<Category>Mood</Category>}
           >
-            {mood.map(m => (
-              <MenuItem key={m}>
-                <input
-                  onClick={handleCheck}
-                  type="checkbox"
-                  name="mood"
-                  value={m}
-                  checked={state.filters.includes(m)}
-                />
-                {m}
-              </MenuItem>
-            ))}
+            <CatWrapper>
+              {mood.map(m => (
+                <MenuItem key={m}>
+                  <input
+                    onClick={handleCheck}
+                    type="checkbox"
+                    name="mood"
+                    value={m}
+                    checked={state.filters.includes(m)}
+                  />
+                  {m}
+                </MenuItem>
+              ))}
+            </CatWrapper>
           </SubMenu>
         </SidebarContent>
       </Menu>

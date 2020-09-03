@@ -34,12 +34,6 @@ function reducer(state, action) {
       }
     }
 
-    // case "ADD_FILTERED_SONGS": {
-    //   return {
-    //     ...state,
-    //     filteredSongs: action.filteredSongs,
-    //   }
-    // }
     case "ADD_FILTER": {
       return {
         ...state,

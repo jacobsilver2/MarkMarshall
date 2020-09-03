@@ -2,15 +2,26 @@ import React, { useContext, useEffect, useState } from "react"
 import { GlobalStateContext } from "../context/provider"
 import { graphql } from "gatsby"
 import styled from "styled-components"
-import Song from "../components/song"
+import Song from "../components/song2"
 import Sidebar from "../components/proSidebar"
 import Pagination from "../components/pagination"
 import { songsPerPage } from "../lib/constants"
+import { tempoCategories, tempoFilter } from "../lib/tempoCalc"
 
 const Wrapper = styled.div`
   display: grid;
   height: calc(100vh - 160px);
   grid-template-columns: 1fr 6fr;
+`
+
+const CategoriesWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 2rem;
+  padding: 0 1rem;
+  h1 {
+    font-weight: bold;
+  }
 `
 
 const Cards = styled.div`
@@ -67,7 +78,9 @@ const Music = ({ data }) => {
               return (
                 (song.node.genre && song.node.genre.includes(f)) ||
                 (song.node.composer && song.node.composer.includes(f)) ||
-                (song.node.tempo && song.node.tempo.includes(f)) ||
+                (song.node.tempo &&
+                  tempoCategories.includes(f) &&
+                  tempoFilter(f, song.node.tempo)) ||
                 (song.node.soundsLike && song.node.soundsLike.includes(f)) ||
                 (song.node.instrumentation &&
                   song.node.instrumentation.includes(f)) ||
@@ -89,8 +102,6 @@ const Music = ({ data }) => {
     setCurrentPage(pageNumber)
   }
 
-  console.log(currentSongs)
-
   return (
     <Wrapper>
       <Sidebar>SIDEBAR</Sidebar>
@@ -101,6 +112,26 @@ const Music = ({ data }) => {
           paginate={paginate}
           currentPage={currentPage}
         />
+        <CategoriesWrapper>
+          <div>
+            <h1>Title</h1>
+          </div>
+          <div>
+            <h1>Genres</h1>
+          </div>
+          <div>
+            <h1>Description</h1>
+          </div>
+          <div>
+            <h1>Composer</h1>
+          </div>
+          <div>
+            <h1>Tempo</h1>
+          </div>
+          <div>
+            <h1>Instrumentation</h1>
+          </div>
+        </CategoriesWrapper>
         <Cards>
           {currentSongs.map(song => (
             <Song

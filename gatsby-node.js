@@ -32,12 +32,12 @@ exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions
   const typeDefs = `
       type allContentfulSong implements Node {
-        tempo: String
-        composer: String
+        tempo: [String]
+        composer: [String]
       }
       type ContentfulSong implements Node {
-        tempo: String
-        composer: String
+        tempo: [String]
+        composer: [String]
       }
     `
   createTypes(typeDefs)

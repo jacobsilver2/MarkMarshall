@@ -4,7 +4,8 @@ import styled from "styled-components"
 const Wrapper = styled.div``
 
 const UL = styled.ul`
-  text-align: center;
+  text-align: right;
+  padding: 2rem 0;
 `
 const LI = styled.li`
   padding: 0 1rem;
