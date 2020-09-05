@@ -67,7 +67,7 @@ const Song2 = ({ song, loading }) => {
     return <h2>Loading</h2>
   }
   const renderList = category => {
-    const isLarge = category.length > listLength
+    const isLarge = category && category.length > listLength
     const remainingCats = isLarge && category.length - listLength
     const truncated =
       isLarge &&
@@ -92,13 +92,13 @@ const Song2 = ({ song, loading }) => {
         <div>
           <Link to={`/music/${slugify(title)}`}>{title}</Link>
         </div>
-        <div>{renderList(genre)}</div>
+        <div>{genre ? renderList(genre) : ""}</div>
         <div>
-          {description && truncateParagraph(description.internal.content)}
+          {description ? truncateParagraph(description.internal.content) : ""}
         </div>
-        <div>{renderList(composer)}</div>
-        <div>{tempoCalc(tempo)}</div>
-        <div>{renderList(instrumentation)}</div>
+        <div>{composer ? renderList(composer) : ""}</div>
+        <div>{tempo ? tempoCalc(tempo) : ""}</div>
+        <div>{instrumentation ? renderList(instrumentation) : ""}</div>
       </Info>
       <Waveform>
         <StyledFontAwesome onClick={() => addToGlobalState()} icon={faPlay} />

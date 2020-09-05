@@ -66,7 +66,6 @@ const SongTemplate = props => {
     title,
     updatedAt,
   } = props.data.song
-  const { description: desc } = description
 
   function addToGlobalState() {
     dispatch({
@@ -92,20 +91,25 @@ const SongTemplate = props => {
             <WaveformWrapper>WAVEFORM</WaveformWrapper>
           </TitleAndWaveform>
           <Details>
-            <DetailsGridItem>Description: {desc && desc}</DetailsGridItem>
             <DetailsGridItem>
-              Composer: {composer && composer.join(", ")}
+              Description: {description ? description.description : ""}
             </DetailsGridItem>
             <DetailsGridItem>
-              Instrumentation: {instrumentation && instrumentation.join(", ")}
+              Composer: {composer ? composer.join(", ") : ""}
             </DetailsGridItem>
             <DetailsGridItem>
-              Genre: {genre && genre.join(", ")}
+              Instrumentation:{" "}
+              {instrumentation ? instrumentation.join(", ") : ""}
             </DetailsGridItem>
-            <DetailsGridItem>Mood: {mood && mood.join(", ")}</DetailsGridItem>
-            <DetailsGridItem>Tempo: {tempo && tempo}</DetailsGridItem>
             <DetailsGridItem>
-              Sounds Like: {soundsLike && soundsLike.join(", ")}
+              Genre: {genre ? genre.join(", ") : ""}
+            </DetailsGridItem>
+            <DetailsGridItem>
+              Mood: {mood ? mood.join(", ") : ""}
+            </DetailsGridItem>
+            <DetailsGridItem>Tempo: {tempo ? tempo : ""}</DetailsGridItem>
+            <DetailsGridItem>
+              Sounds Like: {soundsLike ? soundsLike.join(", ") : ""}
             </DetailsGridItem>
           </Details>
         </SongCard>

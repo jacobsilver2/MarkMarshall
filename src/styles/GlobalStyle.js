@@ -37,6 +37,9 @@ const GlobalStyle = createGlobalStyle`
     font-weight: normal;
     line-height: 1.5;
   }
+  h1 {
+    font-weight: bold;
+  }
   a {
     color: var(--dark);
   }

@@ -3,8 +3,20 @@ import { graphql } from "gatsby"
 import styled from "styled-components"
 import Img from "gatsby-image"
 
-const PlaylistWrapper = styled.div`
+const OuterWrapper = styled.div`
+  width: 100%;
   height: calc(100vh - 160px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const PlaylistWrapper = styled.div`
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  border: 1px dashed black;
 `
 const PlaylistImg = styled(Img)`
   max-height: 50%;
@@ -21,15 +33,17 @@ const PlaylistTemplate = props => {
     songs,
   } = props.data.playlist
   return (
-    <PlaylistWrapper>
-      <h1>{title}</h1>
-      <PlaylistImg fluid={image.fluid} />
-      <ol>
-        {songs.map(song => (
-          <li>{song.title}</li>
-        ))}
-      </ol>
-    </PlaylistWrapper>
+    <OuterWrapper>
+      <PlaylistWrapper>
+        <PlaylistImg fluid={image.fluid} />
+        <h1>{title}</h1>
+        <ol>
+          {songs.map(song => (
+            <li>{song.title}</li>
+          ))}
+        </ol>
+      </PlaylistWrapper>
+    </OuterWrapper>
   )
 }
 
