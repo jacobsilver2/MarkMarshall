@@ -1,7 +1,12 @@
-import React from "react"
+import React, { useContext } from "react"
 import { graphql } from "gatsby"
 import styled from "styled-components"
 import Img from "gatsby-image"
+import { Link } from "gatsby"
+import slugify from "../lib/slugify"
+import { GlobalDispatchContext } from "../context/provider"
+import { faPlay } from "@fortawesome/free-solid-svg-icons"
+import { StyledFontAwesome } from "../components/Song2"
 
 const OuterWrapper = styled.div`
   width: 100%;
@@ -12,10 +17,12 @@ const OuterWrapper = styled.div`
 `
 
 const PlaylistWrapper = styled.div`
-  text-align: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 80%;
+  height: 80%;
   border: 1px dashed black;
 `
 const PlaylistImg = styled(Img)`
@@ -23,7 +30,16 @@ const PlaylistImg = styled(Img)`
   max-width: 50%;
 `
 
+const SongWrapper = styled.div`
+  display: flex;
+`
+
+const SongLink = styled(Link)`
+  padding: 0 2rem;
+`
+
 const PlaylistTemplate = props => {
+  const dispatch = useContext(GlobalDispatchContext)
   const {
     description,
     contentful_id,
@@ -32,14 +48,33 @@ const PlaylistTemplate = props => {
     image,
     songs,
   } = props.data.playlist
+
+  function addToGlobalState(song) {
+    dispatch({
+      type: "SET_CURRENT_TRACK",
+      url: `https:${song.audio.file.url}`,
+      title: song.title,
+    })
+  }
+
   return (
     <OuterWrapper>
       <PlaylistWrapper>
         <PlaylistImg fluid={image.fluid} />
         <h1>{title}</h1>
         <ol>
-          {songs.map(song => (
-            <li>{song.title}</li>
+          {songs.map((song, i) => (
+            <SongWrapper>
+              <SongLink to={`/music/${slugify(song.title)}`}>
+                <li>
+                  {i + 1}. {song.title}
+                </li>
+              </SongLink>
+              <StyledFontAwesome
+                onClick={() => addToGlobalState(song)}
+                icon={faPlay}
+              />
+            </SongWrapper>
           ))}
         </ol>
       </PlaylistWrapper>
