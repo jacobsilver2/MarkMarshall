@@ -4,11 +4,20 @@ import styled from "styled-components"
 import FeaturedPlaylistCard from "./featuredPlaylistCard"
 
 const FeatWrapper = styled.div`
+  border-right: 1px dashed black;
   border-bottom: 1px dashed black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 const PlaylistsWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   grid-gap: 1rem;
   margin: 1rem;
 `

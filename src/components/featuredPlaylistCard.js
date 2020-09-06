@@ -5,8 +5,8 @@ import slugify from "../lib/slugify"
 
 const PlaylistWrapper = styled.div`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   border: 1px dashed black;
   cursor: pointer;
   box-shadow: 5px 5px 4px #888888;

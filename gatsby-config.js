@@ -29,6 +29,18 @@ module.exports = {
       },
     },
     {
+      resolve: "gatsby-theme-auth0",
+      options: {
+        domain: process.env.GATSBY_AUTH0_DOMAIN,
+        clientID: process.env.GATSBY_AUTH0_CLIENT_ID,
+        redirectUri: process.env.GATSBY_AUTH0_CALLBACK_URL,
+        // audience: process.env.AUTH0_AUDIENCE, // Optional
+        // responseType: process.env.AUTH0_RESPONSE_TYPE, // Optional
+        // scope: process.env.AUTH0_SCOPE, // Optional
+        // callbackPath: "/auth/callback", // Optional
+      },
+    },
+    {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `Jake-Default-Starter`,

@@ -6,9 +6,16 @@ import FeaturedSongCard from "./featuredSongCard"
 const FeatWrapper = styled.div`
   border-right: 1px dashed black;
   border-bottom: 1px dashed black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `
 
 const SongsWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
