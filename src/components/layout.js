@@ -6,6 +6,7 @@ import { GlobalDispatchContext } from "../context/provider"
 import Header from "./Header"
 import Footer from "./Footer"
 import Fade from "./Fade"
+// import "semantic-ui-css/semantic.min.css"
 // import Search from "./search"
 
 const Site = styled.div`

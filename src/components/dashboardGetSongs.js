@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { createClient } from "contentful-management"
+import rankify from "../lib/rankfy"
+import RankedCategory from "./dashboardRankedCategory"
 
 const DashboardGetSongs = () => {
   const [songs, setSongs] = useState([])
@@ -8,7 +10,6 @@ const DashboardGetSongs = () => {
   useEffect(() => {
     async function getSongs() {
       const client = await createClient({
-        // This is the access token for this space. Normally you get the token in the Contentful web app
         accessToken: process.env.GATSBY_CONTENTFUL_CONTENT_MANAGEMENT,
       })
       const space = await client.getSpace(
@@ -27,30 +28,13 @@ const DashboardGetSongs = () => {
     getSongs()
   }, [])
 
-  function rankify(entries) {
-    let rankedObj = {}
-    entries.forEach(entry => {
-      if (rankedObj.hasOwnProperty(entry)) {
-        rankedObj[entry] += 1
-      } else {
-        const entryObj = { [entry]: 1 }
-        rankedObj = { ...rankedObj, ...entryObj }
-      }
-    })
-    return rankedObj
-  }
-
-  //   const allGenres = []
-  //   const allGenres = songs.forEach(song => {
-  //     song.fields.genre["en-US"].forEach(genre => allGenres.push(genre))
-  //   })
-
-  //   const ranked = rankify(allGenres)
-  //   console.log(ranked)
-
   return (
     <div>
-      <h1></h1>
+      <RankedCategory category="genre" songs={songs} />
+      <RankedCategory category="mood" songs={songs} />
+      <RankedCategory category="composer" songs={songs} />
+      <RankedCategory category="instrumentation" songs={songs} />
+      <RankedCategory category="soundsLike" songs={songs} />
     </div>
   )
 }

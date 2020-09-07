@@ -42,6 +42,8 @@
     "react-player": "^2.6.1",
     "react-pro-sidebar": "^0.4.4",
     "react-typography": "^0.16.19",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^1.2.1",
     "styled-components": "^5.1.1",
     "styled-reset": "^4.2.1",
     "typography": "^0.16.19",
