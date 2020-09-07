@@ -51,7 +51,7 @@
     "typography-theme-grand-view": "^0.16.19",
     "wavesurfer-react": "^2.0.5",
     "wavesurfer.js": "^4.0.1",
-    "yup": "^0.29.2"
+    "yup": "^0.29.3"
   },
   "devDependencies": {
     "prettier": "2.0.5"

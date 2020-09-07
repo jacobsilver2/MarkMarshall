@@ -4,12 +4,12 @@ import styled from "styled-components"
 import { GlobalStateContext } from "../context/provider"
 import SEO from "../components/seo"
 import Song from "../components/song"
-import FeaturedSongs from "../components/featuredSongs"
-import FeaturedPlaylists from "../components/featuredPlaylists"
+import LatestSongs from "../components/latestSongs"
+import LatestPlaylists from "../components/latestPlaylists"
 import SearchResults from "../components/searchResults"
 import Search from "../components/search"
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   height: calc(100vh - 160px);
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
@@ -22,17 +22,17 @@ const Featured = styled.div`
 `
 
 const IndexPage = () => {
-  const state = useContext(GlobalStateContext)
-  const songCards = state.filteredSongs.map(song => (
-    <Song key={song.node.contentful_id} song={song.node} />
-  ))
+  // const state = useContext(GlobalStateContext)
+  // const songCards = state.filteredSongs.map(song => (
+  //   <Song key={song.node.contentful_id} song={song.node} />
+  // ))
 
   return (
     <Wrapper>
       <SEO title="Home" />
       <Featured>
-        <FeaturedSongs />
-        <FeaturedPlaylists />
+        <LatestSongs />
+        <LatestPlaylists />
       </Featured>
       <Search />
       <SearchResults />

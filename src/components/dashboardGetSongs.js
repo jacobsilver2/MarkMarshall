@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react"
 import { createClient } from "contentful-management"
-import rankify from "../lib/rankfy"
-import RankedCategory from "./dashboardRankedCategory"
+import styled from "styled-components"
+import DashboardCreateNewSong from "../components/dashboardCreateNewSong"
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`
 
 const DashboardGetSongs = () => {
   const [songs, setSongs] = useState([])
@@ -29,13 +36,11 @@ const DashboardGetSongs = () => {
   }, [])
 
   return (
-    <div>
-      <RankedCategory category="genre" songs={songs} />
-      <RankedCategory category="mood" songs={songs} />
-      <RankedCategory category="composer" songs={songs} />
-      <RankedCategory category="instrumentation" songs={songs} />
-      <RankedCategory category="soundsLike" songs={songs} />
-    </div>
+    <Wrapper>
+      <DashboardCreateNewSong songs={songs} />
+
+      {/* <RankedCategory category="soundsLike" songs={songs} /> */}
+    </Wrapper>
   )
 }
 

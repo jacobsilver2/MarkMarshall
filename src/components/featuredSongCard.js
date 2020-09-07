@@ -1,19 +1,6 @@
 import React, { useContext } from "react"
-import styled from "styled-components"
 import { GlobalDispatchContext } from "../context/provider"
-
-const SongWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px dashed black;
-  cursor: pointer;
-  box-shadow: 5px 5px 4px #888888;
-  &:hover {
-    background-color: #ffc600;
-    opacity: 80%;
-  }
-`
+import { FeatItemWrapper } from "../styles/FeaturedItems"
 
 const FeaturedSongCard = ({ song }) => {
   const dispatch = useContext(GlobalDispatchContext)
@@ -29,9 +16,9 @@ const FeaturedSongCard = ({ song }) => {
     // not including a link to the song because we want clicking
     // to just play the track
     <>
-      <SongWrapper onClick={addToGlobalState}>
+      <FeatItemWrapper onClick={addToGlobalState}>
         <h1>{song.node.title}</h1>
-      </SongWrapper>
+      </FeatItemWrapper>
     </>
   )
 }

@@ -5,6 +5,8 @@ import styled from "styled-components"
 import PlaylistTile from "../components/playlistTile"
 
 const AllPlaylistsWrapper = styled.div`
+  height: calc(100vh - 160px);
+  overflow: scroll;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 2rem;
