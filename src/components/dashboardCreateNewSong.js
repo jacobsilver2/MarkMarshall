@@ -3,6 +3,7 @@ import RankedCategory from "./dashboardRankedCategory"
 import { Form, Field, ErrorMessage, Formik, FieldArray } from "formik"
 import * as yup from "yup"
 import styled from "styled-components"
+import Upload from "./dashboardUpload"
 
 const Wrapper = styled.div`
   width: 100%;
@@ -23,6 +24,7 @@ const Title = styled.div`
 const Label = styled.label`
   text-align: left;
   padding-right: 2rem;
+  font-weight: bold;
 `
 
 const AddedValues = styled.div`
@@ -48,7 +50,10 @@ const NewEntry = styled.div`
   grid-template-columns: 5fr 1fr;
   margin: 1rem;
   input {
-    /* min-width: 500px; */
+    font-size: 1.5rem;
+    ::placeholder {
+      font-size: 1.5rem;
+    }
   }
   button {
     cursor: pointer;
@@ -57,6 +62,19 @@ const NewEntry = styled.div`
       color: blue;
     } */
   }
+`
+
+const StyledField = styled(Field)`
+  font-size: 1.5rem;
+  ::placeholder {
+    font-size: 1.5rem;
+  }
+`
+const UploadWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 const validationSchema = yup.object({
@@ -70,7 +88,7 @@ const validationSchema = yup.object({
   soundsLike: yup.array(yup.string()),
 })
 
-const DashboardCreateNewSong = ({ songs }) => {
+const DashboardCreateNewSong = ({ songs, setNewSong, upload }) => {
   const [comp, setComp] = useState("")
   const [genreField, setgenreField] = useState("")
   const [moodField, setmoodField] = useState("")
@@ -80,10 +98,13 @@ const DashboardCreateNewSong = ({ songs }) => {
   return (
     <Wrapper>
       <h1>Add A New Song</h1>
+      <UploadWrapper>
+        <Upload setNewSong={setNewSong} />
+      </UploadWrapper>
       <Formik
         initialValues={{
           title: "",
-          tempo: null,
+          tempo: 0,
           composer: [],
           genre: [],
           mood: [],
@@ -91,17 +112,22 @@ const DashboardCreateNewSong = ({ songs }) => {
           instrumentation: [],
         }}
         validationSchema={validationSchema}
+        onSubmit={(values, actions) => {
+          setNewSong(prev => ({ ...prev, values }))
+          upload()
+        }}
       >
         {({ isSubmitting, errors, touched, values }) => {
           return (
             <>
               <Form>
+                <button type="submit">Submit</button>
                 <Category>
                   <Title>
                     <Label htmlFor="title">Title</Label>
                   </Title>
                   <NewEntry>
-                    <Field
+                    <StyledField
                       placeholder="Enter the title here"
                       name="title"
                       type="text"
@@ -114,7 +140,7 @@ const DashboardCreateNewSong = ({ songs }) => {
                     <Label htmlFor="tempo">Tempo</Label>
                   </Title>
                   <NewEntry>
-                    <Field
+                    <StyledField
                       placeholder="Enter the tempo here"
                       name="tempo"
                       type="number"

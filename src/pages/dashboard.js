@@ -16,7 +16,6 @@ const AuthWrapper = styled.div`
 
 const Dashboard = () => {
   const { isLoggedIn, profile } = useAuth()
-  console.log(profile)
   return (
     <Wrapper>
       <AuthWrapper>

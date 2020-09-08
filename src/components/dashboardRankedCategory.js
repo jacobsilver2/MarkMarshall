@@ -73,6 +73,7 @@ const DashboardRankedCategory = ({ category, songs, add, addedCategories }) => {
           {highRanking.map(g => (
             <Box
               onClick={() => add(g)}
+              type="button"
               key={g}
               clr={addedCategories.includes(g) ? "grey" : "red"}
               disabled={addedCategories.includes(g)}
@@ -84,6 +85,7 @@ const DashboardRankedCategory = ({ category, songs, add, addedCategories }) => {
           {medRanking.map(g => (
             <Box
               onClick={() => add(g)}
+              type="button"
               key={g}
               clr={addedCategories.includes(g) ? "grey" : "yellow"}
               disabled={addedCategories.includes(g)}
@@ -96,6 +98,7 @@ const DashboardRankedCategory = ({ category, songs, add, addedCategories }) => {
             <Box
               onClick={() => add(g)}
               key={g}
+              type="button"
               clr={addedCategories.includes(g) ? "grey" : "dodgerBlue"}
               disabled={addedCategories.includes(g)}
               isDisabled={addedCategories.includes(g)}
