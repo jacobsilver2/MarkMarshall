@@ -8,8 +8,9 @@ const AllPlaylistsWrapper = styled.div`
   height: calc(100vh - 160px);
   overflow: scroll;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   grid-gap: 2rem;
+  padding: 1rem;
 `
 
 export const plQuery = graphql`

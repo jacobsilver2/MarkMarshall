@@ -8,10 +8,20 @@ import BackgroundImage from "gatsby-background-image"
 const TileWrapper = styled.div`
   min-width: 300px;
   min-height: 300px;
+  overflow: hidden;
   border: 1px solid black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  img {
+    transition: transform 0.5s ease;
+  }
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  &:hover {
+    /* background-color: rgba(0, 0, 0, 0.9); */
+    img {
+      transform: scale(1.1);
+    }
+  }
 `
 const StyledLink = styled(Link)`
   width: 100%;
@@ -20,9 +30,14 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `
 
+const StyledImg = styled(Img)`
+  transition: transform 0.5s ease;
+`
+
 const StyledbckgImg = styled(BackgroundImage)`
   width: 100%;
   height: 100%;
+  transition: transform 0.5s ease;
 `
 
 const Title = styled.h1`
@@ -37,9 +52,10 @@ const PlaylistTile = ({ playlist }) => {
   return (
     <TileWrapper>
       <StyledLink to={`/playlists/${slugify(pl.title)}`}>
-        <StyledbckgImg backgroundColor={`#040e18`} fluid={pl.image.fluid}>
-          <Title>{pl.title}</Title>
-        </StyledbckgImg>
+        {/* <Title>{pl.title}</Title> */}
+        <StyledImg fluid={pl.image.fluid} />
+        {/* <StyledbckgImg backgroundColor={`#040e18`} fluid={pl.image.fluid}> */}
+        {/* </StyledbckgImg> */}
       </StyledLink>
     </TileWrapper>
   )

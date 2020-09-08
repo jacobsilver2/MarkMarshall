@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     box-sizing: border-box;
     font-size: 10px;
-    font-family: 'HCo Operator Mono', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     position: relative;
     color: var(--dark);
 
@@ -33,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: inherit;
   }
   h1,h2,h3,h4,h5,h6 {
-    font-family: 'HCo Operator Mono', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     font-weight: normal;
     line-height: 1.5;
   }
@@ -99,12 +99,12 @@ const GlobalStyle = createGlobalStyle`
 
   input {
     ::placeholder {
-      font-family: 'HCo Operator Mono', sans-serif;
+      font-family: 'DM Sans', sans-serif;
     }
   }
 
   button {
-      font-family: 'HCo Operator Mono', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       &:active {
         background-color: #ffc600;
       }

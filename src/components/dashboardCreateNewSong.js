@@ -14,6 +14,12 @@ const Category = styled.div`
   margin: 1rem;
 `
 
+const Title = styled.div`
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+  margin: 1rem;
+`
+
 const Label = styled.label`
   text-align: left;
   padding-right: 2rem;
@@ -55,6 +61,7 @@ const NewEntry = styled.div`
 
 const validationSchema = yup.object({
   title: yup.string().required(),
+  tempo: yup.number(),
   composer: yup.array(yup.string()),
   genre: yup.array(yup.string()),
   mood: yup.array(yup.string()),
@@ -76,7 +83,7 @@ const DashboardCreateNewSong = ({ songs }) => {
       <Formik
         initialValues={{
           title: "",
-          tempo: "",
+          tempo: null,
           composer: [],
           genre: [],
           mood: [],
@@ -90,7 +97,9 @@ const DashboardCreateNewSong = ({ songs }) => {
             <>
               <Form>
                 <Category>
-                  <Label htmlFor="title">Title</Label>
+                  <Title>
+                    <Label htmlFor="title">Title</Label>
+                  </Title>
                   <NewEntry>
                     <Field
                       placeholder="Enter the title here"
@@ -101,7 +110,22 @@ const DashboardCreateNewSong = ({ songs }) => {
                 </Category>
 
                 <Category>
-                  <Label htmlFor="composer">Composer(s)</Label>
+                  <Title>
+                    <Label htmlFor="tempo">Tempo</Label>
+                  </Title>
+                  <NewEntry>
+                    <Field
+                      placeholder="Enter the tempo here"
+                      name="tempo"
+                      type="number"
+                    />
+                  </NewEntry>
+                </Category>
+
+                <Category>
+                  <Title>
+                    <Label htmlFor="composer">Composer(s)</Label>
+                  </Title>
                   <FieldArray name="composer">
                     {fieldArrayProps => {
                       const { push, remove, form } = fieldArrayProps
@@ -149,7 +173,9 @@ const DashboardCreateNewSong = ({ songs }) => {
                   </FieldArray>
                 </Category>
                 <Category>
-                  <Label htmlFor="genre">Genre(s)</Label>
+                  <Title>
+                    <Label htmlFor="genre">Genre(s)</Label>
+                  </Title>
                   <FieldArray name="genre">
                     {fieldArrayProps => {
                       const { push, remove, form } = fieldArrayProps
@@ -198,7 +224,9 @@ const DashboardCreateNewSong = ({ songs }) => {
                 </Category>
 
                 <Category>
-                  <Label htmlFor="instrumentation">Instrumentation</Label>
+                  <Title>
+                    <Label htmlFor="instrumentation">Instrumentation</Label>
+                  </Title>
                   <FieldArray name="instrumentation">
                     {fieldArrayProps => {
                       const { push, remove, form } = fieldArrayProps
@@ -249,7 +277,9 @@ const DashboardCreateNewSong = ({ songs }) => {
                 </Category>
 
                 <Category>
-                  <Label htmlFor="mood">Mood</Label>
+                  <Title>
+                    <Label htmlFor="mood">Mood</Label>
+                  </Title>
                   <FieldArray name="mood">
                     {fieldArrayProps => {
                       const { push, remove, form } = fieldArrayProps
@@ -298,7 +328,9 @@ const DashboardCreateNewSong = ({ songs }) => {
                 </Category>
 
                 <Category>
-                  <Label htmlFor="soundsLike">Sounds Like</Label>
+                  <Title>
+                    <Label htmlFor="soundsLike">Sounds Like</Label>
+                  </Title>
                   <FieldArray name="soundsLike">
                     {fieldArrayProps => {
                       const { push, remove, form } = fieldArrayProps
