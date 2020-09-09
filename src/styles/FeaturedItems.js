@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { motion } from "framer-motion"
 
 export const FeatWrapper = styled.div`
   border-right: 1px dashed black;
@@ -25,7 +26,7 @@ export const FeaturedTitleText = styled.h1`
   text-align: center;
 `
 
-export const FeatItemWrapper = styled.div`
+export const FeatItemWrapper = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;

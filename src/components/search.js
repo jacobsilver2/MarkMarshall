@@ -27,10 +27,6 @@ const Search = () => {
   const state = useContext(GlobalStateContext)
   const dispatch = useContext(GlobalDispatchContext)
   const emptyQuery = ""
-  const [localState, setLocalState] = useState({
-    filteredData: [],
-    query: emptyQuery,
-  })
 
   const handleInputChange = event => {
     const query = event.target.value
@@ -55,10 +51,6 @@ const Search = () => {
     if (query === "") {
       filteredData = []
     }
-    setLocalState({
-      query,
-      filteredData,
-    })
 
     dispatch({ type: "ADD_SEARCH_RESULTS", searchResults: filteredData })
   }

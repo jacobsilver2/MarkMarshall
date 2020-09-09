@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import RankedCategory from "./dashboardRankedCategory"
-import { Form, Field, ErrorMessage, Formik, FieldArray } from "formik"
+import { Form, ErrorMessage, Formik, FieldArray } from "formik"
 import * as yup from "yup"
 // import Upload from "./dashboardUpload"
 import { createClient } from "contentful-management"
@@ -24,7 +24,6 @@ const validationSchema = yup.object({
   description: yup.string(),
   genre: yup.array(yup.string()),
   mood: yup.array(yup.string()),
-  tempo: yup.number(),
   instrumentation: yup.array(yup.string()),
   soundsLike: yup.array(yup.string()),
 })

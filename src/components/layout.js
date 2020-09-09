@@ -14,11 +14,6 @@ const Site = styled.div`
   display: flex;
   flex-direction: column;
 `
-
-const StickyFooter = styled.div`
-  flex-shrink: 0;
-`
-
 const SiteContent = styled.div`
   flex-grow: 1;
 `
@@ -61,7 +56,10 @@ const Layout = ({ children, location }) => {
   `)
 
   useEffect(() => {
-    dispatch({ type: "ADD_SONGS", songs: data.songs.edges })
+    function addSongs() {
+      dispatch({ type: "ADD_SONGS", songs: data.songs.edges })
+    }
+    addSongs()
   }, [])
 
   return (
@@ -70,7 +68,6 @@ const Layout = ({ children, location }) => {
         <Header siteTitle={data.site.siteMetadata.title} />
       </Headroom>
       <SiteContent>
-        {/* <Search /> */}
         <Fade location={location}>{children}</Fade>
       </SiteContent>
       <Footer />

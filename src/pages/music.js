@@ -72,28 +72,31 @@ const Music = ({ data }) => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const filtered =
-      state.filters.length > 0
-        ? allSongs.filter(song => {
-            setLoading(true)
-            return state.filters.some(f => {
-              return (
-                (song.node.genre && song.node.genre.includes(f)) ||
-                (song.node.composer && song.node.composer.includes(f)) ||
-                (song.node.tempo &&
-                  tempoCategories.includes(f) &&
-                  tempoFilter(f, song.node.tempo)) ||
-                (song.node.soundsLike && song.node.soundsLike.includes(f)) ||
-                (song.node.instrumentation &&
-                  song.node.instrumentation.includes(f)) ||
-                (song.node.mood && song.node.mood.includes(f))
-              )
+    function createFiltered() {
+      const filtered =
+        state.filters.length > 0
+          ? allSongs.filter(song => {
+              setLoading(true)
+              return state.filters.some(f => {
+                return (
+                  (song.node.genre && song.node.genre.includes(f)) ||
+                  (song.node.composer && song.node.composer.includes(f)) ||
+                  (song.node.tempo &&
+                    tempoCategories.includes(f) &&
+                    tempoFilter(f, song.node.tempo)) ||
+                  (song.node.soundsLike && song.node.soundsLike.includes(f)) ||
+                  (song.node.instrumentation &&
+                    song.node.instrumentation.includes(f)) ||
+                  (song.node.mood && song.node.mood.includes(f))
+                )
+              })
             })
-          })
-        : allSongs
-    setCurrentPage(1)
-    setfilteredSongs(filtered)
-    setLoading(false)
+          : allSongs
+      setCurrentPage(1)
+      setfilteredSongs(filtered)
+      setLoading(false)
+    }
+    createFiltered()
   }, [state.filters])
 
   const indexOfLastSong = currentPage * songsPerPage

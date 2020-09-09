@@ -26,13 +26,13 @@ import "../styles/proSidebarStyles.scss"
 import { sortArrayAlphabetically } from "../lib/sortArrayAlphabetically"
 import tempoCalc from "../lib/tempoCalc"
 
-const SidebarWrapper = styled.div`
-  height: calc(100vh - 160px);
-  width: 270px;
-  /* max-width: 30rem; */
-  /* border-right: 1px dashed black; */
-  overflow: scroll;
-`
+// const SidebarWrapper = styled.div`
+//   height: calc(100vh - 160px);
+//   width: 270px;
+//   /* max-width: 30rem; */
+//   /* border-right: 1px dashed black; */
+//   overflow: scroll;
+// `
 
 const StyledProSideBar = styled(ProSidebar)`
   overflow: scroll;

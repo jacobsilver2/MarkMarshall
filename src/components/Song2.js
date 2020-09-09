@@ -45,16 +45,7 @@ export const StyledFontAwesome = styled(FontAwesomeIcon)`
 
 const Song2 = ({ song, loading }) => {
   const dispatch = useContext(GlobalDispatchContext)
-  const {
-    title,
-    genre,
-    mood,
-    composer,
-    instrumentation,
-    description,
-    tempo,
-    soundsLike,
-  } = song
+  const { title, genre, composer, instrumentation, description, tempo } = song
 
   function addToGlobalState() {
     dispatch({

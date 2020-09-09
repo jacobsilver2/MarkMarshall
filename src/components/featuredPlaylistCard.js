@@ -11,7 +11,7 @@ const StyledLink = styled(Link)`
 const FeaturedPlaylistCard = ({ playlist }) => {
   return (
     <>
-      <FeatItemWrapper>
+      <FeatItemWrapper whileHover={{ scale: 1.05 }}>
         <StyledLink to={`/playlists/${slugify(playlist.node.title)}`}>
           <h1>{playlist.node.title}</h1>
         </StyledLink>

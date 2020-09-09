@@ -62,9 +62,7 @@ const SongTemplate = props => {
     soundsLike,
     tempo,
     description,
-    contentful_id,
     title,
-    updatedAt,
   } = props.data.song
 
   function addToGlobalState() {

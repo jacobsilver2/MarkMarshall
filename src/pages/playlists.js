@@ -3,8 +3,9 @@ import SEO from "../components/seo"
 import { graphql } from "gatsby"
 import styled from "styled-components"
 import PlaylistTile from "../components/playlistTile"
+import { motion } from "framer-motion"
 
-const AllPlaylistsWrapper = styled.div`
+const AllPlaylistsWrapper = styled(motion.div)`
   height: calc(100vh - 160px);
   overflow: scroll;
   display: grid;

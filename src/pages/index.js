@@ -1,9 +1,6 @@
-import React, { useEffect, useContext } from "react"
-import { Link, graphql } from "gatsby"
+import React from "react"
 import styled from "styled-components"
-import { GlobalStateContext } from "../context/provider"
 import SEO from "../components/seo"
-import Song from "../components/song"
 import LatestSongs from "../components/latestSongs"
 import LatestPlaylists from "../components/latestPlaylists"
 import SearchResults from "../components/searchResults"
@@ -22,11 +19,6 @@ const Featured = styled.div`
 `
 
 const IndexPage = () => {
-  // const state = useContext(GlobalStateContext)
-  // const songCards = state.filteredSongs.map(song => (
-  //   <Song key={song.node.contentful_id} song={song.node} />
-  // ))
-
   return (
     <Wrapper>
       <SEO title="Home" />

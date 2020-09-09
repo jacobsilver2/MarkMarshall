@@ -14,41 +14,41 @@ const OuterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: scroll;
+`
+const Card = styled.div`
+  min-height: 500px;
+  border: 1px solid black;
+  margin: 0 1rem;
 `
 
-const PlaylistWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 80%;
-  height: 80%;
-  border: 1px dashed black;
-`
 const PlaylistImg = styled(Img)`
-  max-height: 50%;
-  max-width: 50%;
+  max-height: 250px;
 `
 
 const SongWrapper = styled.div`
   display: flex;
+  padding: 1rem;
 `
 
 const SongLink = styled(Link)`
   padding: 0 2rem;
 `
 
+const Title = styled.h1`
+  text-align: center;
+  padding: 1rem 0;
+`
+
+const Desc = styled.p`
+  color: grey;
+  padding: 1rem;
+  font-size: 1.3rem;
+`
+
 const PlaylistTemplate = props => {
   const dispatch = useContext(GlobalDispatchContext)
-  const {
-    description,
-    contentful_id,
-    title,
-    updatedAt,
-    image,
-    songs,
-  } = props.data.playlist
-
+  const { description, title, image, songs } = props.data.playlist
   function addToGlobalState(song) {
     dispatch({
       type: "SET_CURRENT_TRACK",
@@ -59,25 +59,26 @@ const PlaylistTemplate = props => {
 
   return (
     <OuterWrapper>
-      <PlaylistWrapper>
+      <Card>
         <PlaylistImg fluid={image.fluid} />
-        <h1>{title}</h1>
+        <Title>{title}</Title>
+        <Desc>{description && description.content[0].content[0].value}</Desc>
         <ol>
           {songs.map((song, i) => (
-            <SongWrapper>
+            <SongWrapper key={song.contentful_id}>
+              <StyledFontAwesome
+                onClick={() => addToGlobalState(song)}
+                icon={faPlay}
+              />
               <SongLink to={`/music/${slugify(song.title)}`}>
                 <li>
                   {i + 1}. {song.title}
                 </li>
               </SongLink>
-              <StyledFontAwesome
-                onClick={() => addToGlobalState(song)}
-                icon={faPlay}
-              />
             </SongWrapper>
           ))}
         </ol>
-      </PlaylistWrapper>
+      </Card>
     </OuterWrapper>
   )
 }
@@ -88,7 +89,11 @@ export const pageQuery = graphql`
   query($contentful_id: String!) {
     playlist: contentfulPlaylist(contentful_id: { eq: $contentful_id }) {
       description {
-        description
+        content {
+          content {
+            value
+          }
+        }
       }
       contentful_id
       title
