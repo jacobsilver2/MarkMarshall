@@ -37,7 +37,7 @@ const Search = () => {
     const songs = state.songs || []
 
     let filteredData = songs.filter(song => {
-      const { title, tempo, instrumentation, composer, genre } = song.node
+      const { title, tempo, instrumentation, composer, genre, mood } = song.node
       return (
         title.toLowerCase().includes(query.toLowerCase()) ||
         (tempo && tempo.join("").toLowerCase().includes(query.toLowerCase())) ||
@@ -48,7 +48,8 @@ const Search = () => {
             .includes(query.toLowerCase())) ||
         (composer &&
           composer.join("").toLowerCase().includes(query.toLowerCase())) ||
-        (genre && genre.join("").toLowerCase().includes(query.toLowerCase()))
+        (genre && genre.join("").toLowerCase().includes(query.toLowerCase())) ||
+        (mood && mood.join("").toLowerCase().includes(query.toLowerCase()))
       )
     })
     if (query === "") {

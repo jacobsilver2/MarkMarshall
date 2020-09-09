@@ -64,7 +64,9 @@ const DashboardUpload = ({ setNewSong }) => {
   const [files, setFiles] = useState([])
 
   const onFilesAdded = f => {
-    console.log(f)
+    // const formdat = new FormData(f[0])
+    // console.log(formdat)
+    console.log(f[0])
     setFiles(f)
     setNewSong(prev => ({ ...prev, songFile: f }))
   }

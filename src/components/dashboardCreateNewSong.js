@@ -2,85 +2,26 @@ import React, { useState } from "react"
 import RankedCategory from "./dashboardRankedCategory"
 import { Form, Field, ErrorMessage, Formik, FieldArray } from "formik"
 import * as yup from "yup"
-import styled from "styled-components"
-import Upload from "./dashboardUpload"
-
-const Wrapper = styled.div`
-  width: 100%;
-  text-align: center;
-`
-const Category = styled.div`
-  border-bottom: 2px solid black;
-  padding: 2rem;
-  margin: 1rem;
-`
-
-const Title = styled.div`
-  display: grid;
-  grid-template-columns: 5fr 1fr;
-  margin: 1rem;
-`
-
-const Label = styled.label`
-  text-align: left;
-  padding-right: 2rem;
-  font-weight: bold;
-`
-
-const AddedValues = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`
-
-const AddedValue = styled.div`
-  padding: 1rem;
-  display: flex;
-  justify-content: center;
-  button {
-    cursor: pointer;
-    margin: 0 1rem;
-    border: none;
-    background: none;
-  }
-`
-const NewEntry = styled.div`
-  display: grid;
-  /* justify-content: center; */
-  min-height: 5rem;
-  grid-template-columns: 5fr 1fr;
-  margin: 1rem;
-  input {
-    font-size: 1.5rem;
-    ::placeholder {
-      font-size: 1.5rem;
-    }
-  }
-  button {
-    cursor: pointer;
-    margin: 0 2rem;
-    /* &:hover {
-      color: blue;
-    } */
-  }
-`
-
-const StyledField = styled(Field)`
-  font-size: 1.5rem;
-  ::placeholder {
-    font-size: 1.5rem;
-  }
-`
-const UploadWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
+// import Upload from "./dashboardUpload"
+import { createClient } from "contentful-management"
+import {
+  Wrapper,
+  Category,
+  Title,
+  Label,
+  AddedValues,
+  AddedValue,
+  NewEntry,
+  StyledField,
+  UploadWrapper,
+  SubmitButton,
+} from "../styles/DashboardCreateNewSong"
 
 const validationSchema = yup.object({
   title: yup.string().required(),
   tempo: yup.number(),
   composer: yup.array(yup.string()),
+  description: yup.string(),
   genre: yup.array(yup.string()),
   mood: yup.array(yup.string()),
   tempo: yup.number(),
@@ -88,24 +29,93 @@ const validationSchema = yup.object({
   soundsLike: yup.array(yup.string()),
 })
 
-const DashboardCreateNewSong = ({ songs, setNewSong, upload }) => {
+const DashboardCreateNewSong = ({ songs }) => {
   const [comp, setComp] = useState("")
   const [genreField, setgenreField] = useState("")
   const [moodField, setmoodField] = useState("")
   const [instrumentationField, setInstrumentationField] = useState("")
   const [soundsLikeField, setSoundsLikeField] = useState("")
+  // const [newSong, setNewSong] = useState({})
+
+  const uploadSong = async values => {
+    // console.log(newSong)
+    // console.log(values)
+    const client = await createClient({
+      accessToken: process.env.GATSBY_CONTENTFUL_CONTENT_MANAGEMENT,
+    })
+    const space = await client.getSpace(process.env.GATSBY_CONTENTFUL_SPACE_ID)
+    const env = await space.getEnvironment("master")
+    env
+      .createEntry("song", {
+        fields: {
+          title: { "en-US": values.title },
+          composer: { "en-US": [...values.composer] },
+          description: { "en-US": values.description },
+          instrumentation: { "en-US": [...values.instrumentation] },
+          tempo: { "en-US": [values.tempo.toString()] },
+          genre: { "en-US": [...values.genre] },
+          mood: { "en-US": [...values.mood] },
+          soundsLike: { "en-US": [...values.soundsLike] },
+        },
+      })
+      .then(entry => {
+        console.log(entry)
+      })
+      .catch(console.error)
+    // env
+    //   .createAsset({
+    //     fields: {
+    //       file: {
+    //         "en-US": {
+    //           // contentType: newSong.songFile[0].type,
+    //           contentType: "image/jpeg",
+    //           // fileName: newSong.songFile[0].name,
+    //           fileName: "18_19IMP_SPT_4door_Side_red_garage_SCI_HiRes.jpg",
+    //           // upload: newSong.songFile[0], //! look at this
+    //           upload:
+    //             "https://www.subaru.ca/Content/7907/media/General/ImageLibrary/18_19IMP_SPT_4door_Side_red_garage_SCI_HiRes.jpg",
+    //         },
+    //       },
+    //     },
+    //   })
+    //   .then(asset => asset.processForAllLocales())
+    //   .then(asset => asset.publish())
+    //   .then(asset => {
+    //     env.createEntry("song", {
+    //       fields: {
+    //         title: { "en-US": newSong.values.title },
+    //         composer: { "en-US": newSong.values.composer },
+    //         instrumentation: { "en-US": newSong.values.instrumentation },
+    //         tempo: { "en-US": newSong.values.tempo.toString() },
+    //         genre: { "en-US": newSong.values.genre },
+    //         mood: { "en-US": newSong.values.mood },
+    //         soundsLike: { "en-US": newSong.values.soundsLike },
+    //         audio: {
+    //           "en-US": {
+    //             sys: { id: asset.sys.id, linkType: "Asset", type: "Link" },
+    //           },
+    //         },
+    //       },
+    //     })
+    //   })
+    //   .then(entry => {
+    //     console.log(entry)
+    //   })
+    //   .catch(console.error)
+  }
 
   return (
     <Wrapper>
       <h1>Add A New Song</h1>
-      <UploadWrapper>
+      {/* <UploadWrapper>
         <Upload setNewSong={setNewSong} />
-      </UploadWrapper>
+      </UploadWrapper> */}
       <Formik
         initialValues={{
           title: "",
           tempo: 0,
           composer: [],
+          description: "",
           genre: [],
           mood: [],
           soundsLike: [],
@@ -113,15 +123,16 @@ const DashboardCreateNewSong = ({ songs, setNewSong, upload }) => {
         }}
         validationSchema={validationSchema}
         onSubmit={(values, actions) => {
-          setNewSong(prev => ({ ...prev, values }))
-          upload()
+          uploadSong(values)
         }}
       >
         {({ isSubmitting, errors, touched, values }) => {
           return (
             <>
               <Form>
-                <button type="submit">Submit</button>
+                <SubmitButton disabled={isSubmitting || !touched} type="submit">
+                  Submit
+                </SubmitButton>
                 <Category>
                   <Title>
                     <Label htmlFor="title">Title</Label>
@@ -198,6 +209,21 @@ const DashboardCreateNewSong = ({ songs, setNewSong, upload }) => {
                     }}
                   </FieldArray>
                 </Category>
+
+                <Category>
+                  <Title>
+                    <Label htmlFor="description">Description</Label>
+                  </Title>
+                  <NewEntry>
+                    <StyledField
+                      placeholder="Enter a description"
+                      name="description"
+                      type="text"
+                      as="textarea"
+                    />
+                  </NewEntry>
+                </Category>
+
                 <Category>
                   <Title>
                     <Label htmlFor="genre">Genre(s)</Label>

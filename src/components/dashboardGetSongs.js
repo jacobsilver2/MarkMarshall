@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 
 const DashboardGetSongs = () => {
   const [songs, setSongs] = useState([])
-  const [newSong, setNewSong] = useState({})
+
   //   const [allGenres, setAllGenres] = useState([])
 
   useEffect(() => {
@@ -37,7 +37,6 @@ const DashboardGetSongs = () => {
   }, [])
 
   const uploadSong = async () => {
-    console.log(newSong)
     // const client = await createClient({
     //   accessToken: process.env.GATSBY_CONTENTFUL_CONTENT_MANAGEMENT,
     // })
@@ -50,7 +49,8 @@ const DashboardGetSongs = () => {
     //         "en-US": {
     //           // contentType: newSong.songFile[0].type,
     //           contentType: "image/jpeg",
-    //           fileName: newSong.songFile[0].name,
+    //           // fileName: newSong.songFile[0].name,
+    //           fileName: "18_19IMP_SPT_4door_Side_red_garage_SCI_HiRes.jpg",
     //           // upload: newSong.songFile[0], //! look at this
     //           upload:
     //             "https://www.subaru.ca/Content/7907/media/General/ImageLibrary/18_19IMP_SPT_4door_Side_red_garage_SCI_HiRes.jpg",
@@ -82,18 +82,13 @@ const DashboardGetSongs = () => {
     //     console.log(entry)
     //   })
     //   .catch(console.error)
-
     // console.log("we are in the upload song function")
   }
 
-  console.log(newSong)
+  // console.log(newSong)
   return (
     <Wrapper>
-      <DashboardCreateNewSong
-        upload={uploadSong}
-        setNewSong={setNewSong}
-        songs={songs}
-      />
+      <DashboardCreateNewSong songs={songs} />
     </Wrapper>
   )
 }
