@@ -1,6 +1,7 @@
 import React from "react"
 import rankify from "../lib/rankfy"
 import styled from "styled-components"
+import { motion } from "framer-motion"
 
 const Wrapper = styled.div`
   position: relative;
@@ -24,7 +25,7 @@ const GridWrapper = styled.div`
 const LargeP = styled.p`
   font-size: 1.5rem;
 `
-const Box = styled.button`
+const Box = styled(motion.button)`
   cursor: ${({ isDisabled }) => (isDisabled ? "" : "pointer")};
   border-radius: 5px;
   display: flex;
@@ -72,6 +73,7 @@ const DashboardRankedCategory = ({ category, songs, add, addedCategories }) => {
         <GridWrapper>
           {highRanking.map(g => (
             <Box
+              whileHover={{ scale: 1.05 }}
               onClick={() => add(g)}
               type="button"
               key={g}
@@ -84,6 +86,7 @@ const DashboardRankedCategory = ({ category, songs, add, addedCategories }) => {
           ))}
           {medRanking.map(g => (
             <Box
+              whileHover={{ scale: 1.05 }}
               onClick={() => add(g)}
               type="button"
               key={g}
@@ -96,6 +99,7 @@ const DashboardRankedCategory = ({ category, songs, add, addedCategories }) => {
           ))}
           {lowRanking.map(g => (
             <Box
+              whileHover={{ scale: 1.05 }}
               onClick={() => add(g)}
               key={g}
               type="button"

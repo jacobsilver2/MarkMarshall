@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import RankedCategory from "./dashboardRankedCategory"
 import { Form, ErrorMessage, Formik, FieldArray } from "formik"
 import * as yup from "yup"
+import Waveform from "./wavesWithGeneratedArray"
 // import Upload from "./dashboardUpload"
 import { createClient } from "contentful-management"
 import {
@@ -34,73 +35,75 @@ const DashboardCreateNewSong = ({ songs }) => {
   const [moodField, setmoodField] = useState("")
   const [instrumentationField, setInstrumentationField] = useState("")
   const [soundsLikeField, setSoundsLikeField] = useState("")
+  const [returnedFileFromCloudinary, setReturnedFileFromCloudinary] = useState(
+    ""
+  )
+  const [generatedWaveformArray, setGeneratedWaveformArray] = useState([])
   // const [newSong, setNewSong] = useState({})
 
   const uploadSong = async values => {
-    // console.log(newSong)
-    // console.log(values)
+    //waveformarray needs to be an array of strings. Casting here.
+    const waveFormStringArray = generatedWaveformArray.map(waveform =>
+      waveform.toString()
+    )
+
     const client = await createClient({
       accessToken: process.env.GATSBY_CONTENTFUL_CONTENT_MANAGEMENT,
     })
     const space = await client.getSpace(process.env.GATSBY_CONTENTFUL_SPACE_ID)
     const env = await space.getEnvironment("master")
     env
-      .createEntry("song", {
+      .createAsset({
         fields: {
-          title: { "en-US": values.title },
-          composer: { "en-US": [...values.composer] },
-          description: { "en-US": values.description },
-          instrumentation: { "en-US": [...values.instrumentation] },
-          tempo: { "en-US": [values.tempo.toString()] },
-          genre: { "en-US": [...values.genre] },
-          mood: { "en-US": [...values.mood] },
-          soundsLike: { "en-US": [...values.soundsLike] },
+          file: {
+            "en-US": {
+              contentType: returnedFileFromCloudinary.format,
+              fileName: values.title,
+              upload: returnedFileFromCloudinary.secure_url,
+            },
+          },
         },
       })
-      .then(entry => {
-        console.log(entry)
+      .then(asset => asset.processForAllLocales())
+      .then(asset => asset.publish())
+      .then(asset => {
+        env
+          .createEntry("song", {
+            fields: {
+              title: { "en-US": values.title },
+              composer: { "en-US": [...values.composer] },
+              description: { "en-US": values.description },
+              instrumentation: { "en-US": [...values.instrumentation] },
+              tempo: { "en-US": [values.tempo.toString()] },
+              waveformarray: { "en-US": [...waveFormStringArray] },
+              genre: { "en-US": [...values.genre] },
+              mood: { "en-US": [...values.mood] },
+              soundsLike: { "en-US": [...values.soundsLike] },
+              audio: {
+                "en-US": {
+                  sys: { id: asset.sys.id, linkType: "Asset", type: "Link" },
+                },
+              },
+            },
+          })
+          .then(entry => {
+            console.log(entry)
+          })
+          .catch(console.error)
       })
-      .catch(console.error)
-    // env
-    //   .createAsset({
-    //     fields: {
-    //       file: {
-    //         "en-US": {
-    //           // contentType: newSong.songFile[0].type,
-    //           contentType: "image/jpeg",
-    //           // fileName: newSong.songFile[0].name,
-    //           fileName: "18_19IMP_SPT_4door_Side_red_garage_SCI_HiRes.jpg",
-    //           // upload: newSong.songFile[0], //! look at this
-    //           upload:
-    //             "https://www.subaru.ca/Content/7907/media/General/ImageLibrary/18_19IMP_SPT_4door_Side_red_garage_SCI_HiRes.jpg",
-    //         },
-    //       },
-    //     },
-    //   })
-    //   .then(asset => asset.processForAllLocales())
-    //   .then(asset => asset.publish())
-    //   .then(asset => {
-    //     env.createEntry("song", {
-    //       fields: {
-    //         title: { "en-US": newSong.values.title },
-    //         composer: { "en-US": newSong.values.composer },
-    //         instrumentation: { "en-US": newSong.values.instrumentation },
-    //         tempo: { "en-US": newSong.values.tempo.toString() },
-    //         genre: { "en-US": newSong.values.genre },
-    //         mood: { "en-US": newSong.values.mood },
-    //         soundsLike: { "en-US": newSong.values.soundsLike },
-    //         audio: {
-    //           "en-US": {
-    //             sys: { id: asset.sys.id, linkType: "Asset", type: "Link" },
-    //           },
-    //         },
-    //       },
-    //     })
-    //   })
-    //   .then(entry => {
-    //     console.log(entry)
-    //   })
-    //   .catch(console.error)
+  }
+
+  const sendToCloudinary = async file => {
+    const data = new FormData()
+    data.append("file", file)
+    data.append("upload_preset", "mark-marshall")
+    data.append("resource_type", "video")
+    const res = await fetch(process.env.GATSBY_CLOUDINARY_URL, {
+      method: "POST",
+      body: data,
+    })
+    const returnedFile = await res.json()
+    setReturnedFileFromCloudinary(returnedFile)
   }
 
   return (
@@ -119,13 +122,15 @@ const DashboardCreateNewSong = ({ songs }) => {
           mood: [],
           soundsLike: [],
           instrumentation: [],
+          file: null,
         }}
         validationSchema={validationSchema}
         onSubmit={(values, actions) => {
           uploadSong(values)
+          // console.log(values)
         }}
       >
-        {({ isSubmitting, errors, touched, values }) => {
+        {({ isSubmitting, errors, touched, values, setFieldValue }) => {
           return (
             <>
               <Form>
@@ -143,6 +148,29 @@ const DashboardCreateNewSong = ({ songs }) => {
                       type="text"
                     />
                   </NewEntry>
+                </Category>
+
+                <Category>
+                  <Title>
+                    <Label htmlFor="file">File</Label>
+                  </Title>
+                  <NewEntry>
+                    <input
+                      onChange={e => {
+                        sendToCloudinary(e.currentTarget.files[0])
+                        setFieldValue("file", e.currentTarget.files[0])
+                      }}
+                      placeholder="Enter the title here"
+                      name="file"
+                      type="file"
+                    />
+                  </NewEntry>
+                  {returnedFileFromCloudinary && (
+                    <Waveform
+                      url={returnedFileFromCloudinary.secure_url}
+                      setArray={setGeneratedWaveformArray}
+                    />
+                  )}
                 </Category>
 
                 <Category>

@@ -43,6 +43,7 @@ export const musicData = graphql`
           tempo
           soundsLike
           instrumentation
+          waveformarray
           audio {
             file {
               url

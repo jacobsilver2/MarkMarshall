@@ -94,7 +94,10 @@ const Song2 = ({ song, loading }) => {
       </Info>
       <div>
         {/* <StyledFontAwesome onClick={() => addToGlobalState()} icon={faPlay} /> */}
-        <Waves url={song.audio.file.url} />
+        <Waves
+          url={song.audio.file.url}
+          waveArray={song.waveformarray ? song.waveformarray : ""}
+        />
       </div>
     </Wrapper>
   )
