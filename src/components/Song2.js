@@ -7,6 +7,7 @@ import { listLength } from "../lib/constants"
 import tempoCalc from "../lib/tempoCalc"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlay } from "@fortawesome/free-solid-svg-icons"
+import Waves from "./waves"
 
 const Wrapper = styled.div`
   display: grid;
@@ -29,8 +30,8 @@ const Info = styled.div`
 `
 
 const Waveform = styled.div`
-  display: flex;
-  align-items: center;
+  display: inline;
+  /* align-items: center; */
   padding: 0 1rem;
 `
 
@@ -91,9 +92,10 @@ const Song2 = ({ song, loading }) => {
         <div>{tempo ? tempoCalc(tempo) : ""}</div>
         <div>{instrumentation ? renderList(instrumentation) : ""}</div>
       </Info>
-      <Waveform>
-        <StyledFontAwesome onClick={() => addToGlobalState()} icon={faPlay} />
-      </Waveform>
+      <div>
+        {/* <StyledFontAwesome onClick={() => addToGlobalState()} icon={faPlay} /> */}
+        <Waves url={song.audio.file.url} />
+      </div>
     </Wrapper>
   )
 }

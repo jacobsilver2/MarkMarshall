@@ -28,8 +28,6 @@ const FeaturedSongCard = ({ song }) => {
     })
   }
   return (
-    // not including a link to the song because we want clicking
-    // to just play the track
     <>
       <Wrapper whileHover={{ scale: 1.05 }}>
         <StyledFontAwesome onClick={addToGlobalState} icon={faPlay} />

@@ -1,54 +1,51 @@
-// import React, { useCallback, useRef, useContext, useEffect } from "react"
-// import { WaveSurfer, WaveForm } from "wavesurfer-react"
-// import { GlobalStateContext } from "../context/provider"
-// import { WaveformContainer, Wave, PlayButton } from "../styles/WaveformStyles"
+import React, { useState, useRef, useEffect } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPlay } from "@fortawesome/free-solid-svg-icons"
+import styled from "styled-components"
+import WaveSurfer from "wavesurfer.js"
 
-// const WavesurfertakeThree = ({ url }) => {
-//   const state = useContext(GlobalStateContext)
-//   const wavesurferRef = useRef()
+export const StyledFontAwesome = styled(FontAwesomeIcon)`
+  font-size: 3rem;
+  color: grey;
+  cursor: pointer;
+  &:hover {
+    color: black;
+  }
+`
+const Wrapper = styled.div`
+  position: flex;
+`
 
-//   const handleWSMount = useCallback(
-//     waveSurfer => {
-//       console.log("here")
-//       wavesurferRef.current = waveSurfer
-//       if (wavesurferRef.current) {
-//         wavesurferRef.current.load(url)
+const Waveform = ({ url }) => {
+  const waveformRef = useRef()
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [waveSurfer, setWaveSurfer] = useState(null)
 
-//         wavesurferRef.current.on("ready", () => {
-//           console.log("WaveSurfer is ready")
-//         })
+  useEffect(() => {
+    setWaveSurfer(
+      WaveSurfer.create({
+        container: waveformRef.current,
+      })
+    )
+  }, [])
 
-//         wavesurferRef.current.on("loading", data => {
-//           console.log("loading --> ", data)
-//         })
+  useEffect(() => {
+    if (waveSurfer) {
+      waveSurfer.load(url)
+    }
+  }, [waveSurfer])
 
-//         if (window) {
-//           window.surferidze = wavesurferRef.current
-//         }
-//       }
-//     },
-//     [url]
-//   )
+  const togglePlayPause = () => {
+    waveSurfer.playPause()
+    setIsPlaying(!isPlaying)
+  }
 
-//   const { waveSurfer } = handleWSMount
-//   console.log(waveSurfer)
-//   useEffect(() => {
-//     // waveSurfer()
-//   }, [waveSurfer])
+  return (
+    <Wrapper>
+      <StyledFontAwesome icon={faPlay} onClick={() => togglePlayPause()} />
+      <div ref={waveformRef}></div>
+    </Wrapper>
+  )
+}
 
-//   const play = useCallback(() => {
-//     wavesurferRef.current.playPause()
-//   }, [])
-//   return (
-//     <WaveformContainer>
-//       <PlayButton onClick={play}>Play/Pause</PlayButton>
-//       <Wave>
-//         <WaveSurfer onMount={handleWSMount}>
-//           <WaveForm></WaveForm>
-//         </WaveSurfer>
-//       </Wave>
-//     </WaveformContainer>
-//   )
-// }
-
-// export default WavesurfertakeThree
+export default Waveform
