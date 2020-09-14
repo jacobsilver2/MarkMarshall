@@ -24,6 +24,8 @@ const Waveform = ({ url, waveArray }) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [waveSurfer, setWaveSurfer] = useState(null)
 
+  console.log(url)
+
   useEffect(() => {
     setWaveSurfer(
       WaveSurfer.create({
@@ -35,43 +37,22 @@ const Waveform = ({ url, waveArray }) => {
 
   useEffect(() => {
     if (waveSurfer) {
-      // waveSurfer.load(url)
       waveSurfer.song = url
-
       waveSurfer.backend.peaks = waveArray ? waveArray : fakeWaveformArray
       waveSurfer.drawBuffer()
       waveSurfer.loaded = false
-      // waveSurfer.on("ready", function () {
-      //   if (!waveSurfer.loaded) {
-      //     waveSurfer.loaded = true
-      //     waveSurfer.play()
-      //   }
-      // })
-      // waveSurfer.on("play", function () {
-      //   console.log("were here")
-      //   if (!waveSurfer.loaded) {
-      //     waveSurfer.load(waveSurfer.song, waveSurfer.backend.peaks)
-      //   }
-      // })
     }
   }, [waveSurfer])
 
   const togglePlayPause = () => {
     if (!waveSurfer.loaded) {
       waveSurfer.load(url)
-      // waveSurfer.loadMediaElement(
-      //   waveSurfer.song,
-      //   waveSurfer.backend.peaks,
-      //   true,
-      //   waveSurfer.getDuration()
-      // )
-      waveSurfer.playPause()
       waveSurfer.loaded = true
-    }
-    if (waveSurfer.loaded) {
+      waveSurfer.playPause()
+    } else {
       waveSurfer.playPause()
     }
-    setIsPlaying(!isPlaying)
+    setIsPlaying(prev => !prev)
   }
 
   return (

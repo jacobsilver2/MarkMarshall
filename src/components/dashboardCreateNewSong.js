@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import RankedCategory from "./dashboardRankedCategory"
-import { Form, ErrorMessage, Formik, FieldArray } from "formik"
+import { Form, ErrorMessage, Formik, FieldArray, FastField } from "formik"
 import * as yup from "yup"
 import Waveform from "./wavesWithGeneratedArray"
 // import Upload from "./dashboardUpload"
@@ -18,6 +18,8 @@ import {
   SubmitButton,
 } from "../styles/DashboardCreateNewSong"
 
+const FILE_SIZE = 48 * 1024
+
 const validationSchema = yup.object({
   title: yup.string().required(),
   tempo: yup.number(),
@@ -27,6 +29,14 @@ const validationSchema = yup.object({
   mood: yup.array(yup.string()),
   instrumentation: yup.array(yup.string()),
   soundsLike: yup.array(yup.string()),
+  file: yup
+    .mixed()
+    .required("An audio file is required")
+    .test(
+      "fileSize",
+      "File too large",
+      value => value && value.size <= FILE_SIZE
+    ),
 })
 
 const DashboardCreateNewSong = ({ songs }) => {
@@ -39,7 +49,6 @@ const DashboardCreateNewSong = ({ songs }) => {
     ""
   )
   const [generatedWaveformArray, setGeneratedWaveformArray] = useState([])
-  // const [newSong, setNewSong] = useState({})
 
   const uploadSong = async values => {
     //waveformarray needs to be an array of strings. Casting here.
@@ -109,9 +118,6 @@ const DashboardCreateNewSong = ({ songs }) => {
   return (
     <Wrapper>
       <h1>Add A New Song</h1>
-      {/* <UploadWrapper>
-        <Upload setNewSong={setNewSong} />
-      </UploadWrapper> */}
       <Formik
         initialValues={{
           title: "",
@@ -130,7 +136,14 @@ const DashboardCreateNewSong = ({ songs }) => {
           // console.log(values)
         }}
       >
-        {({ isSubmitting, errors, touched, values, setFieldValue }) => {
+        {({
+          isSubmitting,
+          errors,
+          touched,
+          values,
+          setFieldValue,
+          handleChange,
+        }) => {
           return (
             <>
               <Form>
@@ -147,6 +160,7 @@ const DashboardCreateNewSong = ({ songs }) => {
                       name="title"
                       type="text"
                     />
+                    {errors["title"] && <p>{errors["title"]}</p>}
                   </NewEntry>
                 </Category>
 
@@ -157,14 +171,26 @@ const DashboardCreateNewSong = ({ songs }) => {
                   <NewEntry>
                     <input
                       onChange={e => {
-                        sendToCloudinary(e.currentTarget.files[0])
-                        setFieldValue("file", e.currentTarget.files[0])
+                        if (!errors["file"]) {
+                          setFieldValue(
+                            "file",
+                            e.currentTarget.files[
+                              e.currentTarget.files.length - 1
+                            ]
+                          )
+                          sendToCloudinary(
+                            e.currentTarget.files[
+                              e.currentTarget.files.length - 1
+                            ]
+                          )
+                        }
                       }}
                       placeholder="Enter the title here"
                       name="file"
                       type="file"
                     />
                   </NewEntry>
+                  {errors["file"] && <p>{errors["file"]}</p>}
                   {returnedFileFromCloudinary && (
                     <Waveform
                       url={returnedFileFromCloudinary.secure_url}

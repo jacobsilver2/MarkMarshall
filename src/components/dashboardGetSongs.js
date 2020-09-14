@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { createClient } from "contentful-management"
 import styled from "styled-components"
-import DashboardCreateNewSong from "../components/dashboardCreateNewSong"
+import DashboardCreateNewSong from "../components/dashboardNewSongFinalForm"
 
 const Wrapper = styled.div`
   display: flex;
@@ -34,7 +34,12 @@ const DashboardGetSongs = () => {
 
   return (
     <Wrapper>
-      <DashboardCreateNewSong songs={songs} />
+      {
+        <DashboardCreateNewSong
+          subscription={{ submitting: true, pristine: true }}
+          songs={songs}
+        />
+      }
     </Wrapper>
   )
 }

@@ -34,6 +34,7 @@ export const Label = styled.label`
 export const AddedValues = styled.div`
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
 `
 
 export const AddedValue = styled.div`

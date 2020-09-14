@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react"
-import styled from "styled-components"
 import WaveSurfer from "wavesurfer.js"
 
 const WaveFormWithGeneratedArray = ({ url, setArray }) => {
@@ -11,6 +10,7 @@ const WaveFormWithGeneratedArray = ({ url, setArray }) => {
       WaveSurfer.create({
         container: waveformRef.current,
         responsive: true,
+        hideScrollbar: true,
       })
     )
   }, [url])

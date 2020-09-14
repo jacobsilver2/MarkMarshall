@@ -2,6 +2,7 @@ import React from "react"
 import rankify from "../lib/rankfy"
 import styled from "styled-components"
 import { motion } from "framer-motion"
+import Button from "@material-ui/core/Button"
 
 const Wrapper = styled.div`
   position: relative;
@@ -72,43 +73,36 @@ const DashboardRankedCategory = ({ category, songs, add, addedCategories }) => {
         <summary>select from previous {category}</summary>
         <GridWrapper>
           {highRanking.map(g => (
-            <Box
-              whileHover={{ scale: 1.05 }}
+            <Button
               onClick={() => add(g)}
+              color="primary"
               type="button"
               key={g}
-              clr={addedCategories.includes(g) ? "grey" : "red"}
-              disabled={addedCategories.includes(g)}
-              isDisabled={addedCategories.includes(g)}
+              disabled={addedCategories && addedCategories.includes(g)}
             >
-              <LargeP>{g}</LargeP>
-            </Box>
+              {g}
+            </Button>
           ))}
           {medRanking.map(g => (
-            <Box
-              whileHover={{ scale: 1.05 }}
+            <Button
               onClick={() => add(g)}
               type="button"
+              color="secondary"
               key={g}
-              clr={addedCategories.includes(g) ? "grey" : "yellow"}
-              disabled={addedCategories.includes(g)}
-              isDisabled={addedCategories.includes(g)}
+              disabled={addedCategories && addedCategories.includes(g)}
             >
-              <LargeP>{g}</LargeP>
-            </Box>
+              {g}
+            </Button>
           ))}
           {lowRanking.map(g => (
-            <Box
-              whileHover={{ scale: 1.05 }}
+            <Button
               onClick={() => add(g)}
               key={g}
               type="button"
-              clr={addedCategories.includes(g) ? "grey" : "dodgerBlue"}
-              disabled={addedCategories.includes(g)}
-              isDisabled={addedCategories.includes(g)}
+              disabled={addedCategories && addedCategories.includes(g)}
             >
-              <LargeP>{g}</LargeP>
-            </Box>
+              {g}
+            </Button>
           ))}
         </GridWrapper>
       </details>
