@@ -1,5 +1,9 @@
-import React from "react"
-import rankify from "../lib/rankfy"
+import React, { useState, useEffect } from "react"
+import rankify, {
+  highRanking as highRankingFunc,
+  medRanking as medRankingFunc,
+  lowRanking as lowRankingFunc,
+} from "../lib/rankfy"
 import styled from "styled-components"
 import { motion } from "framer-motion"
 import Button from "@material-ui/core/Button"
@@ -41,34 +45,51 @@ const Box = styled(motion.button)`
 `
 
 const DashboardRankedCategory = ({ category, songs, add, addedCategories }) => {
-  const allElements = []
-  const highRanking = []
-  const medRanking = []
-  const lowRanking = []
+  const [allElements, setAllElements] = useState([])
+  const [ranked, setRanked] = useState()
+  const [highRanking, setHighRanking] = useState([])
+  const [medRanking, setMedRanking] = useState([])
+  const [lowRanking, setLowRanking] = useState([])
+  // const allElements = []
+  // const highRanking = []
+  // const medRanking = []
+  // const lowRanking = []
 
-  songs.forEach(song => {
-    song.fields[category] &&
-      song.fields[category]["en-US"].forEach(el => allElements.push(el))
-  })
-  const ranked = rankify(allElements)
-  for (const [key, value] of Object.entries(ranked)) {
-    if (value >= 10) {
-      highRanking.push(key)
+  useEffect(() => {
+    function createCategories() {
+      setAllElements(songs.map(song => song.fields[category]["en-US"]).flat())
+      // setRanked(rankify(allElements))
+      setHighRanking(highRankingFunc(allElements))
+      setMedRanking(medRankingFunc(allElements))
+      setLowRanking(lowRankingFunc(allElements))
+      // setHighRanking(allElements.reduce((el, x) => el + (x >= 5), 0))
+      // setMedRanking(medRankingFunc(ranked))
+      // setLowRanking(lowRankingFunc(ranked))
     }
-    if (value >= 5 && value < 10) {
-      medRanking.push(key)
-    }
-    if (value < 5) {
-      lowRanking.push(key)
-    }
-  }
 
-  highRanking.sort()
-  medRanking.sort()
-  lowRanking.sort()
+    createCategories()
+  }, [songs, addedCategories])
+
+  // songs.forEach(song => {
+  //   song.fields[category] &&
+  //     song.fields[category]["en-US"].forEach(el => allElements.push(el))
+  // })
+  // const ranked = rankify(allElements)
+  // for (const [key, value] of Object.entries(ranked)) {
+  //   if (value >= 10) {
+  //     highRanking.push(key)
+  //   }
+  //   if (value >= 5 && value < 10) {
+  //     medRanking.push(key)
+  //   }
+  //   if (value < 5) {
+  //     lowRanking.push(key)
+  //   }
+  // }
 
   return (
     <Wrapper>
+      <h1>HELLO</h1>
       <details>
         <summary>select from previous {category}</summary>
         <GridWrapper>

@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import TextField from "@material-ui/core/TextField"
-import RankedCategory from "./dashboardRankedCategory"
+import RankedCategory from "./dashboardRankedCategoryMemo"
 import {
   Form,
   ErrorMessage,
@@ -13,7 +13,6 @@ import {
 import * as yup from "yup"
 import FileUpload from "./dashboardFileUpload"
 import SingleTextEntry from "./dashboardSingleTextEntry"
-import ArrayEntry from "./dashboardArrayEntry"
 import { createClient } from "contentful-management"
 import Button from "@material-ui/core/Button"
 import {
@@ -85,6 +84,7 @@ const DashboardCreateNewSongSecondTry = ({ songs }) => {
           instrumentation: "",
           instrumentationValues: [],
           file: null,
+          waveFormArray: [],
         }}
         validationSchema={validationSchema}
         validateOnChange={false}
@@ -160,26 +160,7 @@ const DashboardCreateNewSongSecondTry = ({ songs }) => {
                   <FieldArray name="composerValues">
                     {fieldArrayProps => (
                       <>
-                        <FastField
-                          name="composer"
-                          render={({ field, form }) => (
-                            <TextField
-                              {...field}
-                              onChange={e => {
-                                yup
-                                  .reach(validationSchema, "composer")
-                                  .validate(e.target.value)
-                                  .then(() =>
-                                    form.setFieldError("composer", undefined)
-                                  )
-                                  .catch(e =>
-                                    form.setFieldError("composer", e.message)
-                                  )
-                                form.handleChange(e)
-                              }}
-                            />
-                          )}
-                        />
+                        <Field name="composer" component={Input} />
                         <Button
                           type="button"
                           onClick={() => {
@@ -193,21 +174,12 @@ const DashboardCreateNewSongSecondTry = ({ songs }) => {
                         </Button>
                         {values.composerValues &&
                           values.composerValues.map((comp, i) => (
-                            <Box
-                              flexDirection="row"
-                              justifyContent="flex-start"
-                            >
-                              <AddedValue>
-                                <h2 style={{ display: "inline" }} key={i}>
-                                  {comp}
-                                </h2>
-                                <Button
-                                  onClick={() => fieldArrayProps.remove(i)}
-                                >
-                                  Remove
-                                </Button>
-                              </AddedValue>
-                            </Box>
+                            <AddedValue key={i}>
+                              <h2 style={{ display: "inline" }}>{comp}</h2>
+                              <Button onClick={() => fieldArrayProps.remove(i)}>
+                                Remove
+                              </Button>
+                            </AddedValue>
                           ))}
                         <RankedCategory
                           add={fieldArrayProps.push}
@@ -255,26 +227,137 @@ const DashboardCreateNewSongSecondTry = ({ songs }) => {
                         </Button>
                         {values.genreValues &&
                           values.genreValues.map((value, i) => (
-                            <Box
-                              flexDirection="row"
-                              justifyContent="flex-start"
-                            >
-                              <AddedValue>
-                                <h2 style={{ display: "inline" }} key={i}>
-                                  {value}
-                                </h2>
-                                <Button
-                                  onClick={() => fieldArrayProps.remove(i)}
-                                >
-                                  Remove
-                                </Button>
-                              </AddedValue>
-                            </Box>
+                            <AddedValue key={i}>
+                              <h2 style={{ display: "inline" }}>{value}</h2>
+                              <Button onClick={() => fieldArrayProps.remove(i)}>
+                                Remove
+                              </Button>
+                            </AddedValue>
                           ))}
                         <RankedCategory
                           add={fieldArrayProps.push}
                           category="genre"
                           addedCategories={values.genreValues}
+                          songs={songs}
+                        />
+                      </>
+                    )}
+                  </FieldArray>
+                </Category>
+
+                <Category>
+                  <Title>
+                    <Label htmlFor="mood">Mood</Label>
+                  </Title>
+                  <FieldArray name="moodValues">
+                    {fieldArrayProps => (
+                      <>
+                        <Field name="mood" component={Input} />
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            values.mood
+                              ? fieldArrayProps.push(values.mood)
+                              : fieldArrayProps.insert(0, values.mood)
+                            setFieldValue("mood", "")
+                          }}
+                        >
+                          Add Mood
+                        </Button>
+                        {values.moodValues &&
+                          values.moodValues.map((value, i) => (
+                            <AddedValue key={i}>
+                              <h2 style={{ display: "inline" }}>{value}</h2>
+                              <Button onClick={() => fieldArrayProps.remove(i)}>
+                                Remove
+                              </Button>
+                            </AddedValue>
+                          ))}
+                        <RankedCategory
+                          add={fieldArrayProps.push}
+                          category="mood"
+                          addedCategories={values.moodValues}
+                          songs={songs}
+                        />
+                      </>
+                    )}
+                  </FieldArray>
+                </Category>
+
+                <Category>
+                  <Title>
+                    <Label htmlFor="instrumentation">Instrumentation</Label>
+                  </Title>
+                  <FieldArray name="instrumentationValues">
+                    {fieldArrayProps => (
+                      <>
+                        <Field name="instrumentation" component={Input} />
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            values.instrumentation
+                              ? fieldArrayProps.push(values.instrumentation)
+                              : fieldArrayProps.insert(
+                                  0,
+                                  values.instrumentation
+                                )
+                            setFieldValue("instrumentation", "")
+                          }}
+                        >
+                          Add Instrument
+                        </Button>
+                        {values.instrumentationValues &&
+                          values.instrumentationValues.map((value, i) => (
+                            <AddedValue key={i}>
+                              <h2 style={{ display: "inline" }}>{value}</h2>
+                              <Button onClick={() => fieldArrayProps.remove(i)}>
+                                Remove
+                              </Button>
+                            </AddedValue>
+                          ))}
+                        <RankedCategory
+                          add={fieldArrayProps.push}
+                          category="instrumentation"
+                          addedCategories={values.instrumentationValues}
+                          songs={songs}
+                        />
+                      </>
+                    )}
+                  </FieldArray>
+                </Category>
+
+                <Category>
+                  <Title>
+                    <Label htmlFor="soundsLike">Sounds Like</Label>
+                  </Title>
+                  <FieldArray name="soundsLikeValues">
+                    {fieldArrayProps => (
+                      <>
+                        <Field name="soundsLike" component={Input} />
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            values.soundsLike
+                              ? fieldArrayProps.push(values.soundsLike)
+                              : fieldArrayProps.insert(0, values.soundsLike)
+                            setFieldValue("soundsLike", "")
+                          }}
+                        >
+                          Add Sounds Like
+                        </Button>
+                        {values.soundsLikeValues &&
+                          values.soundsLikeValues.map((value, i) => (
+                            <AddedValue key={i}>
+                              <h2 style={{ display: "inline" }}>{value}</h2>
+                              <Button onClick={() => fieldArrayProps.remove(i)}>
+                                Remove
+                              </Button>
+                            </AddedValue>
+                          ))}
+                        <RankedCategory
+                          add={fieldArrayProps.push}
+                          category="soundsLike"
+                          addedCategories={values.soundsLikeValues}
                           songs={songs}
                         />
                       </>

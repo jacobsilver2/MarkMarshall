@@ -30,18 +30,34 @@ const DashboardFileUpload = props => {
     })
     const returnedFile = await res.json()
     setReturnedFileFromCloudinary(returnedFile)
+    props.form.setFieldValue("file", returnedFile.secure_url)
+    props.form.setFieldValue("waveFormArray", waveformArray)
+
+    // returnedFileFromCloudinary &&
+    //   props.form.setFieldValue("file", returnedFileFromCloudinary.secure_url)
   }
+
+  console.log("here are the props")
+  console.log(props)
 
   return (
     <FormControl margin="normal">
       <input
+        id="audio-upload"
         style={{ display: "none" }}
         name={props.field.name}
         type="file"
         onChange={handleAudioChange}
       />
-      <label htmlFor="file">
-        <Button color="primary" margin="normal" component="span">
+      <label htmlFor="audio-upload">
+        <Button
+          type="file"
+          onChange={handleAudioChange}
+          name={props.field.name}
+          color="primary"
+          margin="normal"
+          component="span"
+        >
           {props.title}
           <FontAwesomeIcon icon={faFileAudio} />
         </Button>

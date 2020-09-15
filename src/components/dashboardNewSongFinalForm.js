@@ -1,12 +1,16 @@
 import React from "react"
 import styled from "styled-components"
 import validator from "validator"
-import { Form, Field, FormSpy } from "react-final-form"
+import { Form, Field } from "react-final-form"
 import arrayMutators from "final-form-arrays"
 import Button from "@material-ui/core/Button"
-import RankedCategory from "./dashboardRankedCategory"
+import RankedCategory from "./dashboardRankedCategoryMemo"
 import { FieldArray } from "react-final-form-arrays"
-import { TextField, Input as MuiInput } from "final-form-material-ui"
+import {
+  TextField as MuiTextField,
+  Input as MuiInput,
+} from "final-form-material-ui"
+import Input from "@material-ui/core/Input"
 
 const Group = styled.div`
   display: flex;
@@ -29,7 +33,7 @@ const Label = styled.div`
   margin-bottom: 8px;
 `
 
-const NewSongFinalForm = ({ songs, subscription }) => {
+const NewSongFinalForm = ({ songs }) => {
   return (
     <>
       <h1>Create A New Song</h1>
@@ -38,7 +42,6 @@ const NewSongFinalForm = ({ songs, subscription }) => {
           ...arrayMutators,
         }}
         onSubmit={() => {}}
-        subscription={subscription}
         render={props => {
           return (
             <FormWrapper>
@@ -58,7 +61,7 @@ const NewSongFinalForm = ({ songs, subscription }) => {
                 <Label>Description</Label>
                 <Field
                   name="description"
-                  component={TextField}
+                  component={MuiTextField}
                   type="textarea"
                   fullWidth
                   placeholder="description"
@@ -77,55 +80,50 @@ const NewSongFinalForm = ({ songs, subscription }) => {
                   }
                 />
               </Group>
+
               <Group>
                 <Label>Genre</Label>
                 <Field
                   name="genre"
                   type="text"
-                  fullWidth
                   component={MuiInput}
+                  fullWidth
                   placeholder="Enter a new genre"
                 />
-                <FormSpy subscription={{ values: true }}>
-                  {({ values }) => (
-                    <>
-                      <FieldArray name="genres">
-                        {({ fields }) => {
+                <FieldArray name="genres">
+                  {({ fields }) => {
+                    return (
+                      <>
+                        <Button
+                          disabled={!props.values.genre}
+                          type="button"
+                          onClick={() => {
+                            fields.push(props.values.genre)
+                            props.form.change("genre", "")
+                          }}
+                        >
+                          Add
+                        </Button>
+                        {fields.map((name, index) => {
                           return (
-                            <>
-                              <Button
-                                onClick={() => {
-                                  fields.push(values.genre)
-                                  props.form.change("genre", "")
-                                }}
-                              >
-                                Add
+                            <div key={index}>
+                              <label>{props.values.genres[index]}</label>
+                              <Button onClick={() => fields.remove(index)}>
+                                Remove
                               </Button>
-                              {fields.map((name, index) => {
-                                return (
-                                  <div key={index}>
-                                    <label>{values.genres[index]}</label>
-                                    <Button
-                                      onClick={() => fields.remove(index)}
-                                    >
-                                      Remove
-                                    </Button>
-                                  </div>
-                                )
-                              })}
-                              <RankedCategory
-                                category="genre"
-                                songs={songs}
-                                add={fields.push}
-                                addedCategories={values.genres}
-                              />
-                            </>
+                            </div>
                           )
-                        }}
-                      </FieldArray>
-                    </>
-                  )}
-                </FormSpy>
+                        })}
+                        <RankedCategory
+                          category="genre"
+                          songs={songs}
+                          add={fields.push}
+                          addedCategories={props.values.genres}
+                        />
+                      </>
+                    )
+                  }}
+                </FieldArray>
               </Group>
 
               <Group>
@@ -133,46 +131,41 @@ const NewSongFinalForm = ({ songs, subscription }) => {
                 <Field
                   name="composer"
                   type="text"
-                  fullWidth
                   component={MuiInput}
+                  fullWidth
                   placeholder="Enter a new composer"
                 />
-                <FormSpy subscription={{ values: true }}>
-                  {({ values }) => (
+                <FieldArray name="composers">
+                  {({ fields }) => (
                     <>
-                      <FieldArray name="composers">
-                        {({ fields }) => (
-                          <>
-                            <Button
-                              onClick={() => {
-                                fields.push(values.composer)
-                                props.form.change("composer", "")
-                              }}
-                            >
-                              Add
+                      <Button
+                        disabled={!props.values.composer}
+                        onClick={() => {
+                          fields.push(props.values.composer)
+                          props.form.change("composer", "")
+                        }}
+                      >
+                        Add
+                      </Button>
+                      {fields.map((name, index) => {
+                        return (
+                          <div key={index}>
+                            <label>{props.values.composers[index]}</label>
+                            <Button onClick={() => fields.remove(index)}>
+                              Remove
                             </Button>
-                            {fields.map((name, index) => {
-                              return (
-                                <div key={index}>
-                                  <label>{values.composers[index]}</label>
-                                  <Button onClick={() => fields.remove(index)}>
-                                    Remove
-                                  </Button>
-                                </div>
-                              )
-                            })}
-                            <RankedCategory
-                              category="composer"
-                              songs={songs}
-                              add={fields.push}
-                              addedCategories={values.composers}
-                            />
-                          </>
-                        )}
-                      </FieldArray>
+                          </div>
+                        )
+                      })}
+                      <RankedCategory
+                        category="composer"
+                        songs={songs}
+                        add={fields.push}
+                        addedCategories={props.values.composers}
+                      />
                     </>
                   )}
-                </FormSpy>
+                </FieldArray>
               </Group>
 
               <Group>
@@ -184,42 +177,37 @@ const NewSongFinalForm = ({ songs, subscription }) => {
                   component={MuiInput}
                   placeholder="Enter a new instrument"
                 />
-                <FormSpy subscription={{ values: true }}>
-                  {({ values }) => (
+                <FieldArray name="instrumentation">
+                  {({ fields }) => (
                     <>
-                      <FieldArray name="instrumentation">
-                        {({ fields }) => (
-                          <>
-                            <Button
-                              onClick={() => {
-                                fields.push(values.instrument)
-                                props.form.change("instrument", "")
-                              }}
-                            >
-                              Add
+                      <Button
+                        disabled={!props.values.instrument}
+                        onClick={() => {
+                          fields.push(props.values.instrument)
+                          props.form.change("instrument", "")
+                        }}
+                      >
+                        Add
+                      </Button>
+                      {fields.map((name, index) => {
+                        return (
+                          <div key={index}>
+                            <label>{props.values.instrumentation[index]}</label>
+                            <Button onClick={() => fields.remove(index)}>
+                              Remove
                             </Button>
-                            {fields.map((name, index) => {
-                              return (
-                                <div key={index}>
-                                  <label>{values.instrumentation[index]}</label>
-                                  <Button onClick={() => fields.remove(index)}>
-                                    Remove
-                                  </Button>
-                                </div>
-                              )
-                            })}
-                            <RankedCategory
-                              category="instrumentation"
-                              songs={songs}
-                              add={fields.push}
-                              addedCategories={values.instrumentation}
-                            />
-                          </>
-                        )}
-                      </FieldArray>
+                          </div>
+                        )
+                      })}
+                      <RankedCategory
+                        category="instrumentation"
+                        songs={songs}
+                        add={fields.push}
+                        addedCategories={props.values.instrumentation}
+                      />
                     </>
                   )}
-                </FormSpy>
+                </FieldArray>
               </Group>
 
               <Group>
@@ -227,87 +215,84 @@ const NewSongFinalForm = ({ songs, subscription }) => {
                 <Field
                   name="mood"
                   type="text"
-                  component={MuiInput}
                   fullWidth
+                  component={MuiInput}
                   placeholder="Enter a new mood"
                 />
-                <FormSpy subscription={{ values: true }}>
-                  {({ values }) => (
+                <FieldArray name="moods">
+                  {({ fields }) => (
                     <>
-                      <FieldArray name="moods">
-                        {({ fields }) => (
-                          <>
-                            <Button
-                              onClick={() => {
-                                fields.push(values.mood)
-                                props.form.change("mood", "")
-                              }}
-                            >
-                              Add
+                      <Button
+                        disabled={!props.values.mood}
+                        onClick={() => {
+                          fields.push(props.values.mood)
+                          props.form.change("mood", "")
+                        }}
+                      >
+                        Add
+                      </Button>
+                      {fields.map((name, index) => {
+                        return (
+                          <div key={index}>
+                            <label>{props.values.moods[index]}</label>
+                            <Button onClick={() => fields.remove(index)}>
+                              Remove
                             </Button>
-                            {fields.map((name, index) => {
-                              return (
-                                <div key={index}>
-                                  <label>{values.moods[index]}</label>
-                                  <Button onClick={() => fields.remove(index)}>
-                                    Remove
-                                  </Button>
-                                </div>
-                              )
-                            })}
-                            <RankedCategory
-                              category="mood"
-                              songs={songs}
-                              add={fields.push}
-                              addedCategories={values.moods}
-                            />
-                          </>
-                        )}
-                      </FieldArray>
+                          </div>
+                        )
+                      })}
+                      <RankedCategory
+                        category="mood"
+                        songs={songs}
+                        add={fields.push}
+                        addedCategories={props.values.moods}
+                      />
                     </>
                   )}
-                </FormSpy>
+                </FieldArray>
               </Group>
 
-              {/* <Group>
-              <Label>Sounds Like</Label>
-              <FieldArray name="soundsLike">
-                {({ fields }) => (
-                  <>
-                    <Field
-                      name="sound"
-                      type="text"
-                      component={MuiInput}
-                      placeholder="Sounds Like..."
-                    />
-                    <Button
-                      onClick={() => {
-                        fields.push(values.sound)
-                        form.change("sound", "")
-                      }}
-                    >
-                      Add
-                    </Button>
-                    {fields.map((name, index) => {
-                      return (
-                        <div key={index}>
-                          <label>{values.soundsLike[index]}</label>
-                          <Button onClick={() => fields.remove(index)}>
-                            Remove
-                          </Button>
-                        </div>
-                      )
-                    })}
-                    <RankedCategory
-                      category="soundsLike"
-                      songs={songs}
-                      add={fields.push}
-                      addedCategories={values.soundsLike}
-                    />
-                  </>
-                )}
-              </FieldArray>
-            </Group> */}
+              <Group>
+                <Label>Sounds Like</Label>
+                <Field
+                  name="sound"
+                  type="text"
+                  fullWidth
+                  component={MuiInput}
+                  placeholder="Sounds Like..."
+                />
+                <FieldArray name="soundsLike">
+                  {({ fields }) => (
+                    <>
+                      <Button
+                        disabled={!props.values.sound}
+                        onClick={() => {
+                          fields.push(props.values.sound)
+                          props.form.change("sound", "")
+                        }}
+                      >
+                        Add
+                      </Button>
+                      {fields.map((name, index) => {
+                        return (
+                          <div key={index}>
+                            <label>{props.values.soundsLike[index]}</label>
+                            <Button onClick={() => fields.remove(index)}>
+                              Remove
+                            </Button>
+                          </div>
+                        )
+                      })}
+                      <RankedCategory
+                        category="soundsLike"
+                        songs={songs}
+                        add={fields.push}
+                        addedCategories={props.values.soundsLike}
+                      />
+                    </>
+                  )}
+                </FieldArray>
+              </Group>
 
               <Group>
                 <Button
