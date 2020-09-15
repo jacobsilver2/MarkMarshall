@@ -4,7 +4,6 @@ import { Form as FinalForm } from "react-final-form"
 export function Form(props) {
   return (
     <FinalForm
-      subscription={props.subscription}
       mutators={props.mutators}
       onSubmit={props.onSubmit}
       render={renderProps => (
