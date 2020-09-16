@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react"
 import styled from "styled-components"
-import rankify from "../lib/rankfy"
-
+import rankify from "../../../lib/rankfiy"
+import toTitleCase from "../../../lib/toTitleCase"
 const Wrapper = styled.div`
   position: relative;
   /* display: flex; */
@@ -21,6 +21,8 @@ const GridWrapper = styled.div`
   /* width: 100%; */
   grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
   justify-content: center;
+  max-height: 300px;
+  overflow: scroll;
 `
 
 const Box = styled.div`
@@ -39,7 +41,6 @@ const Box = styled.div`
 
 const DashboardRankedMemo = ({ category, songs, add, addedCategories }) => {
   const allElements = useMemo(() => {
-    console.log("calculating all Elements")
     const arr = []
 
     songs.forEach(song => {
@@ -50,42 +51,37 @@ const DashboardRankedMemo = ({ category, songs, add, addedCategories }) => {
   }, [songs])
 
   const ranked = useMemo(() => {
-    console.log("calculating ranked")
     return rankify(allElements)
   }, [songs])
 
   const highRanking = useMemo(() => {
     const highRankingArr = []
-    console.log("calculating high ranking")
     for (const [key, value] of Object.entries(ranked)) {
       if (value >= 10) {
         highRankingArr.push(key)
       }
     }
-    return highRankingArr
+    return highRankingArr.map(el => toTitleCase(el)).sort()
   }, [songs])
 
   const medRanking = useMemo(() => {
     const medRankingArr = []
-    console.log("calculating medium ranking")
     for (const [key, value] of Object.entries(ranked)) {
       if (value >= 5 && value < 10) {
         medRankingArr.push(key)
       }
     }
-    console.log(medRankingArr)
-    return medRankingArr
+    return medRankingArr.map(el => toTitleCase(el)).sort()
   }, [songs])
 
   const lowRanking = useMemo(() => {
     const lowRankingArr = []
-    console.log("calculating low ranking")
     for (const [key, value] of Object.entries(ranked)) {
       if (value < 5) {
         lowRankingArr.push(key)
       }
     }
-    return lowRankingArr
+    return lowRankingArr.map(el => toTitleCase(el)).sort()
   }, [songs])
 
   return (

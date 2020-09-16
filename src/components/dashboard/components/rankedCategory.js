@@ -3,7 +3,7 @@ import rankify, {
   highRanking as highRankingFunc,
   medRanking as medRankingFunc,
   lowRanking as lowRankingFunc,
-} from "../lib/rankfy"
+} from "../../../lib/rankfiy"
 import styled from "styled-components"
 import { motion } from "framer-motion"
 import Button from "@material-ui/core/Button"
