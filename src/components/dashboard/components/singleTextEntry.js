@@ -1,24 +1,20 @@
 import React from "react"
-import { Field } from "formik"
+import { useField } from "formik"
 import { Category, Title, Label } from "../styles/DashboardCreateNewSong"
-import Input from "./input"
 import toTitleCase from "../../../lib/toTitleCase"
+import TextField from "@material-ui/core/TextField"
 
-const DashboardSingleTextEntry = ({ name, errors, touched, onBlur }) => {
+const SingleTextField = ({ label, ...props }) => {
+  const [field, meta] = useField(props)
   return (
     <Category>
       <Title>
-        <Label htmlFor={name}>{toTitleCase(name)}</Label>
+        <Label htmlFor={props.id || props.name}>{toTitleCase(label)}</Label>
       </Title>
-      <Field
-        name={name}
-        component={Input}
-        touched={touched[name]}
-        errorMessage={errors[name]}
-        onBlur={onBlur}
-      />
+      <TextField fullWidth {...field} {...props} />
+      {meta.touched && meta.error ? <div>{meta.error}</div> : null}
     </Category>
   )
 }
 
-export default DashboardSingleTextEntry
+export default SingleTextField

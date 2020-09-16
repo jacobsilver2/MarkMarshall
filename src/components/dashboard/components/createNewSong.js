@@ -2,21 +2,16 @@ import React from "react"
 import { createClient } from "contentful-management"
 import { Field, Form, Formik } from "formik"
 import Card from "@material-ui/core/Card"
+import Button from "@material-ui/core/Button"
 import { makeStyles } from "@material-ui/core/styles"
 import CardHeader from "@material-ui/core/CardHeader"
 import CardContent from "@material-ui/core/CardContent"
-import {
-  Category,
-  Label,
-  SubmitButton,
-  Title,
-  Wrapper,
-} from "./dashboard/styles/DashboardCreateNewSong"
-import initialValues from "./dashboard/lib/initialValues"
-import validationSchema from "./dashboard/lib/validationSchema"
-import FileUpload from "./dashboardFileUpload"
-import SingleTextField from "./dashboard/components/singleTextEntry"
-import ArrayEntry from "./dashboard/components/arrayEntry"
+import { Category, Label, Title } from "../styles/DashboardCreateNewSong"
+import initialValues from "../lib/initialValues"
+import validationSchema from "../lib/validationSchema"
+import FileUpload from "./fileUpload"
+import SingleTextField from "./singleTextEntry"
+import ArrayEntry from "./arrayEntry"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -71,16 +66,16 @@ const DashboardCreateNewSongSecondTry = ({ songs }) => {
                   </Category>
 
                   <SingleTextField
+                    label="Title"
                     name="title"
-                    errors={errors}
-                    touched={touched}
-                    onBlur={handleBlur}
+                    type="text"
+                    placeholder="Enter the title"
                   />
                   <SingleTextField
+                    label="Tempo"
                     name="tempo"
-                    errors={errors}
-                    touched={touched}
-                    onBlur={handleBlur}
+                    type="text"
+                    placeholder="Enter the tempo"
                   />
                   <ArrayEntry
                     fieldName="composer"
@@ -90,10 +85,10 @@ const DashboardCreateNewSongSecondTry = ({ songs }) => {
                     songs={songs}
                   />
                   <SingleTextField
+                    label="Description"
                     name="description"
-                    errors={errors}
-                    touched={touched}
-                    onBlur={handleBlur}
+                    type="textarea"
+                    placeholder="Enter a description"
                   />
                   <ArrayEntry
                     fieldName="genre"
@@ -123,6 +118,7 @@ const DashboardCreateNewSongSecondTry = ({ songs }) => {
                     values={values}
                     songs={songs}
                   />
+                  <Button type="submit">Submit</Button>
                 </Form>
               </>
             )

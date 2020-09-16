@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 import { AuthService, useAuth } from "gatsby-theme-auth0"
-import DashboardGetSongs from "../components/dashboardGetSongs"
+import DashboardGetSongs from "../components/dashboard/components/getSongs"
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import Button from "@material-ui/core/Button"
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { createClient } from "contentful-management"
 import styled from "styled-components"
-import DashboardCreateNewSong from "../components/dashboardCreateNewSongFileSecondTry"
+import DashboardCreateNewSong from "./createNewSong"
 
 const Wrapper = styled.div`
   display: flex;
