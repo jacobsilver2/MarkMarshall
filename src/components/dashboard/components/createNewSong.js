@@ -12,6 +12,7 @@ import validationSchema from "../lib/validationSchema"
 import FileUpload from "./fileUpload"
 import SingleTextField from "./singleTextEntry"
 import ArrayEntry from "./arrayEntry"
+import sendToContentful from "../lib/sendToContentful"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,7 +23,12 @@ const useStyles = makeStyles(theme => ({
 const DashboardCreateNewSongSecondTry = ({ songs }) => {
   const classes = useStyles()
   return (
-    <Card className={classes.root}>
+    <Card
+      style={{
+        textAlign: "center",
+      }}
+      className={classes.root}
+    >
       <CardHeader title="Add A New Song" />
       <CardContent>
         <Formik
@@ -31,8 +37,8 @@ const DashboardCreateNewSongSecondTry = ({ songs }) => {
           validateOnChange={false}
           validateOnBlur={false}
           onSubmit={(values, actions) => {
-            // uploadSong(values)
-            console.log(values)
+            sendToContentful(values)
+            // console.log(values)
           }}
         >
           {({
@@ -57,10 +63,9 @@ const DashboardCreateNewSongSecondTry = ({ songs }) => {
                       name="file"
                       component={FileUpload}
                       title="Select An Audio File"
-                      setFieldValue={setFieldValue}
                       errorMessage={errors["file"] ? errors["file"] : undefined}
                       touched={touched["file"]}
-                      style={{ display: "flex" }}
+                      // style={{ display: "flex" }}
                       onBlur={handleBlur}
                     />
                   </Category>
@@ -81,7 +86,6 @@ const DashboardCreateNewSongSecondTry = ({ songs }) => {
                     fieldName="composer"
                     fieldArrayName="composerValues"
                     setFieldValue={setFieldValue}
-                    values={values}
                     songs={songs}
                   />
                   <SingleTextField
@@ -94,31 +98,27 @@ const DashboardCreateNewSongSecondTry = ({ songs }) => {
                     fieldName="genre"
                     fieldArrayName="genreValues"
                     setFieldValue={setFieldValue}
-                    values={values}
                     songs={songs}
                   />
                   <ArrayEntry
                     fieldName="mood"
                     fieldArrayName="moodValues"
                     setFieldValue={setFieldValue}
-                    values={values}
                     songs={songs}
                   />
                   <ArrayEntry
                     fieldName="instrumentation"
                     fieldArrayName="instrumentationValues"
                     setFieldValue={setFieldValue}
-                    values={values}
                     songs={songs}
                   />
                   <ArrayEntry
                     fieldName="soundsLike"
                     fieldArrayName="soundsLikeValues"
                     setFieldValue={setFieldValue}
-                    values={values}
                     songs={songs}
                   />
-                  <Button type="submit">Submit</Button>
+                  <button type="submit">Submit</button>
                 </Form>
               </>
             )

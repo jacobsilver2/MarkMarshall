@@ -13,6 +13,7 @@ const initialValues = {
   instrumentation: "",
   instrumentationValues: [],
   file: null,
+  fileFormat: "",
   waveFormArray: [],
 }
 

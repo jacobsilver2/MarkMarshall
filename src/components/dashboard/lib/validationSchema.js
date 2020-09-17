@@ -16,14 +16,13 @@ const validationSchema = yup.object({
   instrumentationValues: yup.array(yup.string()),
   soundsLike: yup.string(),
   soundsLikeValues: yup.array(yup.string()),
-  file: yup
-    .mixed()
-    .required("An audio file is required")
-    .test(
-      "fileSize",
-      "File too large",
-      value => value && value.size >= FILE_SIZE
-    ),
+  file: yup.mixed().required("An audio file is required"),
+  // .test("fileSize", "File too large", value => {
+  //   console.log(value)
+  //   console.log(value.size)
+  //   console.log(FILE_SIZE)
+  //   return value && value.size >= FILE_SIZE
+  // }),
 })
 
 export default validationSchema

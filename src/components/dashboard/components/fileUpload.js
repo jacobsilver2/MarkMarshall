@@ -1,15 +1,18 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Waveform from "./wavesWithGeneratedArray"
-import FormControl from "@material-ui/core/FormControl"
 import Button from "@material-ui/core/Button"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFileAudio } from "@fortawesome/free-solid-svg-icons"
+import { useFormikContext } from "formik"
+import styled from "styled-components"
+
+const Wrapper = styled.div`
+  width: 100%;
+`
 
 const DashboardFileUpload = props => {
-  const [fileName, setFileName] = useState("")
-  const [returnedFileFromCloudinary, setReturnedFileFromCloudinary] = useState()
-  const [waveformArray, setWaveformArray] = useState([])
+  const { values, setFieldValue } = useFormikContext()
 
   const handleAudioChange = e => {
     e.preventDefault()
@@ -29,19 +32,14 @@ const DashboardFileUpload = props => {
       body: data,
     })
     const returnedFile = await res.json()
-    setReturnedFileFromCloudinary(returnedFile)
-    props.form.setFieldValue("file", returnedFile.secure_url)
-    props.form.setFieldValue("waveFormArray", waveformArray)
-
-    // returnedFileFromCloudinary &&
-    //   props.form.setFieldValue("file", returnedFileFromCloudinary.secure_url)
+    // console.log(returnedFile)
+    setFieldValue("file", returnedFile.secure_url)
+    setFieldValue("fileFormat", returnedFile.format)
+    return returnedFile
   }
 
-  console.log("here are the props")
-  console.log(props)
-
   return (
-    <FormControl margin="normal">
+    <Wrapper>
       <input
         id="audio-upload"
         style={{ display: "none" }}
@@ -62,17 +60,12 @@ const DashboardFileUpload = props => {
           <FontAwesomeIcon icon={faFileAudio} />
         </Button>
       </label>
-      {fileName ? <FormHelperText>{fileName}</FormHelperText> : null}
-      {returnedFileFromCloudinary ? (
-        <Waveform
-          url={returnedFileFromCloudinary.secure_url}
-          setArray={setWaveformArray}
-        />
-      ) : null}
+
+      {values.file ? <Waveform /> : null}
       {props.errorMessage ? (
         <FormHelperText error={true}>{props.errorMessage}</FormHelperText>
       ) : null}
-    </FormControl>
+    </Wrapper>
   )
 }
 export default DashboardFileUpload

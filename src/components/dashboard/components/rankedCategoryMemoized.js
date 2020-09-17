@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from "react"
 import styled from "styled-components"
 import rankify from "../../../lib/rankfiy"
 import toTitleCase from "../../../lib/toTitleCase"
+import Chip from "@material-ui/core/Chip"
+import { useFormikContext } from "formik"
 const Wrapper = styled.div`
   position: relative;
   /* display: flex; */
@@ -32,14 +34,15 @@ const Box = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 6rem;
-  background-color: ${({ clr }) => clr};
+  background-color: ${({ clr, isDisabled }) => (isDisabled ? "grey" : clr)};
   &:hover {
     background-color: ${({ isDisabled }) => (isDisabled ? "" : "#ffc600")};
   }
   /* text-align: center; */
 `
 
-const DashboardRankedMemo = ({ category, songs, add, addedCategories }) => {
+const DashboardRankedMemo = ({ category, songs, add, arrayName }) => {
+  const { values } = useFormikContext()
   const allElements = useMemo(() => {
     const arr = []
 
@@ -89,32 +92,39 @@ const DashboardRankedMemo = ({ category, songs, add, addedCategories }) => {
       <details>
         <summary>select from previous {category}</summary>
         <GridWrapper>
-          {highRanking.map(g => (
+          {highRanking.map((g, i) => (
             <Box
-              onClick={() => add(g)}
+              onClick={() =>
+                values[arrayName] && values[arrayName].includes(g) ? "" : add(g)
+              }
               clr="red"
-              key={g}
-              disabled={addedCategories && addedCategories.includes(g)}
+              key={i}
+              isDisabled={values[arrayName] && values[arrayName].includes(g)}
             >
               {g}
             </Box>
+            // <Chip onClick={() => add(g)} color="primary" label={g} key={i} disabled={values[]}  />
           ))}
-          {medRanking.map(g => (
+          {medRanking.map((g, i) => (
             <Box
-              onClick={() => add(g)}
+              onClick={() =>
+                values[arrayName] && values[arrayName].includes(g) ? "" : add(g)
+              }
               clr="yellow"
-              key={g}
-              disabled={addedCategories && addedCategories.includes(g)}
+              key={i}
+              isDisabled={values[arrayName] && values[arrayName].includes(g)}
             >
               {g}
             </Box>
           ))}
-          {lowRanking.map(g => (
+          {lowRanking.map((g, i) => (
             <Box
-              onClick={() => add(g)}
-              key={g}
+              onClick={() =>
+                values[arrayName] && values[arrayName].includes(g) ? "" : add(g)
+              }
+              key={i}
               clr="blue"
-              disabled={addedCategories && addedCategories.includes(g)}
+              isDisabled={values[arrayName] && values[arrayName].includes(g)}
             >
               {g}
             </Box>

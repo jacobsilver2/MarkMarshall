@@ -40,7 +40,8 @@ export const AddedValues = styled.div`
 export const AddedValue = styled.div`
   padding: 1rem;
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  /* justify-content: center; */
   button {
     cursor: pointer;
     margin: 0 1rem;

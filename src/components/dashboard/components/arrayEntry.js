@@ -6,18 +6,14 @@ import {
   Label,
   AddedValue,
 } from "../styles/DashboardCreateNewSong"
-import Input from "./input"
 import RankedCategory from "./rankedCategoryMemoized"
 import Button from "@material-ui/core/Button"
 import toTitleCase from "../../../lib/toTitleCase"
+import SingleTextFieldNoStyling from "./singleTextFieldNoStyling"
+import Chip from "@material-ui/core/Chip"
 
-const ArrayEntry = ({
-  fieldName,
-  fieldArrayName,
-  setFieldValue,
-  values,
-  songs,
-}) => {
+const ArrayEntry = ({ fieldName, fieldArrayName, setFieldValue, songs }) => {
+  const { values } = useFormikContext()
   return (
     <Category>
       <Title>
@@ -26,9 +22,14 @@ const ArrayEntry = ({
       <FieldArray name={fieldArrayName}>
         {({ push, insert, remove }) => (
           <>
-            <Field name={fieldName} component={Input} />
+            <SingleTextFieldNoStyling
+              name={fieldName}
+              type="text"
+              placeholder={`Enter a new ${fieldName}`}
+            />
             <Button
               type="button"
+              disabled={!values[fieldName]}
               onClick={() => {
                 values[fieldName]
                   ? push(values[fieldName])
@@ -36,17 +37,25 @@ const ArrayEntry = ({
                 setFieldValue(fieldName, "")
               }}
             >{`Add ${fieldName}`}</Button>
-            {values[fieldArrayName] &&
-              values[fieldArrayName].map((value, index) => (
-                <AddedValue key={index}>
-                  <h2 style={{ display: "inline" }}>{value}</h2>
-                  <Button onClick={() => remove(index)}>Remove</Button>
-                </AddedValue>
-              ))}
+            <AddedValue>
+              {values[fieldArrayName] &&
+                values[fieldArrayName].map((value, index) => (
+                  // <AddedValue key={index}>
+                  //   <h2 style={{ display: "inline" }}>{value}</h2>
+                  //   <Button onClick={() => remove(index)}>Remove</Button>
+                  // </AddedValue>
+                  <Chip
+                    style={{ margin: ".5rem", fontSize: "12px" }}
+                    label={value}
+                    key={index}
+                    onDelete={() => remove(index)}
+                  />
+                ))}
+            </AddedValue>
             <RankedCategory
               add={push}
               category={fieldName}
-              addedCategories={values[fieldArrayName]}
+              arrayName={fieldArrayName}
               songs={songs}
             />
           </>

@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   overflow: scroll;
 `
 const AuthWrapper = styled.div`
+  padding: 1rem;
   display: block;
   text-align: right;
 `

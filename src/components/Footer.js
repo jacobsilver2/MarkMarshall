@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
-import MusicPlayer from "./musicPlayer"
+// import MusicPlayer from "./musicPlayer"
+import Waves from "../components/wavesFooter"
 // import Waves from "./waves"
 import { GlobalStateContext } from "../context/provider"
 
@@ -13,10 +14,11 @@ const Footer = () => {
   return (
     <StyledFooter>
       {/* <Waves url={state.currentTrackURL} /> */}
-      <MusicPlayer
+      {/* <MusicPlayer
         url={state.currentTrackURL}
         title={state.currentTrackTitle}
-      />
+      /> */}
+      <Waves />
     </StyledFooter>
   )
 }
