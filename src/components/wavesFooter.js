@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlay } from "@fortawesome/free-solid-svg-icons"
+import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons"
 import styled from "styled-components"
 import WaveSurfer from "wavesurfer.js"
 import fakeWaveformArray from "../lib/fakeWaveformArray"
@@ -14,11 +14,16 @@ export const StyledFontAwesome = styled(FontAwesomeIcon)`
     color: black;
   }
 `
-const Wrapper = styled.div`
-  width: 100%;
-  height: 80px
-  position: flex;
+const WaveWrapper = styled.div`
+  display: flex;
+  /* position: flex; */
   padding: 1rem;
+  align-items: center;
+`
+
+const Wave = styled.div`
+  width: 100%;
+  margin: 0 1rem;
 `
 
 const Waveform = ({ url, waveArray }) => {
@@ -27,42 +32,41 @@ const Waveform = ({ url, waveArray }) => {
   const [waveSurfer, setWaveSurfer] = useState(null)
   const state = useContext(GlobalStateContext)
 
-  // console.log(url)
-
   useEffect(() => {
     setWaveSurfer(
       WaveSurfer.create({
         container: waveformRef.current,
         responsive: true,
+        removeMediaElementOnDestroy: false,
       })
     )
   }, [])
 
   useEffect(() => {
     if (waveSurfer) {
-      waveSurfer.song = state.currentTrackURL
-      waveSurfer.backend.peaks = waveArray ? waveArray : fakeWaveformArray
-      waveSurfer.drawBuffer()
       waveSurfer.loaded = false
+      waveSurfer.load(state.currentTrackURL)
+      // waveSurfer.on("ready", function () {
+      //   waveSurfer.play()
+      // })
     }
-  }, [waveSurfer])
+  }, [waveSurfer, state.currentTrackURL])
 
   const togglePlayPause = () => {
-    if (!waveSurfer.loaded) {
-      waveSurfer.load(state.currentTrackURL)
-      waveSurfer.loaded = true
+    if (waveSurfer) {
       waveSurfer.playPause()
-    } else {
-      waveSurfer.playPause()
+      setIsPlaying(prev => !prev)
     }
-    setIsPlaying(prev => !prev)
   }
 
   return (
-    <Wrapper>
-      <StyledFontAwesome icon={faPlay} onClick={() => togglePlayPause()} />
-      <div ref={waveformRef}></div>
-    </Wrapper>
+    <WaveWrapper>
+      <StyledFontAwesome
+        icon={isPlaying ? faPause : faPlay}
+        onClick={() => togglePlayPause()}
+      />
+      <Wave ref={waveformRef}></Wave>
+    </WaveWrapper>
   )
 }
 

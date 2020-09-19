@@ -1,23 +1,26 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
-// import MusicPlayer from "./musicPlayer"
 import Waves from "../components/wavesFooter"
-// import Waves from "./waves"
 import { GlobalStateContext } from "../context/provider"
 
 const StyledFooter = styled.footer`
-  border: 1px solid black;
+  grid-area: footer;
+  /* height: 60px; */
+  /* height: 200px; */
+  z-index: 3;
+  display: grid;
+  grid-template-rows: 1fr 3fr;
+  grid-gap: 10px;
+  /* flex-direction: column; */
 `
 
 const Footer = () => {
   const state = useContext(GlobalStateContext)
   return (
     <StyledFooter>
-      {/* <Waves url={state.currentTrackURL} /> */}
-      {/* <MusicPlayer
-        url={state.currentTrackURL}
-        title={state.currentTrackTitle}
-      /> */}
+      <div>
+        <h5>{state.currentTrackTitle}</h5>
+      </div>
       <Waves />
     </StyledFooter>
   )

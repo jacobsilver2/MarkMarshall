@@ -3,7 +3,8 @@ import React from "react"
 import styled from "styled-components"
 
 const StyledHeader = styled.header`
-  height: 80px;
+  /* height: 80px; */
+  grid-area: header;
   background: #0d0c1d;
   color: ${({ lightMode }) => (lightMode ? "black" : "white")};
 `

@@ -26,7 +26,8 @@ const GlobalStyle = createGlobalStyle`
 
   }
   body {
-    min-height: calc(100vh - 40px);
+    /* min-height: calc(100vh - 40px); */
+    margin: 0;
     font-size: 2rem;
   }
   *, *:before, *:after {

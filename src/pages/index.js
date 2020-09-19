@@ -7,7 +7,9 @@ import SearchResults from "../components/searchResults"
 import Search from "../components/search"
 
 export const Wrapper = styled.div`
-  height: calc(100vh - 160px);
+  /* min-height: calc(100vh - 300px); */
+  /* overflow: auto; */
+  /* overflow: hidden; */
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
   grid-gap: 5rem;
@@ -20,15 +22,17 @@ const Featured = styled.div`
 
 const IndexPage = () => {
   return (
-    <Wrapper>
+    <>
       <SEO title="Home" />
-      <Featured>
-        <LatestSongs />
-        <LatestPlaylists />
-      </Featured>
-      <Search />
-      <SearchResults />
-    </Wrapper>
+      <Wrapper>
+        <Featured>
+          <LatestSongs />
+          <LatestPlaylists />
+        </Featured>
+        <Search />
+        <SearchResults />
+      </Wrapper>
+    </>
   )
 }
 

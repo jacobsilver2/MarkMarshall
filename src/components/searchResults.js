@@ -6,6 +6,8 @@ import Song from "./song"
 const DescWrapper = styled.div`
   border-top: 1px dashed black;
   overflow: scroll;
+  display: flex;
+  flex-direction: column;
 `
 const TitleText = styled.h1`
   text-align: center;

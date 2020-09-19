@@ -11,7 +11,7 @@ import { tempoCategories, tempoFilter } from "../lib/tempoCalc"
 
 const Wrapper = styled.div`
   display: grid;
-  height: calc(100vh - 160px);
+  /* height: calc(100vh - 160px); */
   grid-template-columns: 1fr 6fr;
 `
 

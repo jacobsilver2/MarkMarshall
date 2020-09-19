@@ -3,7 +3,8 @@ import styled from "styled-components"
 import { GlobalStateContext, GlobalDispatchContext } from "../context/provider"
 
 const SearchBox = styled.div`
-  height: 100%;
+  /* height: 100%; */
+  /* max-height: 250px; */
   width: 100%;
   display: flex;
   justify-content: center;

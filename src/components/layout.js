@@ -10,12 +10,20 @@ import Fade from "./Fade"
 // import Search from "./search"
 
 const Site = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  height: 100vh;
+
+  /* grid container settings */
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
 `
 const SiteContent = styled.div`
-  flex-grow: 1;
+  grid-area: main;
+  overflow: auto;
 `
 
 const Layout = ({ children, location }) => {
@@ -64,9 +72,9 @@ const Layout = ({ children, location }) => {
 
   return (
     <Site>
-      <Headroom>
-        <Header siteTitle={data.site.siteMetadata.title} />
-      </Headroom>
+      {/* <Headroom> */}
+      <Header siteTitle={data.site.siteMetadata.title} />
+      {/* </Headroom> */}
       <SiteContent>
         <Fade location={location}>{children}</Fade>
       </SiteContent>

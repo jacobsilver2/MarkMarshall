@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   padding: 1rem;
 `
 
-const Waveform = ({ url, waveArray }) => {
+const Waveform = ({ url, title, waveArray }) => {
   const waveformRef = useRef()
   const [isPlaying, setIsPlaying] = useState(false)
   const [waveSurfer, setWaveSurfer] = useState(null)
@@ -61,7 +61,7 @@ const Waveform = ({ url, waveArray }) => {
       <StyledFontAwesome
         icon={faPlay}
         onClick={() => {
-          dispatch({ type: "SET_CURRENT_TRACK", url: url, title: "" })
+          dispatch({ type: "SET_CURRENT_TRACK", url: url, title: title })
           // togglePlayPause()
         }}
       />
