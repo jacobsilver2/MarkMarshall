@@ -5,6 +5,9 @@ import styled from "styled-components"
 import WaveSurfer from "wavesurfer.js"
 import fakeWaveformArray from "../lib/fakeWaveformArray"
 import { GlobalStateContext } from "../context/provider"
+import loadable from "@loadable/component"
+
+// const WaveSurfer = loadable(() => import("wavesurfer.js"))
 
 export const StyledFontAwesome = styled(FontAwesomeIcon)`
   font-size: 3rem;

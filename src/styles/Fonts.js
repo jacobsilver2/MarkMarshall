@@ -5,6 +5,8 @@ import { createGlobalStyle } from "styled-components"
 // import OperatorMonoBoldItalic_Web from "../assets/fonts/operator/OperatorMono-BoldItalic_Web.woff2"
 // import OperatorMonoBold_Web from "../assets/fonts/operator/OperatorMono-Bold_Web.woff2"
 
+import RoslineDaleDisplayBlack from "../assets/fonts/Roslindale/RoslindaleV2-DisplayBlack.woff2"
+
 import DMSansBold from "../assets/fonts/DM_Sans/DMSans-Bold.ttf"
 import DMSansBoldItalic from "../assets/fonts/DM_Sans/DMSans-BoldItalic.ttf"
 import DMSansRegular from "../assets/fonts/DM_Sans/DMSans-Regular.ttf"
@@ -17,6 +19,13 @@ const Fonts = createGlobalStyle`
     font-weight: 400;
     font-style: normal;
   }
+  @font-face {
+    font-family: 'RoslindaleV2';
+    src: url(${DMSansRegular}) format('woff2');
+    font-weight: 400;
+    font-style: normal;
+  }
+
 
   @font-face {
     font-family: 'DM Sans';

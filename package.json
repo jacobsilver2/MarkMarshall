@@ -8,6 +8,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
     "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "@fortawesome/react-fontawesome": "^0.1.11",
+    "@loadable/component": "^5.13.2",
     "@material-ui/core": "^4.11.0",
     "@nfront/global-styles": "^1.2.1",
     "contentful-management": "^6.1.1",
@@ -56,7 +57,6 @@
     "typography-theme-funston": "^0.16.19",
     "typography-theme-grand-view": "^0.16.19",
     "validator": "^13.1.1",
-    "wavesurfer-react": "^2.0.5",
     "wavesurfer.js": "^4.0.1",
     "yup": "^0.29.3"
   },

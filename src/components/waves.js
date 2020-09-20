@@ -6,6 +6,13 @@ import WaveSurfer from "wavesurfer.js"
 import fakeWaveformArray from "../lib/fakeWaveformArray"
 import { GlobalDispatchContext } from "../context/provider"
 
+const Wrapper = styled.div`
+  display: flex;
+  padding: 1rem;
+  width: 100%;
+  align-items: center;
+`
+
 export const StyledFontAwesome = styled(FontAwesomeIcon)`
   font-size: 3rem;
   color: grey;
@@ -14,10 +21,9 @@ export const StyledFontAwesome = styled(FontAwesomeIcon)`
     color: black;
   }
 `
-const Wrapper = styled.div`
+const Wave = styled.div`
   width: 100%;
-  position: flex;
-  padding: 1rem;
+  margin: 0 1rem;
 `
 
 const Waveform = ({ url, title, waveArray }) => {
@@ -65,7 +71,7 @@ const Waveform = ({ url, title, waveArray }) => {
           // togglePlayPause()
         }}
       />
-      <div ref={waveformRef}></div>
+      <Wave ref={waveformRef}></Wave>
     </Wrapper>
   )
 }
