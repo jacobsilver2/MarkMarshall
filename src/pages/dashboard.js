@@ -21,7 +21,7 @@ const AuthWrapper = styled.div`
 // https://material-ui.com/customization/typography/
 const theme = createMuiTheme({
   typography: {
-    fontSize: "2rem",
+    fontSize: "25",
   },
 })
 

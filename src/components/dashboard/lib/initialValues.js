@@ -15,6 +15,7 @@ const initialValues = {
   file: null,
   fileFormat: "",
   waveFormArray: [],
+  waveFormImage: "",
 }
 
 export default initialValues

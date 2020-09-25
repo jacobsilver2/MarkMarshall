@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
 import { GlobalStateContext } from "../context/provider"
-import Song from "./song"
+import Song from "./song2"
 
 const DescWrapper = styled.div`
   border-top: 1px dashed black;

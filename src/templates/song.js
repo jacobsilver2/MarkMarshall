@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import SEO from "../components/seo"
-import { GlobalDispatchContext } from "../context/provider"
+import { GlobalDispatchContext, GlobalStateContext } from "../context/provider"
 import { graphql } from "gatsby"
 import styled from "styled-components"
 import { StyledFontAwesome } from "../components/Song2"
@@ -37,8 +37,27 @@ const TitleandPlayWrapper = styled.div`
 `
 
 const WaveformWrapper = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+`
+
+const StyledImg = styled.img`
+  position: relative;
+  width: 100%;
+  height: 100%;
+`
+
+const StyledOverlayImg = styled.img`
+  position: absolute;
+  top: 0;
+  left: 4px;
+  width: 100%;
+  height: 100%;
+  clip-path: ${({ width }) => `inset(0 ${100 - width}% 0 0 )`};
+  filter: opacity(0.5) drop-shadow(0 0 0 blue);
 `
 
 const Details = styled.div`
@@ -53,6 +72,7 @@ const DetailsGridItem = styled.div`
 
 const SongTemplate = props => {
   const dispatch = useContext(GlobalDispatchContext)
+  const state = useContext(GlobalStateContext)
   const {
     audio,
     composer,
@@ -63,6 +83,7 @@ const SongTemplate = props => {
     tempo,
     description,
     title,
+    waveformImage,
   } = props.data.song
 
   function addToGlobalState() {
@@ -86,7 +107,15 @@ const SongTemplate = props => {
               />
               <h1>{title}</h1>
             </TitleandPlayWrapper>
-            <WaveformWrapper>WAVEFORM</WaveformWrapper>
+            <WaveformWrapper>
+              <StyledImg src={waveformImage.fluid.src} />
+              {state.currentTrackURL === `https:${audio.file.url}` && (
+                <StyledOverlayImg
+                  width={state.currentTrackDuration}
+                  src={waveformImage.fluid.src}
+                />
+              )}
+            </WaveformWrapper>
           </TitleAndWaveform>
           <Details>
             <DetailsGridItem>
@@ -124,6 +153,11 @@ export const songQuery = graphql`
       audio {
         file {
           url
+        }
+      }
+      waveformImage {
+        fluid {
+          ...GatsbyContentfulFluid
         }
       }
       composer

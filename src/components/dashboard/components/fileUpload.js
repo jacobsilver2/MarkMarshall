@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
+import Loader from "react-loader-spinner"
 import Waveform from "./wavesWithGeneratedArray"
 import Button from "@material-ui/core/Button"
 import FormHelperText from "@material-ui/core/FormHelperText"
@@ -32,10 +33,20 @@ const DashboardFileUpload = props => {
       body: data,
     })
     const returnedFile = await res.json()
-    // console.log(returnedFile)
     setFieldValue("file", returnedFile.secure_url)
     setFieldValue("fileFormat", returnedFile.format)
+    await getWaveformImgFromCloudinary(returnedFile.url)
     return returnedFile
+  }
+  const getWaveformImgFromCloudinary = async url => {
+    const newUrl = url
+      .replace(
+        "http://res.cloudinary.com/dplx6jxxo/video/upload/",
+        "https://res.cloudinary.com/dplx6jxxo/video/upload/fl_waveform,co_grey,b_transparent/"
+      )
+      .replace("mp3", "png")
+    const res = await fetch(newUrl)
+    setFieldValue("waveFormImage", res.url)
   }
 
   return (
@@ -61,7 +72,7 @@ const DashboardFileUpload = props => {
         </Button>
       </label>
 
-      {values.file ? <Waveform /> : null}
+      {values.waveFormImage ? <img src={values.waveFormImage} /> : null}
       {props.errorMessage ? (
         <FormHelperText error={true}>{props.errorMessage}</FormHelperText>
       ) : null}

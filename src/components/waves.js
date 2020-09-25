@@ -4,7 +4,7 @@ import { faPlay } from "@fortawesome/free-solid-svg-icons"
 import styled from "styled-components"
 import WaveSurfer from "wavesurfer.js"
 import fakeWaveformArray from "../lib/fakeWaveformArray"
-import { GlobalDispatchContext } from "../context/provider"
+import { GlobalDispatchContext, GlobalStateContext } from "../context/provider"
 
 const Wrapper = styled.div`
   display: flex;
@@ -31,6 +31,7 @@ const Waveform = ({ url, title, waveArray }) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [waveSurfer, setWaveSurfer] = useState(null)
   const dispatch = useContext(GlobalDispatchContext)
+  const state = useContext(GlobalStateContext)
   // console.log(url)
 
   useEffect(() => {
@@ -48,8 +49,19 @@ const Waveform = ({ url, title, waveArray }) => {
       waveSurfer.backend.peaks = waveArray ? waveArray : fakeWaveformArray
       waveSurfer.drawBuffer()
       waveSurfer.loaded = false
+      waveSurfer.setMute(true)
     }
   }, [waveSurfer])
+
+  useEffect(() => {
+    function syncItUp() {
+      if (waveSurfer && state.currentTrackURL === url) {
+        console.log("hey whats up")
+        waveSurfer.playPause()
+      }
+    }
+    syncItUp()
+  }, [state.playing])
 
   const togglePlayPause = () => {
     if (!waveSurfer.loaded) {
@@ -67,7 +79,12 @@ const Waveform = ({ url, title, waveArray }) => {
       <StyledFontAwesome
         icon={faPlay}
         onClick={() => {
-          dispatch({ type: "SET_CURRENT_TRACK", url: url, title: title })
+          dispatch({
+            type: "SET_CURRENT_TRACK",
+            url: url,
+            title: title,
+            // trackRef: waveformRef,
+          })
           // togglePlayPause()
         }}
       />

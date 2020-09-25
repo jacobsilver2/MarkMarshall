@@ -273,7 +273,7 @@ const ProSidebarComponent = () => {
                     type="checkbox"
                     name="instrumentation"
                     value={inst}
-                    checked={state.filters.includes(inst)}
+                    defaultChecked={state.filters.includes(inst)}
                   />
                   {inst}
                 </MenuItem>
@@ -292,7 +292,7 @@ const ProSidebarComponent = () => {
                     type="checkbox"
                     name="mood"
                     value={m}
-                    checked={state.filters.includes(m)}
+                    defaultChecked={state.filters.includes(m)}
                   />
                   {m}
                 </MenuItem>

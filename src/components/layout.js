@@ -1,10 +1,11 @@
 import React, { useEffect, useContext } from "react"
+
 import { useStaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
 import Headroom from "react-headroom"
 import { GlobalDispatchContext } from "../context/provider"
 import Header from "./Header"
-import Footer from "./Footer"
+import Footer from "./footer/Footer"
 import Fade from "./Fade"
 // import "semantic-ui-css/semantic.min.css"
 // import Search from "./search"
@@ -42,6 +43,11 @@ const Layout = ({ children, location }) => {
             tempo
             soundsLike
             instrumentation
+            waveformImage {
+              fluid {
+                ...GatsbyContentfulFluid
+              }
+            }
             audio {
               file {
                 url
@@ -76,7 +82,8 @@ const Layout = ({ children, location }) => {
       <Header siteTitle={data.site.siteMetadata.title} />
       {/* </Headroom> */}
       <SiteContent>
-        <Fade location={location}>{children}</Fade>
+        {/* <Fade location={location}>{children}</Fade> */}
+        <main>{children}</main>
       </SiteContent>
       <Footer />
     </Site>

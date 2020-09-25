@@ -1,13 +1,12 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
-import { GlobalDispatchContext } from "../context/provider"
+import { GlobalDispatchContext, GlobalStateContext } from "../context/provider"
 import { Link } from "gatsby"
 import slugify from "../lib/slugify"
 import { listLength } from "../lib/constants"
 import tempoCalc from "../lib/tempoCalc"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlay } from "@fortawesome/free-solid-svg-icons"
-import Waves from "./waves"
 
 const Wrapper = styled.div`
   display: grid;
@@ -23,19 +22,47 @@ const Info = styled.div`
   align-items: center;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-gap: 2rem;
-
+  font-size: 2rem;
   a {
     font-weight: bold;
   }
 `
 
-const Waveform = styled.div`
-  display: inline;
-  /* align-items: center; */
+const WaveWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 0 1rem;
 `
 
+const Wave = styled.div`
+  height: 100%;
+  width: 100%;
+  position: relative;
+`
+const ImgWrapper = styled.div`
+  position: relative;
+`
+
+const StyledImg = styled.img`
+  position: relative;
+  width: 100%;
+  height: 100%;
+`
+
+const StyledOverlayImg = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: ${({ width }) => `inset(0 ${100 - width}% 0 0 )`};
+  filter: opacity(0.5) drop-shadow(0 0 0 blue);
+`
+
 export const StyledFontAwesome = styled(FontAwesomeIcon)`
+  position: relative;
+  max-width: 20px;
   font-size: 3rem;
   color: grey;
   cursor: pointer;
@@ -44,9 +71,18 @@ export const StyledFontAwesome = styled(FontAwesomeIcon)`
   }
 `
 
-const Song2 = ({ song, loading }) => {
+const SongSecondTry = ({ song, loading }) => {
   const dispatch = useContext(GlobalDispatchContext)
-  const { title, genre, composer, instrumentation, description, tempo } = song
+  const state = useContext(GlobalStateContext)
+  const {
+    title,
+    genre,
+    composer,
+    instrumentation,
+    description,
+    tempo,
+    waveformImage,
+  } = song
 
   function addToGlobalState() {
     dispatch({
@@ -77,7 +113,7 @@ const Song2 = ({ song, loading }) => {
 
     return paragraph
   }
-
+  console.log(waveformImage)
   return (
     <Wrapper>
       <Info>
@@ -92,16 +128,24 @@ const Song2 = ({ song, loading }) => {
         <div>{tempo ? tempoCalc(tempo) : ""}</div>
         <div>{instrumentation ? renderList(instrumentation) : ""}</div>
       </Info>
-      <div>
-        {/* <StyledFontAwesome onClick={() => addToGlobalState()} icon={faPlay} /> */}
-        <Waves
-          title={title}
-          url={song.audio.file.url}
-          waveArray={song.waveformarray ? song.waveformarray : ""}
-        />
-      </div>
+      <WaveWrapper>
+        <StyledFontAwesome onClick={() => addToGlobalState()} icon={faPlay} />
+        <Wave style={{ width: "100%", padding: "1rem 1rem" }}>
+          {waveformImage && (
+            <ImgWrapper>
+              <StyledImg src={waveformImage.fluid.src} />
+              {state.currentTrackURL === `https:${song.audio.file.url}` && (
+                <StyledOverlayImg
+                  width={state.currentTrackDuration}
+                  src={waveformImage.fluid.src}
+                />
+              )}
+            </ImgWrapper>
+          )}
+        </Wave>
+      </WaveWrapper>
     </Wrapper>
   )
 }
 
-export default Song2
+export default SongSecondTry

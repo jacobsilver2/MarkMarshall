@@ -1,13 +1,11 @@
 import React, { useState, useRef, useEffect, useContext } from "react"
+import Loader from "react-loader-spinner"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons"
 import styled from "styled-components"
 import WaveSurfer from "wavesurfer.js"
-import fakeWaveformArray from "../lib/fakeWaveformArray"
-import { GlobalStateContext } from "../context/provider"
-import loadable from "@loadable/component"
-
-// const WaveSurfer = loadable(() => import("wavesurfer.js"))
+import { GlobalStateContext, GlobalDispatchContext } from "../context/provider"
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 
 export const StyledFontAwesome = styled(FontAwesomeIcon)`
   font-size: 3rem;
@@ -18,8 +16,8 @@ export const StyledFontAwesome = styled(FontAwesomeIcon)`
   }
 `
 const WaveWrapper = styled.div`
+  position: relative;
   display: flex;
-  /* position: flex; */
   padding: 1rem;
   align-items: center;
 `
@@ -29,16 +27,21 @@ const Wave = styled.div`
   margin: 0 1rem;
 `
 
-const Waveform = ({ url, waveArray }) => {
+const Waveform = () => {
   const waveformRef = useRef()
   const [isPlaying, setIsPlaying] = useState(false)
   const [waveSurfer, setWaveSurfer] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
   const state = useContext(GlobalStateContext)
+  const dispatch = useContext(GlobalDispatchContext)
 
   useEffect(() => {
     setWaveSurfer(
       WaveSurfer.create({
-        container: waveformRef.current,
+        container:
+          state.currentTrackRef && state.currentTrackRef.current
+            ? state.currentTrackRef.current
+            : waveformRef.current,
         responsive: true,
         removeMediaElementOnDestroy: false,
       })
@@ -47,11 +50,13 @@ const Waveform = ({ url, waveArray }) => {
 
   useEffect(() => {
     if (waveSurfer) {
-      waveSurfer.loaded = false
+      setIsLoading(true)
       waveSurfer.load(state.currentTrackURL)
-      // waveSurfer.on("ready", function () {
-      //   waveSurfer.play()
-      // })
+      // console.log(state.currentTrackRef)
+      waveSurfer.on("ready", function () {
+        // waveSurfer.play()
+        setIsLoading(false)
+      })
     }
   }, [waveSurfer, state.currentTrackURL])
 
@@ -59,16 +64,27 @@ const Waveform = ({ url, waveArray }) => {
     if (waveSurfer) {
       waveSurfer.playPause()
       setIsPlaying(prev => !prev)
+      dispatch({ type: "TOGGLE_PLAYING" })
     }
   }
 
   return (
     <WaveWrapper>
-      <StyledFontAwesome
-        icon={isPlaying ? faPause : faPlay}
-        onClick={() => togglePlayPause()}
-      />
-      <Wave ref={waveformRef}></Wave>
+      {isLoading ? (
+        <Loader type="Bars" color="#999999" height={80} width={80} />
+      ) : (
+        <StyledFontAwesome
+          icon={isPlaying ? faPause : faPlay}
+          onClick={() => togglePlayPause()}
+        />
+      )}
+      <Wave
+        ref={
+          state.currentTrackRef && state.currentTrackURL.current
+            ? state.currentTrackRef.current
+            : waveformRef
+        }
+      ></Wave>
     </WaveWrapper>
   )
 }

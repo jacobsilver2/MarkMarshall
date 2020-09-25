@@ -6,6 +6,8 @@ export const GlobalDispatchContext = createContext()
 const initialState = {
   currentTrackURL: "https://www.mfiles.co.uk/mp3-downloads/gs-cd-track2.mp3",
   currentTrackTitle: "Default Song",
+  currentTrackDuration: 0,
+  playing: false,
   songs: [],
   filteredSongs: [],
   searchResults: [],
@@ -19,6 +21,18 @@ function reducer(state, action) {
         ...state,
         currentTrackURL: action.url,
         currentTrackTitle: action.title,
+      }
+    }
+    case "SET_CURRENT_TRACK_DURATION": {
+      return {
+        ...state,
+        currentTrackDuration: action.duration,
+      }
+    }
+    case "TOGGLE_PLAYING": {
+      return {
+        ...state,
+        playing: !state.playing,
       }
     }
     case "ADD_SONGS": {

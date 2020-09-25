@@ -1,8 +1,6 @@
 import React from "react"
-import { createClient } from "contentful-management"
 import { Field, Form, Formik } from "formik"
 import Card from "@material-ui/core/Card"
-import Button from "@material-ui/core/Button"
 import { makeStyles } from "@material-ui/core/styles"
 import CardHeader from "@material-ui/core/CardHeader"
 import CardContent from "@material-ui/core/CardContent"
