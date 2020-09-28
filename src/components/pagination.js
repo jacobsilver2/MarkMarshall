@@ -44,13 +44,9 @@ export const Pagination = ({
             Prev
           </a>
         </LI>
-        {pageNumbers.map(pageNumber => (
-          <LI isCurrent={pageNumber === currentPage} key={pageNumber}>
-            <a onClick={() => paginate(pageNumber)} href="#">
-              {pageNumber}
-            </a>
-          </LI>
-        ))}
+        <LI>
+          {currentPage} of {lastPage}
+        </LI>
         <LI isInactive={currentPage === lastPage}>
           <a
             onClick={() =>

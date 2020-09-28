@@ -8,7 +8,7 @@ const Wrapper = styled.div`
 `
 
 const StyledProgressBar = styled(Slider)`
-  width: 60%;
+  width: 100%;
   height: 8px;
   border-radius: 4px;
   background: whitesmoke;

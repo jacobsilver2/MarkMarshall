@@ -1,7 +1,9 @@
 import React, { useContext } from "react"
+import { AuthService, useAuth } from "gatsby-theme-auth0"
+import { useQueryParam, StringParam } from "use-query-params"
 import SEO from "../components/seo"
 import { GlobalDispatchContext, GlobalStateContext } from "../context/provider"
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 import styled from "styled-components"
 import { StyledFontAwesome } from "../components/Song2"
 import { faPlay } from "@fortawesome/free-solid-svg-icons"
@@ -73,6 +75,7 @@ const DetailsGridItem = styled.div`
 const SongTemplate = props => {
   const dispatch = useContext(GlobalDispatchContext)
   const state = useContext(GlobalStateContext)
+  const { isLoggedIn, profile } = useAuth()
   const {
     audio,
     composer,
@@ -84,6 +87,7 @@ const SongTemplate = props => {
     description,
     title,
     waveformImage,
+    contentful_id,
   } = props.data.song
 
   function addToGlobalState() {
@@ -105,16 +109,24 @@ const SongTemplate = props => {
                 onClick={() => addToGlobalState()}
                 icon={faPlay}
               />
-              <h1>{title}</h1>
+              <h1>
+                {title}{" "}
+                {isLoggedIn ? (
+                  <Link state={{ id: contentful_id }} to="/edit">
+                    edit
+                  </Link>
+                ) : null}
+              </h1>
             </TitleandPlayWrapper>
             <WaveformWrapper>
-              <StyledImg src={waveformImage.fluid.src} />
-              {state.currentTrackURL === `https:${audio.file.url}` && (
-                <StyledOverlayImg
-                  width={state.currentTrackDuration}
-                  src={waveformImage.fluid.src}
-                />
-              )}
+              {waveformImage && <StyledImg src={waveformImage.fluid.src} />}
+              {state.currentTrackURL === `https:${audio.file.url}` &&
+                waveformImage && (
+                  <StyledOverlayImg
+                    width={state.currentTrackDuration}
+                    src={waveformImage.fluid.src}
+                  />
+                )}
             </WaveformWrapper>
           </TitleAndWaveform>
           <Details>

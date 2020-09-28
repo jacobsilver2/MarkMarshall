@@ -11,10 +11,23 @@ const Wrapper = styled.div`
   width: 100vw;
   overflow: scroll;
 `
+
+const Buttons = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+`
 const AuthWrapper = styled.div`
   padding: 1rem;
   display: block;
   text-align: right;
+`
+const ResetWebsiteWrapper = styled.div`
+  padding: 1rem;
+  display: block;
+  text-align: left;
+  cursor: pointer;
 `
 
 // eventually this needs to be responsive
@@ -27,23 +40,39 @@ const theme = createMuiTheme({
 
 const Dashboard = () => {
   const { isLoggedIn, profile } = useAuth()
+  const reloadData = () => {
+    alert("Eventually will redeploy Netlify")
+  }
   return (
     <Wrapper>
       <ThemeProvider theme={theme}>
-        <AuthWrapper>
-          <div>
-            {profile && (
-              <img width="50px" src={profile.picture} alt={profile.name} />
-            )}
-          </div>
-          <div>
-            {isLoggedIn ? (
-              <Button onClick={AuthService.logout}>Logout</Button>
-            ) : (
-              <Button onClick={AuthService.login}>Login</Button>
-            )}
-          </div>
-        </AuthWrapper>
+        <Buttons>
+          <AuthWrapper>
+            <div>
+              {profile && (
+                <img width="50px" src={profile.picture} alt={profile.name} />
+              )}
+            </div>
+            <div>
+              {isLoggedIn ? (
+                <Button variant="contained" onClick={AuthService.logout}>
+                  Logout
+                </Button>
+              ) : (
+                <Button variant="contained" onClick={AuthService.login}>
+                  Login
+                </Button>
+              )}
+            </div>
+          </AuthWrapper>
+          {isLoggedIn ? (
+            <ResetWebsiteWrapper>
+              <Button variant="contained" onClick={reloadData}>
+                Reload Data
+              </Button>
+            </ResetWebsiteWrapper>
+          ) : null}
+        </Buttons>
         {isLoggedIn && (
           <>
             <DashboardGetSongs />

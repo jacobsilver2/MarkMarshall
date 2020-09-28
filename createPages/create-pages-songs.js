@@ -22,7 +22,7 @@ function slugify(string) {
 }
 
 function createSongPages(result, createPage) {
-  const songTemplate = path.join(__dirname, "../src/templates/song.js")
+  const songTemplate = path.join(__dirname, "../src/templates/songTemplate.js")
   const songsPages = result.data.songs.edges
   songsPages.forEach(edge => {
     const { title, contentful_id } = edge.node

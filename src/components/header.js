@@ -1,4 +1,5 @@
 import { Link } from "gatsby"
+import { AuthService, useAuth } from "gatsby-theme-auth0"
 import React from "react"
 import styled from "styled-components"
 
@@ -38,12 +39,20 @@ const Page = styled.h3`
 `
 
 const Header = ({ siteTitle }) => {
+  const { isLoggedIn, profile } = useAuth()
+  const name = profile ? profile.name : ""
+
   return (
     <StyledHeader>
       <Wrapper>
         <Title>
           <StyledLink to="/">{siteTitle}</StyledLink>
         </Title>
+        {isLoggedIn ? (
+          <p>
+            Hi, {name} <button onClick={AuthService.logout}>(logout)</button>
+          </p>
+        ) : null}
         <Links>
           <Page>
             <StyledLink to="/music">Music</StyledLink>

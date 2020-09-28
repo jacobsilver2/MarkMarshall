@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
+import _ from "underscore"
 import SEO from "../components/seo"
 import { GlobalStateContext } from "../context/provider"
 import { graphql } from "gatsby"
@@ -6,6 +7,7 @@ import styled from "styled-components"
 import Song from "../components/song2"
 import Sidebar from "../components/proSidebar"
 import Pagination from "../components/pagination"
+import Sort from "../components/sort"
 import { songsPerPage } from "../lib/constants"
 import { tempoCategories, tempoFilter } from "../lib/tempoCalc"
 
@@ -28,6 +30,14 @@ const CategoriesWrapper = styled.div`
 const Cards = styled.div`
   flex-grow: 1;
 `
+const SortAndPaginateWrapper = styled.div`
+  display: flex;
+  margin: 1rem;
+  justify-content: space-between;
+  /* background: lightgrey; */
+  align-items: center;
+`
+
 const SongsAndPaginationWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -73,10 +83,12 @@ const Music = ({ data }) => {
   const { edges: allSongs } = data.allSongs
   const state = useContext(GlobalStateContext)
   const [filteredSongs, setfilteredSongs] = useState([])
+  const [sortBy, setSortBy] = useState("nameDesc")
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    // function createSorted() {}
     function createFiltered() {
       const filtered =
         state.filters.length > 0
@@ -97,12 +109,24 @@ const Music = ({ data }) => {
               })
             })
           : allSongs
+
+      let sorted = []
+      if (sortBy === "nameAsc") {
+        sorted = _.sortBy(filtered, function (song) {
+          return song.node.title.toLowerCase()
+        }).sort()
+      }
+      if (sortBy === "nameDesc") {
+        sorted = _.sortBy(filtered, function (song) {
+          return song.node.title.toLowerCase()
+        }).reverse()
+      }
       setCurrentPage(1)
-      setfilteredSongs(filtered)
+      setfilteredSongs(sorted)
       setLoading(false)
     }
     createFiltered()
-  }, [state.filters])
+  }, [state.filters, sortBy])
 
   const indexOfLastSong = currentPage * songsPerPage
   const indexOfFirstSong = indexOfLastSong - songsPerPage
@@ -118,12 +142,15 @@ const Music = ({ data }) => {
       <Wrapper>
         <Sidebar />
         <SongsAndPaginationWrapper>
-          <Pagination
-            songsPerPage={songsPerPage}
-            totalSongs={filteredSongs.length}
-            paginate={paginate}
-            currentPage={currentPage}
-          />
+          <SortAndPaginateWrapper>
+            <Sort setSortBy={setSortBy} />
+            <Pagination
+              songsPerPage={songsPerPage}
+              totalSongs={filteredSongs.length}
+              paginate={paginate}
+              currentPage={currentPage}
+            />
+          </SortAndPaginateWrapper>
           <CategoriesWrapper>
             <div>
               <h1>Title</h1>
@@ -153,6 +180,7 @@ const Music = ({ data }) => {
               />
             ))}
           </Cards>
+
           <Pagination
             songsPerPage={songsPerPage}
             totalSongs={filteredSongs.length}

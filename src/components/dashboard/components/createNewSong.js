@@ -1,10 +1,13 @@
-import React from "react"
+import React, { useContext, useEffect, useState } from "react"
+import { GlobalStateContext } from "../../../context/provider"
 import { Field, Form, Formik } from "formik"
+import Loader from "react-loader-spinner"
 import Card from "@material-ui/core/Card"
 import { makeStyles } from "@material-ui/core/styles"
 import CardHeader from "@material-ui/core/CardHeader"
 import CardContent from "@material-ui/core/CardContent"
 import { Category, Label, Title } from "../styles/DashboardCreateNewSong"
+import { createClient } from "contentful-management"
 import initialValues from "../lib/initialValues"
 import validationSchema from "../lib/validationSchema"
 import FileUpload from "./fileUpload"
@@ -12,14 +15,46 @@ import SingleTextField from "./singleTextEntry"
 import ArrayEntry from "./arrayEntry"
 import sendToContentful from "../lib/sendToContentful"
 
+// this needs to be changed for responsive
 const useStyles = makeStyles(theme => ({
   root: {
-    minWidth: "1000px",
+    width: 1000,
   },
 }))
 
-const DashboardCreateNewSongSecondTry = ({ songs }) => {
+const CreateNewSong = ({ songs, songId }) => {
+  const [editSongInitialValues, setEditSongInitialValues] = useState({})
+  const state = useContext(GlobalStateContext)
   const classes = useStyles()
+
+  // we will use this only when editing an existing song
+  useEffect(() => {
+    async function getSong() {
+      const client = await createClient({
+        accessToken: process.env.GATSBY_CONTENTFUL_CONTENT_MANAGEMENT,
+      })
+      const space = await client.getSpace(
+        process.env.GATSBY_CONTENTFUL_SPACE_ID
+      )
+      const env = await space.getEnvironment("master")
+      const entry = await env.getEntry(songId)
+      setEditSongInitialValues({
+        ...initialValues,
+        title: entry.fields.title["en-US"],
+        tempo: [...entry.fields.tempo["en-US"]],
+        composerValues: [...entry.fields.composer["en-US"]],
+        description: entry.fields.description["en-US"],
+        genreValues: [...entry.fields.genre["en-US"]],
+        instrumentationValues: [...entry.fields.instrumentation["en-US"]],
+        moodValues: [...entry.fields.mood["en-US"]],
+        soundsLikeValues: [...entry.fields.soundsLike["en-US"]],
+      })
+      // setFieldValue("title", entry.fields.title["en-US"])
+    }
+    getSong()
+  }, [songId])
+  console.log(initialValues)
+  console.log(editSongInitialValues)
   return (
     <Card
       style={{
@@ -27,15 +62,16 @@ const DashboardCreateNewSongSecondTry = ({ songs }) => {
       }}
       className={classes.root}
     >
-      <CardHeader title="Add A New Song" />
+      <CardHeader title={songId ? "Edit A Song" : "Add A New Song"} />
       <CardContent>
         <Formik
-          initialValues={initialValues}
+          enableReinitialize={true}
+          initialValues={editSongInitialValues}
           validationSchema={validationSchema}
           validateOnChange={false}
           validateOnBlur={false}
           onSubmit={(values, actions) => {
-            sendToContentful(values)
+            sendToContentful(values, actions)
             // console.log(values)
           }}
         >
@@ -49,7 +85,7 @@ const DashboardCreateNewSongSecondTry = ({ songs }) => {
             handleChange,
             handleBlur,
           }) => {
-            // console.log(values)
+            console.log(values)
             return (
               <>
                 <Form>
@@ -84,7 +120,7 @@ const DashboardCreateNewSongSecondTry = ({ songs }) => {
                     fieldName="composer"
                     fieldArrayName="composerValues"
                     setFieldValue={setFieldValue}
-                    songs={songs}
+                    songs={songs || state.songs}
                   />
                   <SingleTextField
                     label="Description"
@@ -96,27 +132,40 @@ const DashboardCreateNewSongSecondTry = ({ songs }) => {
                     fieldName="genre"
                     fieldArrayName="genreValues"
                     setFieldValue={setFieldValue}
-                    songs={songs}
+                    songs={songs || state.songs}
                   />
                   <ArrayEntry
                     fieldName="mood"
                     fieldArrayName="moodValues"
                     setFieldValue={setFieldValue}
-                    songs={songs}
+                    songs={songs || state.songs}
                   />
                   <ArrayEntry
                     fieldName="instrumentation"
                     fieldArrayName="instrumentationValues"
                     setFieldValue={setFieldValue}
-                    songs={songs}
+                    songs={songs || state.songs}
                   />
                   <ArrayEntry
                     fieldName="soundsLike"
                     fieldArrayName="soundsLikeValues"
                     setFieldValue={setFieldValue}
-                    songs={songs}
+                    songs={songs || state.songs}
                   />
-                  <button type="submit">Submit</button>
+                  <button type="submit">
+                    {isSubmitting ? (
+                      <>
+                        <Loader
+                          type="Audio"
+                          color="#000"
+                          height={80}
+                          width={80}
+                        />
+                      </>
+                    ) : (
+                      "Submit"
+                    )}
+                  </button>
                 </Form>
               </>
             )
@@ -127,4 +176,4 @@ const DashboardCreateNewSongSecondTry = ({ songs }) => {
   )
 }
 
-export default DashboardCreateNewSongSecondTry
+export default CreateNewSong

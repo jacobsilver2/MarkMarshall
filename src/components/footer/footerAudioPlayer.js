@@ -9,11 +9,18 @@ import ProgressBar from "./progressBar"
 
 const CustomPlayer = styled.div`
   width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: 0.5fr 0.5fr minmax(200px, 5fr) 1fr;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 1rem;
+  justify-items: center;
+  grid-gap: 10px;
 `
+
+const Element = styled.div`
+  width: 100%;
+  text-align: center;
+`
+
 const PlayButtonIcon = props => (
   <PlayerButton {...props}>
     <PlayerIcon.Play width={32} height={32} style={{ marginRight: 32 }} />
@@ -53,19 +60,27 @@ const FooterAudioPlayer = withCustomAudio(props => {
 
   return (
     <CustomPlayer>
-      {!playing ? (
-        <PlayButtonIcon onClick={handlePlayPause} />
-      ) : (
-        <PauseButtonIcon onClick={handlePlayPause} />
-      )}
-      <h2>{trackTitle}</h2>
-      <ProgressBar
-        seek={setSeekTo}
-        isEnabled={seeking ? false : true}
-        value={currentTime / duration}
-        {...props}
-      />
-      <Timer {...props} />
+      <Element>
+        {!playing ? (
+          <PlayButtonIcon onClick={handlePlayPause} />
+        ) : (
+          <PauseButtonIcon onClick={handlePlayPause} />
+        )}
+      </Element>
+      <Element>
+        <h2>{trackTitle}</h2>
+      </Element>
+      <Element>
+        <ProgressBar
+          seek={setSeekTo}
+          isEnabled={seeking ? false : true}
+          value={currentTime / duration}
+          {...props}
+        />
+      </Element>
+      <Element>
+        <Timer {...props} />
+      </Element>
     </CustomPlayer>
   )
 })

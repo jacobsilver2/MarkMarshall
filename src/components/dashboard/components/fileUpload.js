@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import Loader from "react-loader-spinner"
-import Waveform from "./wavesWithGeneratedArray"
 import Button from "@material-ui/core/Button"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -13,6 +12,7 @@ const Wrapper = styled.div`
 `
 
 const DashboardFileUpload = props => {
+  const [uploading, setUploading] = useState(false)
   const { values, setFieldValue } = useFormikContext()
 
   const handleAudioChange = e => {
@@ -24,6 +24,7 @@ const DashboardFileUpload = props => {
   }
 
   const sendToCloudinary = async file => {
+    setUploading(true)
     const data = new FormData()
     data.append("file", file)
     data.append("upload_preset", "mark-marshall")
@@ -36,6 +37,7 @@ const DashboardFileUpload = props => {
     setFieldValue("file", returnedFile.secure_url)
     setFieldValue("fileFormat", returnedFile.format)
     await getWaveformImgFromCloudinary(returnedFile.url)
+    setUploading(false)
     return returnedFile
   }
   const getWaveformImgFromCloudinary = async url => {
@@ -51,31 +53,38 @@ const DashboardFileUpload = props => {
 
   return (
     <Wrapper>
-      <input
-        id="audio-upload"
-        style={{ display: "none" }}
-        name={props.field.name}
-        type="file"
-        onChange={handleAudioChange}
-      />
-      <label htmlFor="audio-upload">
-        <Button
-          type="file"
-          onChange={handleAudioChange}
-          name={props.field.name}
-          color="primary"
-          margin="normal"
-          component="span"
-        >
-          {props.title}
-          <FontAwesomeIcon icon={faFileAudio} />
-        </Button>
-      </label>
-
-      {values.waveFormImage ? <img src={values.waveFormImage} /> : null}
-      {props.errorMessage ? (
-        <FormHelperText error={true}>{props.errorMessage}</FormHelperText>
-      ) : null}
+      {uploading ? (
+        <>
+          <Loader type="Audio" color="#000" height={80} width={80} />
+        </>
+      ) : (
+        <>
+          <input
+            id="audio-upload"
+            style={{ display: "none" }}
+            name={props.field.name}
+            type="file"
+            onChange={handleAudioChange}
+          />
+          <label htmlFor="audio-upload">
+            <Button
+              type="file"
+              onChange={handleAudioChange}
+              name={props.field.name}
+              color="primary"
+              margin="normal"
+              component="span"
+            >
+              {props.title}
+              <FontAwesomeIcon icon={faFileAudio} />
+            </Button>
+          </label>
+          {values.waveFormImage ? <img src={values.waveFormImage} /> : null}
+          {props.errorMessage ? (
+            <FormHelperText error={true}>{props.errorMessage}</FormHelperText>
+          ) : null}
+        </>
+      )}
     </Wrapper>
   )
 }

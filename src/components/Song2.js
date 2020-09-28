@@ -1,7 +1,8 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
-import { GlobalDispatchContext, GlobalStateContext } from "../context/provider"
 import { Link } from "gatsby"
+
+import { GlobalDispatchContext, GlobalStateContext } from "../context/provider"
 import slugify from "../lib/slugify"
 import { listLength } from "../lib/constants"
 import tempoCalc from "../lib/tempoCalc"
@@ -9,15 +10,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlay } from "@fortawesome/free-solid-svg-icons"
 
 const Wrapper = styled.div`
-  display: grid;
-  grid-template-rows: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
   min-height: 10rem;
   border: 1px solid black;
   margin-bottom: 2rem;
 `
 
 const Info = styled.div`
-  padding: 0 1rem;
+  padding: 1rem;
   display: grid;
   align-items: center;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -32,7 +34,7 @@ const WaveWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 1rem;
+  padding: 1rem;
 `
 
 const Wave = styled.div`
@@ -46,8 +48,8 @@ const ImgWrapper = styled.div`
 
 const StyledImg = styled.img`
   position: relative;
-  width: 100%;
   height: 100%;
+  width: 100%;
 `
 
 const StyledOverlayImg = styled.img`
@@ -71,7 +73,7 @@ export const StyledFontAwesome = styled(FontAwesomeIcon)`
   }
 `
 
-const SongSecondTry = ({ song, loading }) => {
+const Song = ({ song, loading }) => {
   const dispatch = useContext(GlobalDispatchContext)
   const state = useContext(GlobalStateContext)
   const {
@@ -113,7 +115,7 @@ const SongSecondTry = ({ song, loading }) => {
 
     return paragraph
   }
-  console.log(waveformImage)
+  // console.log(waveformImage)
   return (
     <Wrapper>
       <Info>
@@ -148,4 +150,4 @@ const SongSecondTry = ({ song, loading }) => {
   )
 }
 
-export default SongSecondTry
+export default Song

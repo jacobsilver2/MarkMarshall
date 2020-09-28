@@ -47,8 +47,16 @@ const DashboardRankedMemo = ({ category, songs, add, arrayName }) => {
     const arr = []
 
     songs.forEach(song => {
-      song.fields[category] &&
+      if (
+        song.fields &&
+        song.fields[category] &&
+        song.fields[category]["en-US"]
+      ) {
         song.fields[category]["en-US"].forEach(el => arr.push(el))
+      }
+      if (song.node && song.node[category]) {
+        song.node[category].forEach(el => arr.push(el))
+      }
     })
     return arr
   }, [songs])

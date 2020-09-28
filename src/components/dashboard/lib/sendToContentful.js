@@ -1,5 +1,5 @@
 import { createClient } from "contentful-management"
-const uploadToContentful = async values => {
+const uploadToContentful = async (values, actions) => {
   const client = await createClient({
     accessToken: process.env.GATSBY_CONTENTFUL_CONTENT_MANAGEMENT,
   })
@@ -64,6 +64,8 @@ const uploadToContentful = async values => {
       entry.publish()
     })
     .then(entry => {
+      actions.setSubmitting(false)
+      actions.resetForm()
       alert("song successfully uploaded to contentul")
     })
     .catch(console.error)
