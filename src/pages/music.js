@@ -83,12 +83,11 @@ const Music = ({ data }) => {
   const { edges: allSongs } = data.allSongs
   const state = useContext(GlobalStateContext)
   const [filteredSongs, setfilteredSongs] = useState([])
-  const [sortBy, setSortBy] = useState("nameDesc")
+  const [sortBy, setSortBy] = useState("nameAsc")
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    // function createSorted() {}
     function createFiltered() {
       const filtered =
         state.filters.length > 0

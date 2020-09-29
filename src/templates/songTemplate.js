@@ -50,6 +50,7 @@ const StyledImg = styled.img`
   position: relative;
   width: 100%;
   height: 100%;
+  /* clip-path: ${({ width }) => `inset(0 0 0 ${width}%`}; */
 `
 
 const StyledOverlayImg = styled.img`
@@ -119,7 +120,12 @@ const SongTemplate = props => {
               </h1>
             </TitleandPlayWrapper>
             <WaveformWrapper>
-              {waveformImage && <StyledImg src={waveformImage.fluid.src} />}
+              {waveformImage && (
+                <StyledImg
+                  width={state.currentTrackDuration}
+                  src={waveformImage.fluid.src}
+                />
+              )}
               {state.currentTrackURL === `https:${audio.file.url}` &&
                 waveformImage && (
                   <StyledOverlayImg
