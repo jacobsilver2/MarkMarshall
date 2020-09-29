@@ -50,7 +50,7 @@ const Header = ({ siteTitle }) => {
         </Title>
         {isLoggedIn ? (
           <p>
-            Hi, {name} <button onClick={AuthService.logout}>(logout)</button>
+            Hi, {name} <button onClick={AuthService.logout}>logout</button>
           </p>
         ) : null}
         <Links>

@@ -50,7 +50,6 @@ const DashboardFileUpload = props => {
     const res = await fetch(newUrl)
     setFieldValue("waveFormImage", res.url)
   }
-
   return (
     <Wrapper>
       {uploading ? (

@@ -50,6 +50,8 @@ const StyledImg = styled.img`
   position: relative;
   height: 100%;
   width: 100%;
+  clip-path: ${({ width, isCurrent }) =>
+    isCurrent ? `inset(0 0 0 ${width}% )` : ""};
 `
 
 const StyledOverlayImg = styled.img`
@@ -135,7 +137,13 @@ const Song = ({ song, loading }) => {
         <Wave style={{ width: "100%", padding: "1rem 1rem" }}>
           {waveformImage && (
             <ImgWrapper>
-              <StyledImg src={waveformImage.fluid.src} />
+              <StyledImg
+                isCurrent={
+                  state.currentTrackURL === `https:${song.audio.file.url}`
+                }
+                width={state.currentTrackDuration}
+                src={waveformImage.fluid.src}
+              />
               {state.currentTrackURL === `https:${song.audio.file.url}` && (
                 <StyledOverlayImg
                   width={state.currentTrackDuration}
