@@ -11,11 +11,6 @@ const StyledFooter = styled.footer`
   display: flex;
   align-items: center;
 `
-const TextWrapper = styled.div`
-  position: absolute;
-  top: 5px;
-  left: 10px;
-`
 
 const Footer = () => {
   const state = useContext(GlobalStateContext)

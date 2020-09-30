@@ -33,55 +33,58 @@ const CreateNewSong = ({ songs, songId }) => {
   useEffect(() => {
     async function getSong() {
       seteditSongIsLoading(true)
-      const client = await createClient({
-        accessToken: process.env.GATSBY_CONTENTFUL_CONTENT_MANAGEMENT,
-      })
-      const space = await client.getSpace(
-        process.env.GATSBY_CONTENTFUL_SPACE_ID
-      )
-      const env = await space.getEnvironment("master")
-      const entry = await env.getEntry(songId)
+      if (songId) {
+        const client = await createClient({
+          accessToken: process.env.GATSBY_CONTENTFUL_CONTENT_MANAGEMENT,
+        })
+        const space = await client.getSpace(
+          process.env.GATSBY_CONTENTFUL_SPACE_ID
+        )
+        const env = await space.getEnvironment("master")
+        const entry = await env.getEntry(songId)
 
-      // checking for null values
-      const tempos = entry.fields.tempo ? entry.fields.tempo["en-US"] : []
-      const composers = entry.fields.composer
-        ? entry.fields.composer["en-US"]
-        : []
-      const desc = entry.fields.description
-        ? entry.fields.description["en-US"]
-        : ""
-      const genres = entry.fields.genre ? entry.fields.genre["en-US"] : []
-      const instruments = entry.fields.instrumentation
-        ? entry.fields.instrumentation["en-US"]
-        : []
-      const moods = entry.fields.mood ? entry.fields.mood["en-US"] : []
-      const sounds = entry.fields.soundsLike
-        ? entry.fields.soundsLike["en-US"]
-        : []
-      const sound =
-        entry.fields.audio && entry.fields.audio["en-US"].sys.id
-          ? await env.getAsset(entry.fields.audio["en-US"].sys.id)
-          : null
-      const fileUrl = sound ? `https:${sound.fields.file["en-US"].url}` : ``
-      const wave =
-        entry.fields.waveformImage && entry.fields.waveformImage["en-US"].sys.id
-          ? await env.getAsset(entry.fields.waveformImage["en-US"].sys.id)
-          : null
-      const waveUrl = wave ? `https:${wave.fields.file["en-US"].url}` : ``
+        // checking for null values
+        const tempos = entry.fields.tempo ? entry.fields.tempo["en-US"] : []
+        const composers = entry.fields.composer
+          ? entry.fields.composer["en-US"]
+          : []
+        const desc = entry.fields.description
+          ? entry.fields.description["en-US"]
+          : ""
+        const genres = entry.fields.genre ? entry.fields.genre["en-US"] : []
+        const instruments = entry.fields.instrumentation
+          ? entry.fields.instrumentation["en-US"]
+          : []
+        const moods = entry.fields.mood ? entry.fields.mood["en-US"] : []
+        const sounds = entry.fields.soundsLike
+          ? entry.fields.soundsLike["en-US"]
+          : []
+        const sound =
+          entry.fields.audio && entry.fields.audio["en-US"].sys.id
+            ? await env.getAsset(entry.fields.audio["en-US"].sys.id)
+            : null
+        const fileUrl = sound ? `https:${sound.fields.file["en-US"].url}` : ``
+        const wave =
+          entry.fields.waveformImage &&
+          entry.fields.waveformImage["en-US"].sys.id
+            ? await env.getAsset(entry.fields.waveformImage["en-US"].sys.id)
+            : null
+        const waveUrl = wave ? `https:${wave.fields.file["en-US"].url}` : ``
 
-      setEditSongInitialValues({
-        ...initialValues,
-        title: entry.fields.title["en-US"],
-        file: fileUrl,
-        waveFormImage: waveUrl,
-        tempo: [...tempos],
-        composerValues: [...composers],
-        description: desc,
-        genreValues: [...genres],
-        instrumentationValues: [...instruments],
-        moodValues: [...moods],
-        soundsLikeValues: [...sounds],
-      })
+        setEditSongInitialValues({
+          ...initialValues,
+          title: entry.fields.title["en-US"],
+          file: fileUrl,
+          waveFormImage: waveUrl,
+          tempo: [...tempos],
+          composerValues: [...composers],
+          description: desc,
+          genreValues: [...genres],
+          instrumentationValues: [...instruments],
+          moodValues: [...moods],
+          soundsLikeValues: [...sounds],
+        })
+      }
       seteditSongIsLoading(false)
     }
     getSong()

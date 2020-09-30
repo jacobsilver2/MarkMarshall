@@ -1,6 +1,5 @@
 import React, { useContext } from "react"
 import { AuthService, useAuth } from "gatsby-theme-auth0"
-import { useQueryParam, StringParam } from "use-query-params"
 import SEO from "../components/seo"
 import { GlobalDispatchContext, GlobalStateContext } from "../context/provider"
 import { graphql, Link } from "gatsby"

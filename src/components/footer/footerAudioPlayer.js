@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useContext } from "react"
-import { GlobalDispatchContext } from "../../context/provider"
+import {
+  GlobalDispatchContext,
+  GlobalStateContext,
+} from "../../context/provider"
 import styled from "styled-components"
 import { Timer } from "react-soundplayer/components"
 import { withCustomAudio } from "react-soundplayer/addons"
@@ -36,6 +39,7 @@ const PauseButtonIcon = props => (
 const FooterAudioPlayer = withCustomAudio(props => {
   const [seekTo, setSeekTo] = useState(null)
   const dispatch = useContext(GlobalDispatchContext)
+  const state = useContext(GlobalStateContext)
   const {
     streamUrl,
     trackTitle,
@@ -48,6 +52,9 @@ const FooterAudioPlayer = withCustomAudio(props => {
   } = props
 
   const handlePlayPause = () => {
+    if (!state.currentTrackURL) {
+      return
+    }
     playing ? soundCloudAudio.pause() : soundCloudAudio.play()
   }
 

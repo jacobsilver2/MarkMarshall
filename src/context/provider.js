@@ -4,8 +4,8 @@ export const GlobalStateContext = createContext()
 export const GlobalDispatchContext = createContext()
 
 const initialState = {
-  currentTrackURL: "https://www.mfiles.co.uk/mp3-downloads/gs-cd-track2.mp3",
-  currentTrackTitle: "Default Song",
+  currentTrackURL: "",
+  currentTrackTitle: "No track selected",
   currentTrackDuration: 0,
   playing: false,
   songs: [],

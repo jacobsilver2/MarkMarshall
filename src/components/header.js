@@ -22,6 +22,16 @@ const Title = styled.h1`
   /* margin: 0; */
 `
 
+const LoggedInText = styled.p`
+  font-size: 1.5rem;
+  button {
+    border: none;
+    cursor: pointer;
+    background: transparent;
+    color: white;
+  }
+`
+
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: white;
@@ -45,14 +55,16 @@ const Header = ({ siteTitle }) => {
   return (
     <StyledHeader>
       <Wrapper>
-        <Title>
-          <StyledLink to="/">{siteTitle}</StyledLink>
-        </Title>
-        {isLoggedIn ? (
-          <p>
-            Hi, {name} <button onClick={AuthService.logout}>logout</button>
-          </p>
-        ) : null}
+        <div>
+          <Title>
+            <StyledLink to="/">{siteTitle}</StyledLink>
+          </Title>
+          {isLoggedIn ? (
+            <LoggedInText>
+              Hi, {name} <button onClick={AuthService.logout}>logout</button>
+            </LoggedInText>
+          ) : null}
+        </div>
         <Links>
           <Page>
             <StyledLink to="/music">Music</StyledLink>
