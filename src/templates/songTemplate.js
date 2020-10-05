@@ -2,15 +2,17 @@ import React, { useContext } from "react"
 import { AuthService, useAuth } from "gatsby-theme-auth0"
 import SEO from "../components/seo"
 import { GlobalDispatchContext, GlobalStateContext } from "../context/provider"
-import { graphql, Link } from "gatsby"
+import { graphql, Link, navigate } from "gatsby"
 import styled from "styled-components"
 import { StyledFontAwesome } from "../components/Song2"
 import { faPlay } from "@fortawesome/free-solid-svg-icons"
+import BackButton from "../components/backButton"
 
 const SongWrapper = styled.div`
   height: calc(100vh - 160px);
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 `
@@ -68,8 +70,10 @@ const Details = styled.div`
   grid-gap: 1rem;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 `
-const DetailsGridItem = styled.div`
-  /* border: 1px dashed grey; */
+const DetailsGridItem = styled.div``
+
+const ButtonWrapper = styled.div`
+  margin-top: 3rem;
 `
 
 const SongTemplate = props => {
@@ -157,6 +161,9 @@ const SongTemplate = props => {
             </DetailsGridItem>
           </Details>
         </SongCard>
+        <ButtonWrapper>
+          <BackButton />
+        </ButtonWrapper>
       </SongWrapper>
     </>
   )

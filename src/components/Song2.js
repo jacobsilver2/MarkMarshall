@@ -7,7 +7,7 @@ import slugify from "../lib/slugify"
 import { listLength } from "../lib/constants"
 import tempoCalc from "../lib/tempoCalc"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPlay } from "@fortawesome/free-solid-svg-icons"
+import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons"
 
 const Wrapper = styled.div`
   display: flex;
@@ -117,7 +117,33 @@ const Song = ({ song, loading }) => {
 
     return paragraph
   }
-  // console.log(waveformImage)
+  const playOrPause = () => {
+    if (
+      state.currentTrackURL === `https:${song.audio.file.url}` &&
+      state.playing
+    ) {
+      return (
+        <StyledFontAwesome
+          onClick={() => dispatch({ type: "PLAYING_OFF" })}
+          icon={faPause}
+        />
+      )
+    }
+    if (
+      state.currentTrackURL === `https:${song.audio.file.url}` &&
+      !state.playing
+    ) {
+      return (
+        <StyledFontAwesome
+          onClick={() => dispatch({ type: "PLAYING_ON" })}
+          icon={faPlay}
+        />
+      )
+    }
+    return (
+      <StyledFontAwesome onClick={() => addToGlobalState()} icon={faPlay} />
+    )
+  }
   return (
     <Wrapper>
       <Info>
@@ -133,7 +159,7 @@ const Song = ({ song, loading }) => {
         <div>{instrumentation ? renderList(instrumentation) : ""}</div>
       </Info>
       <WaveWrapper>
-        <StyledFontAwesome onClick={() => addToGlobalState()} icon={faPlay} />
+        {playOrPause()}
         <Wave style={{ width: "100%", padding: "1rem 1rem" }}>
           {waveformImage && (
             <ImgWrapper>

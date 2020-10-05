@@ -34,7 +34,14 @@ const Search = () => {
     const songs = state.songs || []
 
     let filteredData = songs.filter(song => {
-      const { title, tempo, instrumentation, composer, genre, mood } = song.node
+      const {
+        title,
+        tempo,
+        instrumentation,
+        genre,
+        mood,
+        soundsLike,
+      } = song.node
       return (
         title.toLowerCase().includes(query.toLowerCase()) ||
         (tempo && tempo.join("").toLowerCase().includes(query.toLowerCase())) ||
@@ -43,8 +50,8 @@ const Search = () => {
             .join("")
             .toLowerCase()
             .includes(query.toLowerCase())) ||
-        (composer &&
-          composer.join("").toLowerCase().includes(query.toLowerCase())) ||
+        (soundsLike &&
+          soundsLike.join("").toLowerCase().includes(query.toLowerCase())) ||
         (genre && genre.join("").toLowerCase().includes(query.toLowerCase())) ||
         (mood && mood.join("").toLowerCase().includes(query.toLowerCase()))
       )
@@ -61,7 +68,7 @@ const Search = () => {
         <Input
           type="text"
           aria-label="Search"
-          placeholder="Search by Title, Tempo, Genre, Mood, Sounds-Like, Instrumentation or Composer"
+          placeholder="Search by Title, Tempo, Genre, Mood, Sounds-Like or Instrument"
           onChange={handleInputChange}
         />
       </SearchBox>

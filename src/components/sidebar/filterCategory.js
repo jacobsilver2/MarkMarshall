@@ -1,27 +1,26 @@
 import React, { useContext } from "react"
-import Tippy, { inlinePositioning } from "@tippyjs/react"
+import Tippy from "@tippyjs/react"
 import { GlobalStateContext } from "../../context/provider"
 import "tippy.js/dist/tippy.css"
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import {
-  faTheaterMasks,
-  faGuitar,
-  faUserEdit,
-  faStopwatch,
-  faMusic,
-  faMoon,
-} from "@fortawesome/free-solid-svg-icons"
 
 const LI = styled.li`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   list-style-type: none;
   text-align: center;
-  padding-top: 2rem;
-  padding-right: 2rem;
+  margin-bottom: 2rem;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
   cursor: pointer;
-  width: 100%;
   &:hover {
     background-color: grey;
+  }
+  input {
+    cursor: pointer;
   }
 `
 
@@ -79,7 +78,7 @@ const FilterCategory = ({ title, categoryValues, handleCheck, icon }) => {
       >
         <LI>
           <FontAwesomeIcon icon={icon} />
-          <p>{title}</p>
+          <p style={{ display: "inline" }}>{title}</p>
         </LI>
       </Tippy>
     </>

@@ -29,10 +29,16 @@ function reducer(state, action) {
         currentTrackDuration: action.duration,
       }
     }
-    case "TOGGLE_PLAYING": {
+    case "PLAYING_ON": {
       return {
         ...state,
-        playing: !state.playing,
+        playing: true,
+      }
+    }
+    case "PLAYING_OFF": {
+      return {
+        ...state,
+        playing: false,
       }
     }
     case "ADD_SONGS": {

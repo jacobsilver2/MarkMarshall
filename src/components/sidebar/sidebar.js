@@ -29,6 +29,7 @@ const Title = styled.h1`
   font-weight: bold;
   color: white;
   text-align: center;
+  padding-bottom: 4rem;
 `
 
 const UL = styled.ul`
@@ -43,6 +44,8 @@ const UL = styled.ul`
 const Sidebar = () => {
   const dispatch = useContext(GlobalDispatchContext)
 
+  // ultimately decided on having all these values be one big object.
+  // it's a little weird at first, but considering these values only get set at mount, it shouldn't be too bad.
   const [catValues, setCatValues] = useState({
     genres: { label: "Genre", values: [], icon: faTheaterMasks },
     composers: { label: "Composer", values: [], icon: faUserEdit },

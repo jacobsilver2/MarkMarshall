@@ -17,7 +17,7 @@ const DashboardFileUpload = props => {
 
   const handleAudioChange = e => {
     e.preventDefault()
-    let file = e.target.files[0]
+    let file = e.target.files[e.target.files.length - 1]
     if (file) {
       sendToCloudinary(file)
     }
