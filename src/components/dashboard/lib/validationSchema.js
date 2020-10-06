@@ -25,4 +25,12 @@ const validationSchema = yup.object({
   // }),
 })
 
+export const playlistValidationSchema = yup.object({
+  //still need to add songs array schema
+  title: yup.string().required("Title is required"),
+  description: yup.string().required("Description is required"),
+  image: yup.string().url().required("An image is required"),
+  songs: yup.array().min(1, "Gotta have songs to make a playlist"),
+})
+
 export default validationSchema

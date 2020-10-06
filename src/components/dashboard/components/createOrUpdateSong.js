@@ -8,7 +8,7 @@ import CardHeader from "@material-ui/core/CardHeader"
 import CardContent from "@material-ui/core/CardContent"
 import { Category, Label, Title } from "../styles/DashboardCreateNewSong"
 import { createClient } from "contentful-management"
-import initialValues from "../lib/initialValues"
+import { initialSongValues } from "../lib/initialValues"
 import validationSchema from "../lib/validationSchema"
 import FileUpload from "./fileUpload"
 import SingleTextField from "./singleTextEntry"
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const CreateNewSong = ({ songs, songId }) => {
+const CreateOrUpdateSong = ({ songs, songId }) => {
   const [editSongInitialValues, setEditSongInitialValues] = useState({})
   const [editSongIsLoading, seteditSongIsLoading] = useState(false)
   const state = useContext(GlobalStateContext)
@@ -72,7 +72,7 @@ const CreateNewSong = ({ songs, songId }) => {
         const waveUrl = wave ? `https:${wave.fields.file["en-US"].url}` : ``
 
         setEditSongInitialValues({
-          ...initialValues,
+          ...initialSongValues,
           title: entry.fields.title["en-US"],
           file: fileUrl,
           waveFormImage: waveUrl,
@@ -110,6 +110,7 @@ const CreateNewSong = ({ songs, songId }) => {
               songId
                 ? updateContentfulSong(values, actions, songId)
                 : sendToContentful(values, actions)
+              seteditSongIsLoading(false)
               // console.log(values)
             }}
           >
@@ -221,4 +222,4 @@ const CreateNewSong = ({ songs, songId }) => {
   )
 }
 
-export default CreateNewSong
+export default CreateOrUpdateSong

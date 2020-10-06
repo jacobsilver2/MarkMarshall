@@ -1,4 +1,4 @@
-const initialValues = {
+export const initialSongValues = {
   title: "",
   tempo: 120,
   composer: "",
@@ -18,4 +18,9 @@ const initialValues = {
   waveFormImage: "",
 }
 
-export default initialValues
+export const initialPlaylistValues = {
+  title: "",
+  description: "",
+  songs: [],
+  image: "",
+}

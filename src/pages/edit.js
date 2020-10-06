@@ -1,13 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import { Field, Form, Formik } from "formik"
-import Loader from "react-loader-spinner"
-import Card from "@material-ui/core/Card"
-import { makeStyles } from "@material-ui/core/styles"
-import CardHeader from "@material-ui/core/CardHeader"
-import CardContent from "@material-ui/core/CardContent"
-import CreateNewSong from "../components/dashboard/components/createNewSong"
-import { AuthService, useAuth } from "gatsby-theme-auth0"
+import UpdateSong from "../components/dashboard/components/createOrUpdateSong"
+import UpdatePlaylist from "../components/dashboard/components/createOrUpdatePlaylist"
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,11 +11,14 @@ const Wrapper = styled.div`
 `
 
 const Edit = ({ location }) => {
-  return (
-    <Wrapper>
-      <CreateNewSong songId={location.state.id} />
-    </Wrapper>
-  )
+  let updateComp
+  if (location.state.type === "song") {
+    updateComp = <UpdateSong songId={location.state.id} />
+  }
+  if (location.state.type === "playlist") {
+    updateComp = <UpdatePlaylist playlistId={location.state.id} />
+  }
+  return <Wrapper>{updateComp}</Wrapper>
 }
 
 export default Edit

@@ -1,9 +1,13 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
+import { createClient } from "contentful-management"
 import styled from "styled-components"
 import { AuthService, useAuth } from "gatsby-theme-auth0"
-import DashboardGetSongs from "../components/dashboard/components/getSongs"
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import Button from "@material-ui/core/Button"
+import ToggleButton from "@material-ui/lab/ToggleButton"
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup"
+import CreateNewSong from "../components/dashboard/components/createOrUpdateSong"
+import CreateNewPlaylist from "../components/dashboard/components/createOrUpdatePlaylist"
 
 const Wrapper = styled.div`
   height: calc(100vh - 160px);
@@ -29,6 +33,18 @@ const ResetWebsiteWrapper = styled.div`
   text-align: left;
   cursor: pointer;
 `
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`
+
+const NewItemWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`
 
 // eventually this needs to be responsive
 // https://material-ui.com/customization/typography/
@@ -40,6 +56,29 @@ const theme = createMuiTheme({
 
 const Dashboard = () => {
   const { isLoggedIn, profile } = useAuth()
+  const [formSelected, setFormSelected] = useState("song")
+  const [songs, setSongs] = useState([])
+
+  useEffect(() => {
+    async function getSongs() {
+      const client = await createClient({
+        accessToken: process.env.GATSBY_CONTENTFUL_CONTENT_MANAGEMENT,
+      })
+      const space = await client.getSpace(
+        process.env.GATSBY_CONTENTFUL_SPACE_ID
+      )
+      const env = await space.getEnvironment("master")
+      const entries = await env.getEntries()
+      const allSongs = entries.items.filter(
+        entry => entry.sys.contentType.sys.id === "song"
+      )
+      setSongs([...allSongs])
+      return env
+    }
+
+    getSongs()
+  }, [])
+
   const reloadData = () => {
     alert("Eventually will redeploy Netlify")
   }
@@ -49,11 +88,11 @@ const Dashboard = () => {
         <Buttons>
           <AuthWrapper>
             <div>
+              {/* <div>
               {profile && (
                 <img width="50px" src={profile.picture} alt={profile.name} />
               )}
-            </div>
-            <div>
+            </div> */}
               {isLoggedIn ? (
                 <Button variant="contained" onClick={AuthService.logout}>
                   Logout
@@ -75,7 +114,27 @@ const Dashboard = () => {
         </Buttons>
         {isLoggedIn && (
           <>
-            <DashboardGetSongs />
+            <Container>
+              <ToggleButtonGroup
+                style={{ textAlign: "center" }}
+                exclusive
+                onChange={(e, val) => setFormSelected(val)}
+                value={formSelected}
+                aria-label="text alignment"
+              >
+                <ToggleButton value="song">Create New Song</ToggleButton>
+                <ToggleButton value="playlist">
+                  Create New Playlist
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Container>
+            <NewItemWrapper>
+              {formSelected === "song" ? (
+                <CreateNewSong songs={songs} />
+              ) : (
+                <CreateNewPlaylist songs={songs} />
+              )}
+            </NewItemWrapper>
           </>
         )}
       </ThemeProvider>

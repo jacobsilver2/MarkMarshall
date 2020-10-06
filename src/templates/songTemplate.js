@@ -116,7 +116,7 @@ const SongTemplate = props => {
               <h1>
                 {title}{" "}
                 {isLoggedIn ? (
-                  <Link state={{ id: contentful_id }} to="/edit">
+                  <Link state={{ id: contentful_id, type: "song" }} to="/edit">
                     edit
                   </Link>
                 ) : null}

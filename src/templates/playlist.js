@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
 import { graphql } from "gatsby"
 import styled from "styled-components"
+import { AuthService, useAuth } from "gatsby-theme-auth0"
 import Img from "gatsby-image"
 import { Link } from "gatsby"
 import slugify from "../lib/slugify"
@@ -48,7 +49,14 @@ const Desc = styled.p`
 
 const PlaylistTemplate = props => {
   const dispatch = useContext(GlobalDispatchContext)
-  const { description, title, image, songs } = props.data.playlist
+  const {
+    description,
+    title,
+    image,
+    songs,
+    contentful_id,
+  } = props.data.playlist
+  const { isLoggedIn, profile } = useAuth()
   function addToGlobalState(song) {
     dispatch({
       type: "SET_CURRENT_TRACK",
@@ -61,7 +69,14 @@ const PlaylistTemplate = props => {
     <OuterWrapper>
       <Card>
         <PlaylistImg fluid={image.fluid} />
-        <Title>{title}</Title>
+        <Title>
+          {title}{" "}
+          {isLoggedIn ? (
+            <Link state={{ id: contentful_id, type: "playlist" }} to="/edit">
+              edit
+            </Link>
+          ) : null}
+        </Title>
         <Desc>{description && description.content[0].content[0].value}</Desc>
         <ol>
           {songs.map((song, i) => (
