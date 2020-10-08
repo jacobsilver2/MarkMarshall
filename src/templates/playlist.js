@@ -1,12 +1,14 @@
 import React, { useContext } from "react"
 import { graphql } from "gatsby"
 import styled from "styled-components"
-import { AuthService, useAuth } from "gatsby-theme-auth0"
 import Img from "gatsby-image"
 import { Link } from "gatsby"
+import { faPlay } from "@fortawesome/free-solid-svg-icons"
+import { useAuth } from "gatsby-theme-auth0"
+
+import deleteEntry from "../lib/deleteContentfulEntry"
 import slugify from "../lib/slugify"
 import { GlobalDispatchContext } from "../context/provider"
-import { faPlay } from "@fortawesome/free-solid-svg-icons"
 import { StyledFontAwesome } from "../components/Song2"
 
 const OuterWrapper = styled.div`
@@ -47,8 +49,16 @@ const Desc = styled.p`
   font-size: 1.3rem;
 `
 
+const DeleteButton = styled.button`
+  all: unset;
+  text-decoration: underline;
+  margin-left: 2rem;
+  cursor: pointer;
+`
+
 const PlaylistTemplate = props => {
   const dispatch = useContext(GlobalDispatchContext)
+  const { isLoggedIn } = useAuth()
   const {
     description,
     title,
@@ -56,7 +66,6 @@ const PlaylistTemplate = props => {
     songs,
     contentful_id,
   } = props.data.playlist
-  const { isLoggedIn, profile } = useAuth()
   function addToGlobalState(song) {
     dispatch({
       type: "SET_CURRENT_TRACK",
@@ -72,9 +81,16 @@ const PlaylistTemplate = props => {
         <Title>
           {title}{" "}
           {isLoggedIn ? (
-            <Link state={{ id: contentful_id, type: "playlist" }} to="/edit">
-              edit
-            </Link>
+            <>
+              <Link state={{ id: contentful_id, type: "playlist" }} to="/edit">
+                edit
+              </Link>
+              <DeleteButton
+                onClick={() => deleteEntry("Playlist", contentful_id)}
+              >
+                delete
+              </DeleteButton>
+            </>
           ) : null}
         </Title>
         <Desc>{description && description.content[0].content[0].value}</Desc>

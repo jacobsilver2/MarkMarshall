@@ -55,7 +55,7 @@ const theme = createMuiTheme({
 })
 
 const Dashboard = () => {
-  const { isLoggedIn, profile } = useAuth()
+  const { isLoggedIn } = useAuth()
   const [formSelected, setFormSelected] = useState("song")
   const [songs, setSongs] = useState([])
 

@@ -3,6 +3,7 @@ import { GlobalStateContext } from "../../../context/provider"
 import { Field, Form, Formik } from "formik"
 import Loader from "react-loader-spinner"
 import Card from "@material-ui/core/Card"
+import Button from "@material-ui/core/Button"
 import { makeStyles } from "@material-ui/core/styles"
 import CardHeader from "@material-ui/core/CardHeader"
 import CardContent from "@material-ui/core/CardContent"
@@ -111,20 +112,9 @@ const CreateOrUpdateSong = ({ songs, songId }) => {
                 ? updateContentfulSong(values, actions, songId)
                 : sendToContentful(values, actions)
               seteditSongIsLoading(false)
-              // console.log(values)
             }}
           >
-            {({
-              isSubmitting,
-              errors,
-              touched,
-              values,
-              resetForm,
-              setFieldValue,
-              handleChange,
-              handleBlur,
-            }) => {
-              // console.log(values)
+            {({ isSubmitting, errors, touched, setFieldValue, handleBlur }) => {
               return (
                 <>
                   <Form>
@@ -140,7 +130,6 @@ const CreateOrUpdateSong = ({ songs, songId }) => {
                           errors["file"] ? errors["file"] : undefined
                         }
                         touched={touched["file"]}
-                        // style={{ display: "flex" }}
                         onBlur={handleBlur}
                       />
                     </Category>
@@ -193,7 +182,7 @@ const CreateOrUpdateSong = ({ songs, songId }) => {
                       setFieldValue={setFieldValue}
                       songs={songs || state.songs}
                     />
-                    <button type="submit">
+                    <Button fullWidth color="primary" type="submit">
                       {isSubmitting ? (
                         <>
                           <Loader
@@ -208,7 +197,7 @@ const CreateOrUpdateSong = ({ songs, songId }) => {
                       ) : (
                         "Submit"
                       )}
-                    </button>
+                    </Button>
                   </Form>
                 </>
               )

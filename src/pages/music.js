@@ -83,7 +83,7 @@ const Music = ({ data }) => {
   const { edges: allSongs } = data.allSongs
   const state = useContext(GlobalStateContext)
   const [filteredSongs, setfilteredSongs] = useState([])
-  const [sortBy, setSortBy] = useState("nameAsc")
+  const [sortBy, setSortBy] = useState("createdAtAsc")
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
 
@@ -120,12 +120,27 @@ const Music = ({ data }) => {
           return song.node.title.toLowerCase()
         }).reverse()
       }
+      if (sortBy === "createdAtAsc") {
+        const withTimeStamp = _.map(filtered, (value, index) => {
+          value.timestamp = new Date(value.node.createdAt).getTime()
+          return value
+        })
+        sorted = _.sortBy(withTimeStamp, "timestamp").reverse()
+      }
+      if (sortBy === "createdAtDesc") {
+        const withTimeStamp = _.map(filtered, (value, index) => {
+          value.timestamp = new Date(value.node.createdAt).getTime()
+          return value
+        })
+        sorted = _.sortBy(withTimeStamp, "timestamp")
+      }
+
       setCurrentPage(1)
       setfilteredSongs(sorted)
       setLoading(false)
     }
     createFiltered()
-  }, [state.filters, sortBy])
+  }, [state.filters, sortBy, allSongs])
 
   const indexOfLastSong = currentPage * songsPerPage
   const indexOfFirstSong = indexOfLastSong - songsPerPage
@@ -142,7 +157,7 @@ const Music = ({ data }) => {
         <Sidebar />
         <SongsAndPaginationWrapper>
           <SortAndPaginateWrapper>
-            <Sort setSortBy={setSortBy} />
+            <Sort setSortBy={setSortBy} sortBy={sortBy} />
             <Pagination
               songsPerPage={songsPerPage}
               totalSongs={filteredSongs.length}

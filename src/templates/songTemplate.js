@@ -1,12 +1,13 @@
 import React, { useContext } from "react"
-import { AuthService, useAuth } from "gatsby-theme-auth0"
+import { useAuth } from "gatsby-theme-auth0"
 import SEO from "../components/seo"
 import { GlobalDispatchContext, GlobalStateContext } from "../context/provider"
-import { graphql, Link, navigate } from "gatsby"
+import { graphql, Link } from "gatsby"
 import styled from "styled-components"
 import { StyledFontAwesome } from "../components/Song2"
 import { faPlay } from "@fortawesome/free-solid-svg-icons"
 import BackButton from "../components/backButton"
+import deleteEntry from "../lib/deleteContentfulEntry"
 
 const SongWrapper = styled.div`
   height: calc(100vh - 160px);
@@ -75,11 +76,17 @@ const DetailsGridItem = styled.div``
 const ButtonWrapper = styled.div`
   margin-top: 3rem;
 `
+const DeleteButton = styled.button`
+  all: unset;
+  text-decoration: underline;
+  margin-left: 2rem;
+  cursor: pointer;
+`
 
 const SongTemplate = props => {
   const dispatch = useContext(GlobalDispatchContext)
   const state = useContext(GlobalStateContext)
-  const { isLoggedIn, profile } = useAuth()
+  const { isLoggedIn } = useAuth()
   const {
     audio,
     composer,
@@ -116,9 +123,19 @@ const SongTemplate = props => {
               <h1>
                 {title}{" "}
                 {isLoggedIn ? (
-                  <Link state={{ id: contentful_id, type: "song" }} to="/edit">
-                    edit
-                  </Link>
+                  <>
+                    <Link
+                      state={{ id: contentful_id, type: "song" }}
+                      to="/edit"
+                    >
+                      edit
+                    </Link>
+                    <DeleteButton
+                      onClick={() => deleteEntry("Song", contentful_id)}
+                    >
+                      delete
+                    </DeleteButton>
+                  </>
                 ) : null}
               </h1>
             </TitleandPlayWrapper>

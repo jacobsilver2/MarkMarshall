@@ -6,7 +6,6 @@ import Card from "@material-ui/core/Card"
 import { makeStyles } from "@material-ui/core/styles"
 import CardHeader from "@material-ui/core/CardHeader"
 import Button from "@material-ui/core/Button"
-import CardContent from "@material-ui/core/CardContent"
 import { Category, Label, Title } from "../styles/DashboardCreateNewSong"
 import { createClient } from "contentful-management"
 import { initialPlaylistValues } from "../lib/initialValues"
@@ -33,7 +32,6 @@ const CreateOrUpdatePlaylist = ({ songs, playlistId }) => {
   const classes = useStyles()
 
   // we will use this only when editing an existing playlist
-  // TODO: update this, it's copied from updateSong
   useEffect(() => {
     async function getPlaylist() {
       seteditPlaylistIsLoading(true)
@@ -46,7 +44,6 @@ const CreateOrUpdatePlaylist = ({ songs, playlistId }) => {
         )
         const env = await space.getEnvironment("master")
         const entry = await env.getEntry(playlistId, { include: 2 })
-        // console.log(entry)
 
         // checking for null values
         const desc = entry.fields.description
@@ -66,7 +63,6 @@ const CreateOrUpdatePlaylist = ({ songs, playlistId }) => {
           return song
         })
         const selectedSongs = await Promise.all(promises)
-        // console.log(selectedSongs)
 
         // we have to do this because were not receiving any songs as props when editing
         const allCntflSongs = await env.getEntries()
@@ -74,7 +70,6 @@ const CreateOrUpdatePlaylist = ({ songs, playlistId }) => {
           entry => entry.sys.contentType.sys.id === "song"
         )
         setAllContentfulSongs([...allSongs])
-        // console.log(allContentfulSongs)
         setEditPlaylistInitialValues({
           ...initialPlaylistValues,
           title: title,
@@ -110,24 +105,13 @@ const CreateOrUpdatePlaylist = ({ songs, playlistId }) => {
             validateOnChange={false}
             validateOnBlur={false}
             onSubmit={(values, actions) => {
-              // console.log("soon to be a submit function")
-              // console.log(values)
               playlistId
                 ? updateContentfulPlaylist(values, actions, playlistId)
                 : createNewContentfulPlaylist(values, actions)
               seteditPlaylistIsLoading(false)
             }}
           >
-            {({
-              isSubmitting,
-              errors,
-              touched,
-              values,
-              resetForm,
-              setFieldValue,
-              handleChange,
-              handleBlur,
-            }) => {
+            {({ isSubmitting, errors, touched, handleBlur }) => {
               return (
                 <Form>
                   <Category>

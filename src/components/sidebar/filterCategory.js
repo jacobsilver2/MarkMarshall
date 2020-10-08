@@ -63,6 +63,7 @@ const FilterCategory = ({ title, categoryValues, handleCheck, icon }) => {
                   <label htmlFor={value} />
                   <input
                     key={value}
+                    id={value}
                     onClick={handleCheck}
                     type="checkbox"
                     name={value}

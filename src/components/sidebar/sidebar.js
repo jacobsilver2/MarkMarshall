@@ -1,12 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
-import Tippy, { inlinePositioning } from "@tippyjs/react"
 import "tippy.js/dist/tippy.css"
 import styled from "styled-components"
-import {
-  GlobalDispatchContext,
-  GlobalStateContext,
-} from "../../context/provider"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { GlobalDispatchContext } from "../../context/provider"
 import { useStaticQuery, graphql } from "gatsby"
 import {
   faTheaterMasks,
@@ -147,7 +142,7 @@ const Sidebar = () => {
       }))
     }
     getAvailableFilterParams()
-  }, [])
+  }, [allSongs])
 
   const handleCheck = e => {
     const { value: filter, checked } = e.target
